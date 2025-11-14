@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuthProvider {
+  local
+  google
+  facebook
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  passwordHash  String?       // null si OAuth
+  firstName     String?
+  lastName      String?
+  profilePic    String?
+  authProvider  AuthProvider  @default(local)
+  role          UserRole      @default(user)
+  phone         String?
+  dateOfBirth   DateTime?
+  createdAt     DateTime      @default(now())
+  lastLogin     DateTime?
+  
+  bookings      Booking[]
+  comments      Comment[]
+  news          News[]        // Admin qui crée les actualités
+  
+  @@map("users")
+}
+
+model Class {
+  id                  String   @id @default(cuid())
+  title               String
+  description         String?
+  type                String   // Hatha, Vinyasa, Yin, etc.
+  color               String   // Couleur hex pour l'affichage
+  startTime           DateTime
+  endTime             DateTime
+  date                DateTime
+  instructor          String
+  maxParticipants     Int      @default(20)
+  currentParticipants Int      @default(0)
+  googleCalendarId    String?
+  outlookCalendarId   String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  bookings            Booking[]
+  
+  @@map("classes")
+}
+
+model News {
+  id          String    @id @default(cuid())
+  title       String
+  content     String    @db.Text
+  coverImage  String?
+  authorId    String
+  viewCount   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  
+  @@map("news")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  newsId    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  news      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("comments")
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  userId    String
+  classId   String
+  bookedAt  DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, classId])
+  @@map("bookings")
+}
+

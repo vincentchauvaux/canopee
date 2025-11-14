@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Primary - Feuillage profond */
+  --c-canopee-primary: #264E36;
+  --c-canopee-primary-light: #4F7F5A;
+  
+  /* Secondary - Sous-bois & nature humide */
+  --c-canopee-secondary: #7DAA6A;
+  --c-canopee-secondary-light: #AFCFA1;
+  
+  /* Accent - Lumière filtrée */
+  --c-canopee-accent: #F2E8C9;
+  
+  /* Neutres - Terre & tronc */
+  --c-canopee-dark: #2A2D23;
+  --c-canopee-light: #DAD7CD;
+  --c-canopee-white: #FFFFFF;
+  
+  /* États */
+  --c-canopee-hover: #3A644B;
+  --c-canopee-press: #1E3D2B;
+  --c-canopee-focus: #AFCFA1;
+  
+  /* Surfaces */
+  --c-surface-default: #FFFFFF;
+  --c-surface-muted: #DAD7CD;
+  --c-surface-forest: #F2E8C9;
+  
+  /* Shadows */
+  --shadow-canopee-soft: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-canopee-deep: 0 8px 20px rgba(0,0,0,0.15);
+  
+  /* Alias pour compatibilité */
+  --primary: var(--c-canopee-primary);
+  --primary-light: var(--c-canopee-primary-light);
+  --secondary: var(--c-canopee-secondary);
+  --secondary-light: var(--c-canopee-secondary-light);
+  --accent: var(--c-canopee-accent);
+  --text-dark: var(--c-canopee-dark);
+  --text-light: var(--c-canopee-white);
+  --gray: var(--c-canopee-light);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', 'Montserrat', sans-serif;
+  color: var(--text-dark);
+  background-color: #FFFFFF;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 2.625rem);
+}
+
+h3 {
+  font-size: clamp(1.75rem, 3vw, 2rem);
+}
+
+/* Transitions globales */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--accent);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+/* Animations Ken Burns pour le carrousel Hero - Version subtile */
+@keyframes kenBurns1 {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.06) translate(-2%, -1.5%);
+  }
+}
+
+@keyframes kenBurns2 {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate(1.5%, 2%);
+  }
+}
+
+@keyframes kenBurns3 {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.07) translate(-1.5%, 1.5%);
+  }
+}
+
+@keyframes kenBurns4 {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.05) translate(2%, -1.5%);
+  }
+}
+
+.ken-burns-1 {
+  animation: kenBurns1 10s ease-out forwards;
+}
+
+.ken-burns-2 {
+  animation: kenBurns2 10s ease-out forwards;
+}
+
+.ken-burns-3 {
+  animation: kenBurns3 10s ease-out forwards;
+}
+
+.ken-burns-4 {
+  animation: kenBurns4 10s ease-out forwards;
+}
+
+/* Transformations finales pour maintenir l'effet Ken Burns après l'animation - Version subtile */
+.ken-burns-final-1 {
+  transform: scale(1.06) translate(-2%, -1.5%);
+}
+
+.ken-burns-final-2 {
+  transform: scale(1.08) translate(1.5%, 2%);
+}
+
+.ken-burns-final-3 {
+  transform: scale(1.07) translate(-1.5%, 1.5%);
+}
+
+.ken-burns-final-4 {
+  transform: scale(1.05) translate(2%, -1.5%);
+}
+
