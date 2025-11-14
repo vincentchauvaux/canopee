@@ -150,6 +150,12 @@ yoga/
 - Types TypeScript personnalisés pour NextAuth et types partagés
 - Documentation complète (README.md, INSTALLATION.md)
 
+## Dépôt Git
+
+- **Repository GitHub** : `git@github.com:vincentchauvaux/canopee.git`
+- **Branche principale** : `main`
+- Projet initialisé et poussé sur GitHub avec commit initial
+
 ## Informations sur le Yin Yoga
 
 Le site présente le cours de Yin Yoga avec les informations suivantes :
