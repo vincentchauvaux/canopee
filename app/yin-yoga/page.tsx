@@ -7,7 +7,7 @@ export default function YinYogaPage() {
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      <div className="pt-24 pb-16">
+      <div className="pt-16 pb-16">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">

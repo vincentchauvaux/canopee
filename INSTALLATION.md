@@ -6,8 +6,8 @@
 
 Assurez-vous d'avoir installé :
 - **Node.js** 18+ ([télécharger](https://nodejs.org/))
-- **PostgreSQL** 14+ ([télécharger](https://www.postgresql.org/download/))
 - **npm** ou **yarn**
+- **Base de données** : Supabase (recommandé) ou PostgreSQL local
 
 ### 2. Installation des dépendances
 
@@ -17,7 +17,23 @@ npm install
 
 ### 3. Configuration de la base de données
 
-#### Option A: PostgreSQL local
+#### Option A: Supabase (Recommandé - Cloud)
+
+1. **Créer un compte** : https://supabase.com
+2. **Créer un nouveau projet**
+3. **Récupérer la connection string** :
+   - Aller dans Settings → Database
+   - Copier la "Connection string" (URI)
+   - Format : `postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres`
+
+4. **Configurer dans `.env`** :
+```env
+DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres?schema=public"
+```
+
+📖 **Guide de migration** : Si vous avez déjà une base PostgreSQL, voir [MIGRATION_SUPABASE.md](./MIGRATION_SUPABASE.md)
+
+#### Option B: PostgreSQL local
 
 1. Créer une base de données PostgreSQL :
 ```sql
@@ -29,9 +45,8 @@ CREATE DATABASE yoga_studio;
 DATABASE_URL="postgresql://user:password@localhost:5432/yoga_studio?schema=public"
 ```
 
-#### Option B: Service cloud (Recommandé pour le développement)
+#### Option C: Autres services cloud
 
-- **Supabase** (gratuit) : https://supabase.com
 - **Railway** (gratuit) : https://railway.app
 - **Neon** (gratuit) : https://neon.tech
 
@@ -45,7 +60,10 @@ DATABASE_URL="postgresql://user:password@localhost:5432/yoga_studio?schema=publi
 DATABASE_URL="postgresql://user:password@localhost:5432/yoga_studio?schema=public"
 
 # NextAuth
+# En développement
 NEXTAUTH_URL="http://localhost:3000"
+# En production (sur VPS-1 OVH)
+# NEXTAUTH_URL="https://canopee.be"
 NEXTAUTH_SECRET="votre-secret-ici"
 
 # OAuth Google (optionnel pour commencer)
@@ -114,9 +132,11 @@ Le site sera accessible sur [http://localhost:3000](http://localhost:3000)
 
 ### Erreur de connexion à la base de données
 
-- Vérifier que PostgreSQL est en cours d'exécution
-- Vérifier les identifiants dans `DATABASE_URL`
-- Tester la connexion : `psql -U user -d yoga_studio`
+- **Avec Supabase** : Vérifier que l'URL de connexion est correcte dans `.env`
+- **Avec PostgreSQL local** : 
+  - Vérifier que PostgreSQL est en cours d'exécution
+  - Vérifier les identifiants dans `DATABASE_URL`
+  - Tester la connexion : `psql -U user -d yoga_studio`
 
 ### Erreur Prisma
 

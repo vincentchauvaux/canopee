@@ -28,9 +28,6 @@ export async function GET(request: NextRequest) {
     const distance = distanceMatch ? distanceMatch[1].replace(/\s/g, '') : null
     const nextFullMoon = nextFullMoonMatch ? parseInt(nextFullMoonMatch[1]) : null
 
-    // URL de l'image de la lune depuis lunopia.com (sans date)
-    const moonImageUrl = `https://www.lunopia.com/mod/moon.png?bg=transparent&fg=@ffffff&date=false&percent=true&phase=true&size=200`
-
     // Ne retourner que si on a au moins la phase
     if (!phase) {
       throw new Error('Phase lunaire non trouvée')
@@ -41,7 +38,6 @@ export async function GET(request: NextRequest) {
       illumination,
       distance,
       nextFullMoon,
-      imageUrl: moonImageUrl,
     })
   } catch (error) {
     console.error('Error fetching lunar data:', error)
@@ -82,14 +78,11 @@ export async function GET(request: NextRequest) {
       illumination = Math.round(55 - ((dayOfCycle - 23.99) / (29.53 - 23.99)) * 50)
     }
 
-    const moonImageUrl = `https://www.lunopia.com/mod/moon.png?bg=transparent&fg=@ffffff&date=false&percent=true&phase=true&size=200`
-
     return NextResponse.json({
       phase,
       illumination,
       distance: null,
       nextFullMoon: null,
-      imageUrl: moonImageUrl,
       fallback: true,
     })
   }

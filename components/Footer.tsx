@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   Facebook,
@@ -11,13 +10,13 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
+import MoonPhase from "./MoonPhase";
 
 interface LunarPhase {
   phase: string;
   illumination?: number | null;
   distance?: string | null;
   nextFullMoon?: number | null;
-  imageUrl?: string;
 }
 
 interface MTCSeason {
@@ -211,28 +210,32 @@ export default function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Colonne 1: Logo + Tagline */}
-          <div>
-            <h3 className="text-2xl font-serif font-bold mb-4">🌿 Canopée</h3>
-            <p className="text-text-light/80 mb-4">
-              Votre espace de bien-être et de sérénité
-            </p>
-            {quoteOfDay && (
-              <div className="mb-4">
-                <p className="text-sm italic text-text-light/80">
-                  &ldquo;{quoteOfDay}&rdquo;
-                </p>
+          <div className="flex flex-col h-full">
+            <div>
+              <h3 className="text-2xl font-serif font-bold mb-4">🌿 Canopée</h3>
+              <p className="text-text-light/80 mb-4">
+                Votre espace de bien-être et de sérénité
+              </p>
+            </div>
+            <div className="mt-auto">
+              {quoteOfDay && (
+                <div className="mb-4">
+                  <p className="text-sm italic text-text-light/80">
+                    &ldquo;{quoteOfDay}&rdquo;
+                  </p>
+                </div>
+              )}
+              <div className="flex space-x-4">
+                <a href="#" className="hover:text-primary transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="#" className="hover:text-primary transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="hover:text-primary transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
               </div>
-            )}
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-primary transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
-                <Twitter className="w-5 h-5" />
-              </a>
             </div>
           </div>
 
@@ -272,16 +275,6 @@ export default function Footer() {
                   Membre ABEFY
                 </span>
               </li>
-              <li className="flex items-center">
-                <a
-                  href="https://canopee-yin-yoga.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-primary transition-colors"
-                >
-                  canopee - yin yoga
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -289,19 +282,28 @@ export default function Footer() {
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-4">Infos Spirituelles</h4>
             <div className="flex flex-col gap-4 flex-1">
-              {lunarPhase && lunarPhase.imageUrl && (
-                <div className="flex justify-start">
-                  <Image
-                    src={lunarPhase.imageUrl}
-                    alt="Phase de la lune"
-                    width={150}
-                    height={150}
-                    style={{ width: "auto", height: "auto" }}
-                    unoptimized
-                  />
+              {/* Phase lunaire - toujours afficher avec le composant MoonPhase */}
+              <div className="flex items-center gap-3">
+                <MoonPhase size={60} className="flex-shrink-0" />
+                <div className="flex flex-col">
+                  {lunarPhase?.illumination !== null && lunarPhase?.illumination !== undefined ? (
+                    <p className="text-2xl font-bold text-text-light">
+                      {Math.round(lunarPhase.illumination)}%
+                    </p>
+                  ) : null}
+                  {lunarPhase?.phase ? (
+                    <p className="text-sm text-text-light/80 uppercase">
+                      {lunarPhase.phase}
+                    </p>
+                  ) : (
+                    <p className="text-sm text-text-light/80 uppercase">
+                      Chargement...
+                    </p>
+                  )}
                 </div>
-              )}
-              {mtcSeason && (
+              </div>
+              {/* Saison MTC - toujours afficher */}
+              {mtcSeason ? (
                 <div>
                   <p className="font-medium text-sm">
                     {mtcSeason.season} ({mtcSeason.element})
@@ -315,6 +317,10 @@ export default function Footer() {
                   >
                     En savoir plus sur les saisons MTC
                   </Link>
+                </div>
+              ) : (
+                <div>
+                  <p className="text-xs text-text-light/60">Chargement de la saison...</p>
                 </div>
               )}
             </div>

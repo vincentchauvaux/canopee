@@ -6,14 +6,14 @@ Site web moderne et élégant pour un studio de yoga avec système d'authentific
 
 - **Frontend**: Next.js 14 (App Router) + React + TypeScript + Tailwind CSS
 - **Backend**: Next.js API Routes + NextAuth.js
-- **Base de données**: PostgreSQL avec Prisma ORM
+- **Base de données**: Supabase (recommandé) ou PostgreSQL avec Prisma ORM
 - **Authentification**: NextAuth.js (Email, Google OAuth, Facebook OAuth)
 - **Calendrier**: Intégration Google Calendar API et Microsoft Graph API (Outlook)
 
 ## 📋 Prérequis
 
 - Node.js 18+
-- PostgreSQL
+- Base de données : Supabase (recommandé) ou PostgreSQL
 - npm ou yarn
 
 ## 🛠️ Installation
@@ -30,8 +30,10 @@ npm install
    Créez un fichier `.env` à la racine du projet avec les variables suivantes:
 
 ```env
-# Base de données
-DATABASE_URL="postgresql://user:password@localhost:5432/yoga_studio?schema=public"
+# Base de données (Supabase recommandé)
+# Format Supabase : postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres?schema=public
+# Format PostgreSQL local : postgresql://user:password@localhost:5432/yoga_studio?schema=public
+DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres?schema=public"
 
 # NextAuth
 NEXTAUTH_URL="http://localhost:3000"
@@ -180,7 +182,19 @@ Le site supporte trois méthodes d'authentification:
 
 ## 🚀 Déploiement
 
-### Vercel (Recommandé)
+### OVH (Configuration actuelle)
+
+**Configuration** :
+- **Pack Starter OVH** : Hébergement web (optionnel)
+- **VPS-1 OVH** : Serveur pour l'application Next.js
+- **Domaine** : canopee.be
+- **Base de données** : Supabase (déjà configurée)
+
+📖 **Guide complet** : Voir [DEPLOIEMENT_OVH.md](./DEPLOIEMENT_OVH.md)
+
+### Autres options
+
+#### Vercel
 
 1. Installer Vercel CLI:
 
@@ -196,9 +210,9 @@ vercel
 
 3. Configurer les variables d'environnement dans le dashboard Vercel
 
-4. Configurer la base de données PostgreSQL (ex: Supabase, Railway, Neon)
+4. Configurer la base de données (Supabase recommandé, ou Railway, Neon)
 
-### Netlify
+#### Netlify
 
 1. Build command: `npm run build`
 2. Publish directory: `.next`

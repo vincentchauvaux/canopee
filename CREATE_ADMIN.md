@@ -18,10 +18,24 @@ npx prisma studio
 
 ## Méthode 2 : Via SQL direct (psql)
 
+### Avec Supabase
+
+1. **Se connecter via Supabase SQL Editor** :
+   - Allez dans votre projet Supabase
+   - Ouvrez **SQL Editor**
+   - Exécutez la requête SQL ci-dessous
+
+### Avec PostgreSQL local
+
 1. **Se connecter à PostgreSQL** :
 
 ```bash
 psql yoga_studio
+```
+
+OU avec Supabase via ligne de commande :
+```bash
+psql "postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres"
 ```
 
 2. **Mettre à jour un utilisateur existant** :
@@ -50,6 +64,9 @@ WHERE email = 'votre-email@example.com';
 
 2. **Mettre à jour le rôle en admin** :
 
+**Avec Supabase** : Utilisez le SQL Editor dans l'interface Supabase
+
+**Avec PostgreSQL local** :
 ```bash
 psql yoga_studio
 ```

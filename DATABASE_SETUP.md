@@ -1,6 +1,42 @@
-# Configuration de la Base de Données PostgreSQL
+# Configuration de la Base de Données
 
-## Option 1 : Installation Locale (macOS avec Homebrew)
+## Option 1 : Supabase (Recommandé - Cloud)
+
+### Avantages
+- ✅ Hébergement cloud géré
+- ✅ Sauvegardes automatiques
+- ✅ Interface d'administration intégrée
+- ✅ Plan gratuit disponible
+- ✅ Pas d'installation locale nécessaire
+
+### Étapes
+
+1. **Créer un compte** : https://supabase.com
+2. **Créer un nouveau projet**
+3. **Récupérer la connection string** :
+   - Aller dans Settings → Database
+   - Copier la "Connection string" (URI)
+   - Format : `postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres`
+
+4. **Ajouter dans `.env`** :
+```env
+DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres?schema=public"
+```
+
+5. **Initialiser Prisma** :
+```bash
+# Générer le client Prisma
+npx prisma generate
+
+# Appliquer les migrations
+npx prisma migrate deploy
+```
+
+📖 **Guide de migration complet** : Voir [MIGRATION_SUPABASE.md](./MIGRATION_SUPABASE.md) pour migrer depuis une base PostgreSQL existante.
+
+---
+
+## Option 2 : Installation Locale PostgreSQL (macOS avec Homebrew)
 
 ### Étape 1 : Installer PostgreSQL
 
@@ -47,21 +83,7 @@ npx prisma studio
 
 ---
 
-## Option 2 : Service Cloud (Recommandé pour débuter)
-
-### Supabase (Gratuit, Simple)
-
-1. **Créer un compte** : https://supabase.com
-2. **Créer un nouveau projet**
-3. **Récupérer la connection string** :
-   - Aller dans Settings → Database
-   - Copier la "Connection string" (URI)
-   - Format : `postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres`
-
-4. **Ajouter dans `.env`** :
-```env
-DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres?schema=public"
-```
+## Option 3 : Autres Services Cloud
 
 ### Railway (Gratuit, Simple)
 
@@ -79,7 +101,7 @@ DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/pos
 
 ---
 
-## Option 3 : Docker (Alternative)
+## Option 4 : Docker (Alternative)
 
 Si vous avez Docker installé :
 

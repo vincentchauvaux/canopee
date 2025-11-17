@@ -5,11 +5,13 @@
 ### ✅ Complété
 
 1. **Structure de base du projet**
+
    - Configuration Next.js 14 avec TypeScript
    - Configuration Tailwind CSS avec charte graphique
    - Structure des dossiers (app/, components/, prisma/)
 
 2. **Composants de base**
+
    - Header sticky avec transition au scroll et adaptation intelligente des couleurs de texte (blanc sur fond transparent, couleurs sombres sur fond blanc)
    - Hero section avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
    - Section Agenda (placeholder)
@@ -18,6 +20,7 @@
    - Footer avec phase lunaire simulée et informations de contact réelles (Carol Nelissen, adresse Wauthier-Braine)
 
 3. **Base de données**
+
    - Schéma Prisma complet avec tous les modèles
    - Relations entre les modèles configurées
 
@@ -32,6 +35,7 @@
 ### 🚧 En cours / À faire
 
 1. **Agenda** ✅
+
    - [x] Vue calendrier hebdomadaire avec navigation
    - [x] Affichage des cours avec couleurs par type
    - [x] Fonctionnalité de réservation/annulation
@@ -42,23 +46,23 @@
    - [ ] Export vers calendrier personnel (à venir)
 
 2. **Fil d'actualité** ✅
+
    - [x] API routes pour CRUD des actualités
    - [x] Affichage dynamique des articles en grid
    - [x] Modal détaillée pour chaque article
-   - [x] Système de commentaires complet (créer, modifier, supprimer)
    - [x] Compteur de vues automatique
-   - [x] Compteur de commentaires
    - [ ] Upload d'images pour les articles (à venir)
 
 3. **Panel Admin** ✅
+
    - [x] Dashboard admin avec statistiques
    - [x] Gestion des actualités (CRUD complet)
    - [x] Gestion de l'agenda (CRUD complet)
    - [x] Gestion des utilisateurs (liste et statistiques)
-   - [x] Modération des commentaires (via API)
-   - [x] Statistiques de fréquentation (réservations, vues, commentaires)
+   - [x] Statistiques de fréquentation (réservations, vues)
 
 4. **Profil utilisateur**
+
    - [ ] Page de profil
    - [ ] Upload de photo de profil
    - [ ] Édition des informations
@@ -75,9 +79,10 @@
 ## Architecture Technique
 
 ### Stack
+
 - **Frontend**: Next.js 14 (App Router), React 18, TypeScript
 - **Styling**: Tailwind CSS
-- **Base de données**: PostgreSQL avec Prisma ORM
+- **Base de données**: Supabase (recommandé) ou PostgreSQL avec Prisma ORM
 - **Authentification**: NextAuth.js v4
 - **Validation**: Zod
 
@@ -119,6 +124,7 @@ yoga/
 ## Charte Graphique - Canopée
 
 ### Couleurs
+
 - Primaire: `#264E36` (Vert Canopée - Feuillage profond)
 - Primaire clair: `#4F7F5A` (Vert feuille tendre)
 - Secondaire: `#7DAA6A` (Mousse douce)
@@ -128,17 +134,18 @@ yoga/
 - Neutre: `#DAD7CD` (Écorce claire)
 
 ### Typographie
+
 - Titres: Cormorant Garamond (serif)
 - Corps: Inter / Montserrat (sans-serif)
 
 ## Prochaines Étapes
 
-1. Implémenter l'agenda avec calendrier interactif
-2. Créer les API routes pour les actualités
-3. Développer le système de commentaires
-4. Créer le panel admin
-5. Ajouter la gestion des réservations
-6. Implémenter les intégrations API (Google Calendar, Outlook)
+1. ✅ Implémenter l'agenda avec calendrier interactif
+2. ✅ Créer les API routes pour les actualités
+3. ✅ Créer le panel admin
+4. ✅ Ajouter la gestion des réservations
+5. 🚧 Finaliser le déploiement sur OVH (VPS-1)
+6. [ ] Implémenter les intégrations API (Google Calendar, Outlook)
 
 ## Notes
 
@@ -159,6 +166,7 @@ yoga/
 ## Informations sur le Yin Yoga
 
 Le site présente le cours de Yin Yoga avec les informations suivantes :
+
 - **Horaires** : Vendredi de 18h à 19h
 - **Adresse** : Rue Jean Theys, 10, 1440 Wauthier-Braine
 - **Professeure** : Carol Nelissen
@@ -178,6 +186,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 ## Fichiers Créés
 
 ### Configuration
+
 - `package.json` - Dépendances du projet
 - `tsconfig.json` - Configuration TypeScript
 - `tailwind.config.ts` - Configuration Tailwind CSS
@@ -186,6 +195,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `.gitignore` - Fichiers à ignorer
 
 ### Application
+
 - `app/layout.tsx` - Layout principal avec providers
 - `app/page.tsx` - Page d'accueil one-page
 - `app/globals.css` - Styles globaux et polices
@@ -201,6 +211,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/admin/users/page.tsx` - Gestion des utilisateurs
 
 ### API Routes
+
 - `app/api/auth/[...nextauth]/route.ts` - Handler NextAuth
 - `app/api/auth/register/route.ts` - API d'inscription
 - `app/api/classes/route.ts` - CRUD des cours (GET, POST)
@@ -209,35 +220,140 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/api/bookings/[id]/route.ts` - Annulation d'une réservation (DELETE)
 - `app/api/news/route.ts` - CRUD des actualités (GET, POST)
 - `app/api/news/[id]/route.ts` - Gestion d'une actualité (GET, PATCH, DELETE)
-- `app/api/news/[id]/comments/route.ts` - Commentaires d'une actualité (GET, POST)
-- `app/api/comments/[id]/route.ts` - Gestion d'un commentaire (PATCH, DELETE)
 - `app/api/admin/users/route.ts` - Liste des utilisateurs (admin uniquement)
 - `app/api/admin/bookings/route.ts` - Liste des réservations (admin uniquement)
 - `app/api/lunar/route.ts` - Récupération des informations lunaires depuis lunopia.com (phase, illumination, image dynamique)
 
 ### Composants
-- `components/Header.tsx` - Header sticky avec transition et adaptation automatique des couleurs de texte selon le background (blanc sur fond transparent, couleurs sombres sur fond blanc). Sur les pages `/profile` et `/mon-parcours`, le header a un fond blanc dès le départ (pas d'effet de transparence)
+
+- `components/Header.tsx` - Header sticky avec transition et adaptation automatique des couleurs de texte selon le background (blanc sur fond transparent, couleurs sombres sur fond blanc). Sur les pages `/profile`, `/mon-parcours`, `/yin-yoga` et `/faq`, le header a un fond blanc dès le départ (pas d'effet de transparence)
 - `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
 - `components/Agenda.tsx` - Section agenda interactive avec calendrier hebdomadaire, réservations
 - `components/NewsFeed.tsx` - Fil d'actualité affichant les descriptions des prochains cours (3 par défaut, bouton "Voir plus" pour afficher plus)
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
-- `components/CommentSection.tsx` - Section de commentaires avec CRUD
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY)
 - `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
 - `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
 
 ### Utilitaires
+
 - `lib/auth.ts` - Configuration NextAuth
 - `lib/prisma.ts` - Client Prisma singleton
 - `types/next-auth.d.ts` - Types NextAuth
 - `types/index.ts` - Types partagés
 
 ### Base de données
+
 - `prisma/schema.prisma` - Schéma complet de la base de données
 
 ### Documentation
+
 - `README.md` - Documentation principale
 - `INSTALLATION.md` - Guide d'installation détaillé
+- `DEPLOIEMENT_OVH.md` - Guide de déploiement sur OVH avec le domaine canopee.be (Pack Starter + VPS-1)
+- `ANALYSE_DEPLOIEMENT.md` - Analyse complète du projet pour le déploiement (type de site, build, variables d'environnement, etc.)
+- `MIGRATION_SUPABASE.md` - Guide complet de migration de PostgreSQL vers Supabase
 - `agent.md` - État du projet et notes
 
+## Informations de Déploiement
+
+### Configuration Actuelle
+
+- **Hébergement** : OVH
+  - **Pack Starter OVH** : Hébergement web (optionnel, non utilisé pour l'application)
+  - **VPS-1 OVH** : Serveur principal pour l'application Next.js
+- **Domaine** : canopee.be (canopée.be)
+- **Base de données** : Supabase (déjà configurée)
+  - **URL Dashboard** : https://kzogkberupkzpjdojvhn.supabase.co
+  - **URL Connexion** : `postgresql://postgres:[PASSWORD]@db.kzogkberupkzpjdojvhn.supabase.co:5432/postgres?schema=public`
+
+### Type d'Application
+
+- **Application Node.js/SSR (Next.js 14)** - Nécessite un serveur Node.js
+- **PAS un site statique** - Routes API, authentification, base de données
+
+### Commandes de Build
+
+- Installation : `npm install`
+- Build : `npm run build`
+- Démarrage : `npm start` (ou `next start`)
+
+### Dossier de Production
+
+- **`.next/`** - Généré après `npm run build`, contient tous les fichiers optimisés
+
+### Serveur Requis
+
+- **OUI** - Serveur Node.js obligatoire (port 3000 par défaut)
+- **VPS-1 OVH** : Serveur configuré avec Node.js 18+, PM2, Nginx
+- Reverse proxy (Nginx) configuré pour rediriger le trafic depuis port 80/443 vers 3000
+
+### Base de Données
+
+- **Type** : PostgreSQL (hébergé sur Supabase)
+- **ORM** : Prisma
+- **Variable** : `DATABASE_URL` (format : `postgresql://postgres:[PASSWORD]@db.kzogkberupkzpjdojvhn.supabase.co:5432/postgres?schema=public`)
+- **Configuration** : Voir [CONFIGURATION_SUPABASE.md](./CONFIGURATION_SUPABASE.md)
+
+### Variables d'Environnement Requises
+
+#### Obligatoires
+
+- `DATABASE_URL` - URL de connexion Supabase PostgreSQL
+- `NEXTAUTH_SECRET` - Secret pour NextAuth.js (générer avec `openssl rand -base64 32`)
+- `NEXTAUTH_URL` - URL publique de l'application : `https://canopee.be` (production)
+
+#### Optionnelles (OAuth)
+
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` - Authentification Google
+- `FACEBOOK_CLIENT_ID` / `FACEBOOK_CLIENT_SECRET` - Authentification Facebook
+
+#### Système
+
+- `NODE_ENV` - `production` en production
+- `NEXT_PUBLIC_DOMAIN` - `canopee.be` (pour les images)
+
+### Configuration
+
+- **Fichier** : `next.config.js`
+- **Mode** : SSR (Server-Side Rendering)
+- **Images** : Domaines autorisés : `localhost`, `www.lunopia.com`, `canopee.be`, `canopée.be`
+
+### Prérequis Déploiement
+
+1. **VPS-1 OVH** avec accès SSH
+2. Node.js 18+ (installé sur le VPS)
+3. PM2 (gestionnaire de processus, installé sur le VPS)
+4. Nginx (reverse proxy, installé sur le VPS)
+5. Base de données Supabase (déjà configurée)
+
+### Étapes Déploiement
+
+1. Se connecter au VPS-1 OVH via SSH
+2. Installer Node.js 18+, PM2, Nginx, Git
+3. Cloner le repository dans `/var/www/canopee`
+4. `npm install` - Installer les dépendances
+5. Configurer `.env` avec toutes les variables (DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL, etc.)
+6. `npx prisma generate` - Générer le client Prisma
+7. `npx prisma migrate deploy` - Appliquer les migrations
+8. `npm run build` - Construire l'application
+9. Configurer PM2 avec `ecosystem.config.js`
+10. Configurer Nginx comme reverse proxy pour canopee.be
+11. Configurer SSL/HTTPS avec Let's Encrypt
+12. Configurer DNS pour pointer canopee.be vers le VPS-1
+
+📖 **Guide complet** : Voir [DEPLOIEMENT_OVH.md](./DEPLOIEMENT_OVH.md)
+
+### Fichiers de Configuration Créés
+
+- `ecosystem.config.js` - Configuration PM2 pour la production
+- `CHECKLIST_DEPLOIEMENT.md` - Checklist complète pour suivre l'avancement du déploiement
+- `scripts/install-vps.sh` - Script d'installation automatique pour le VPS (Ubuntu 22.04)
+- `GUIDE_INSTALLATION_VPS.md` - Guide d'installation détaillé avec méthode automatique et manuelle
+
+### Statut du Déploiement
+
+- 🚧 **En cours** - Configuration du VPS-1 OVH et déploiement de l'application
+- 📋 **Checklist disponible** - Voir [CHECKLIST_DEPLOIEMENT.md](./CHECKLIST_DEPLOIEMENT.md) pour suivre l'avancement
+- 🔍 **Guide de vérification** - Voir [VERIFICATION_OVH.md](./VERIFICATION_OVH.md) pour identifier ce qui est déjà configuré

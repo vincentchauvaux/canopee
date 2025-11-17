@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Plus, Edit2, Trash2, Eye, MessageCircle } from 'lucide-react'
+import { Plus, Edit2, Trash2, Eye } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale/fr'
 import NewsFormModal from '@/components/admin/NewsFormModal'
@@ -14,7 +14,6 @@ interface News {
   content: string
   coverImage?: string | null
   viewCount: number
-  commentsCount: number
   createdAt: string
   author: {
     firstName?: string | null
@@ -159,10 +158,6 @@ export default function AdminNews() {
                           <span className="flex items-center">
                             <Eye className="w-4 h-4 mr-1" />
                             {item.viewCount}
-                          </span>
-                          <span className="flex items-center">
-                            <MessageCircle className="w-4 h-4 mr-1" />
-                            {item.commentsCount}
                           </span>
                         </div>
                       </td>

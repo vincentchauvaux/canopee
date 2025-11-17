@@ -19,9 +19,8 @@ export default function PracticalInfo() {
             <ShoppingBag className="w-12 h-12 text-primary mb-4" />
             <h3 className="text-xl font-serif font-semibold mb-3">Tarifs</h3>
             <ul className="text-text-dark/70 space-y-2">
-              <li>Cours à l'unité: 15€</li>
-              <li>Carte 10 cours: 120€</li>
-              <li>Abonnement mensuel: 50€</li>
+              <li><strong>Cours individuel :</strong> 15 euros / séance</li>
+              <li><strong>Cours collectif :</strong> 12 euros / séance</li>
             </ul>
           </div>
 

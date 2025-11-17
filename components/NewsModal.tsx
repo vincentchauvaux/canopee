@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { X, Eye, MessageCircle, Calendar, User, Send, Trash2, Edit2 } from 'lucide-react'
+import { X, Eye, Calendar, User, Send, Trash2, Edit2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale/fr'
-import CommentSection from './CommentSection'
 
 interface NewsAuthor {
   id: string
@@ -21,7 +20,6 @@ interface News {
   coverImage?: string | null
   author: NewsAuthor
   viewCount: number
-  commentsCount: number
   createdAt: string
   updatedAt: string
 }
@@ -145,16 +143,6 @@ export default function NewsModal({ news, isOpen, onClose }: NewsModalProps) {
             )}
           </div>
 
-          {/* Section commentaires */}
-          <div className="border-t border-gray p-6">
-            <div className="flex items-center mb-4">
-              <MessageCircle className="w-5 h-5 mr-2 text-primary" />
-              <h3 className="text-xl font-serif font-semibold">
-                Commentaires ({displayNews.commentsCount})
-              </h3>
-            </div>
-            <CommentSection newsId={displayNews.id} />
-          </div>
         </div>
       </div>
     </div>

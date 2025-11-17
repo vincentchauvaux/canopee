@@ -19,21 +19,6 @@ export async function GET(
             profilePic: true,
           },
         },
-        comments: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                profilePic: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
       },
     })
 
@@ -57,7 +42,6 @@ export async function GET(
     return NextResponse.json({
       ...news,
       viewCount: news.viewCount + 1,
-      commentsCount: news.comments.length,
     })
   } catch (error) {
     console.error('Error fetching news:', error)

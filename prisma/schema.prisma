@@ -36,8 +36,8 @@ model User {
   lastLogin     DateTime?
   
   bookings      Booking[]
+  news          News[]
   comments      Comment[]
-  news          News[]        // Admin qui crée les actualités
   
   @@map("users")
 }
@@ -64,36 +64,6 @@ model Class {
   @@map("classes")
 }
 
-model News {
-  id          String    @id @default(cuid())
-  title       String
-  content     String    @db.Text
-  coverImage  String?
-  authorId    String
-  viewCount   Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  comments    Comment[]
-  
-  @@map("news")
-}
-
-model Comment {
-  id        String   @id @default(cuid())
-  content   String   @db.Text
-  newsId    String
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  news      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  @@map("comments")
-}
-
 model Booking {
   id        String   @id @default(cuid())
   userId    String
@@ -105,5 +75,35 @@ model Booking {
   
   @@unique([userId, classId])
   @@map("bookings")
+}
+
+model News {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text
+  coverImage  String?
+  viewCount   Int      @default(0)
+  authorId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  
+  @@map("news")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  newsId    String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  news      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  
+  @@map("comments")
 }
 

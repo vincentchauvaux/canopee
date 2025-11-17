@@ -21,11 +21,6 @@ export async function GET(request: NextRequest) {
             profilePic: true,
           },
         },
-        comments: {
-          select: {
-            id: true,
-          },
-        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -33,10 +28,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Formater les données
-    const formattedNews = news.map((item) => ({
-      ...item,
-      commentsCount: item.comments.length,
-    }))
+    const formattedNews = news
 
     // Compter le total pour la pagination
     const total = await prisma.news.count()
@@ -46,10 +38,13 @@ export async function GET(request: NextRequest) {
       total,
       hasMore: offset + limit < total,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching news:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération des actualités' },
+      { 
+        error: 'Erreur lors de la récupération des actualités',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     )
   }
@@ -100,10 +95,13 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json(news, { status: 201 })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating news:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la création de l\'actualité' },
+      { 
+        error: 'Erreur lors de la création de l\'actualité',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     )
   }

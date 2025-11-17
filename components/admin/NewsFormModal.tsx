@@ -66,7 +66,10 @@ export default function NewsFormModal({ news, isOpen, onClose }: NewsFormModalPr
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Erreur lors de la sauvegarde')
+        const errorMessage = data.details 
+          ? `${data.error}: ${data.details}`
+          : data.error || 'Erreur lors de la sauvegarde'
+        throw new Error(errorMessage)
       }
 
       onClose()

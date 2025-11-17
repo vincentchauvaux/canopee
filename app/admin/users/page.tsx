@@ -19,7 +19,6 @@ interface User {
   lastLogin?: string | null
   _count: {
     bookings: number
-    comments: number
   }
 }
 
@@ -150,7 +149,6 @@ export default function AdminUsers() {
                       <td className="px-6 py-4">
                         <div className="text-sm text-text-dark/60">
                           <div>{user._count.bookings} réservations</div>
-                          <div>{user._count.comments} commentaires</div>
                         </div>
                       </td>
                       <td className="px-6 py-4">

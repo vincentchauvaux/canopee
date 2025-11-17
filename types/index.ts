@@ -28,20 +28,6 @@ export interface NewsType {
   viewCount: number
   createdAt: Date
   updatedAt: Date
-  commentsCount?: number
-}
-
-export interface CommentType {
-  id: string
-  content: string
-  newsId: string
-  userId: string
-  user?: {
-    firstName?: string
-    lastName?: string
-    profilePic?: string
-  }
-  createdAt: Date
 }
 
 export interface BookingType {
