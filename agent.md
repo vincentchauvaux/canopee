@@ -254,6 +254,8 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `DEPLOIEMENT_OVH.md` - Guide de déploiement sur OVH avec le domaine canopee.be (Pack Starter + VPS-1)
 - `ANALYSE_DEPLOIEMENT.md` - Analyse complète du projet pour le déploiement (type de site, build, variables d'environnement, etc.)
 - `MIGRATION_SUPABASE.md` - Guide complet de migration de PostgreSQL vers Supabase
+- `ENV_SETUP.md` - Guide complet de configuration des variables d'environnement
+- `CONFIG_ENV_PRODUCTION.md` - Configuration .env prête pour la production (VPS)
 - `agent.md` - État du projet et notes
 
 ## Informations de Déploiement

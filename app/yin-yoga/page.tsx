@@ -34,7 +34,7 @@ export default function YinYogaPage() {
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <h2 className="text-4xl font-serif font-bold text-text-dark">
-                  Le Yin yoga, c'est quoi ?
+                  Le Yin yoga, c&apos;est quoi ?
                 </h2>
               </div>
               
@@ -43,7 +43,7 @@ export default function YinYogaPage() {
                   Le Yin yoga est une discipline assez récente développée par <strong>Paul Grilley en 1989</strong>.
                 </p>
                 <p className="text-lg text-text-dark/80 leading-relaxed mb-6">
-                  Il s'est inspiré du yoga taoïste et de la théorie des méridiens pour le créer, avec <strong>Sarah Powers</strong>.
+                  Il s&apos;est inspiré du yoga taoïste et de la théorie des méridiens pour le créer, avec <strong>Sarah Powers</strong>.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                   <div className="bg-accent/30 rounded-lg p-6">
@@ -52,7 +52,7 @@ export default function YinYogaPage() {
                       Différence avec les yogas yang
                     </h3>
                     <p className="text-text-dark/70">
-                      Le Yin yoga, contrairement aux yogas habituels, plutôt de type yang, <strong>n'affermit pas les muscles</strong>. Il vise les articulations (ligaments, tendons, fascias…) qu'il met sous traction passive.
+                      Le Yin yoga, contrairement aux yogas habituels, plutôt de type yang, <strong>n&apos;affermit pas les muscles</strong>. Il vise les articulations (ligaments, tendons, fascias…) qu&apos;il met sous traction passive.
                     </p>
                   </div>
                   <div className="bg-accent/30 rounded-lg p-6">
@@ -61,7 +61,7 @@ export default function YinYogaPage() {
                       Action sur les méridiens
                     </h3>
                     <p className="text-text-dark/70">
-                      Le Yin yoga active également les <strong>méridiens où circule l'énergie (le Chi)</strong>, favorisant un rééquilibrage profond de l'organisme.
+                      Le Yin yoga active également les <strong>méridiens où circule l&apos;énergie (le Chi)</strong>, favorisant un rééquilibrage profond de l&apos;organisme.
                     </p>
                   </div>
                 </div>
@@ -90,7 +90,7 @@ export default function YinYogaPage() {
                         Installation de la posture
                       </h3>
                       <p className="text-text-dark/80 leading-relaxed">
-                        En Yin yoga, on prend le temps d'installer correctement la posture, en s'aidant de <strong>support(s), si nécessaire</strong>.
+                        En Yin yoga, on prend le temps d&apos;installer correctement la posture, en s&apos;aidant de <strong>support(s), si nécessaire</strong>.
                       </p>
                     </div>
                   </div>
@@ -104,7 +104,7 @@ export default function YinYogaPage() {
                         Maintien prolongé
                       </h3>
                       <p className="text-text-dark/80 leading-relaxed">
-                        Ensuite, on maintient celle-ci pendant <strong>plus d'1 minute</strong>. C'est le temps qu'il faut à nos muscles pour se détendre et permettre au "stress" d'aller plus loin, jusque dans nos tissus profonds.
+                        Ensuite, on maintient celle-ci pendant <strong>plus d&apos;1 minute</strong>. C&apos;est le temps qu&apos;il faut à nos muscles pour se détendre et permettre au &quot;stress&quot; d&apos;aller plus loin, jusque dans nos tissus profonds.
                       </p>
                     </div>
                   </div>
@@ -115,13 +115,13 @@ export default function YinYogaPage() {
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold text-text-dark mb-2">
-                        L'importance de l'accompagnement
+                        L&apos;importance de l&apos;accompagnement
                       </h3>
                       <p className="text-text-dark/80 leading-relaxed mb-3">
-                        Cela paraît simple, mais c'est loin d'être facile car notre mental va tout faire pour nous sortir de cette zone d'inconfort.
+                        Cela paraît simple, mais c&apos;est loin d&apos;être facile car notre mental va tout faire pour nous sortir de cette zone d&apos;inconfort.
                       </p>
                       <p className="text-text-dark/80 leading-relaxed">
-                        C'est pourquoi <strong>l'accompagnement d'un professeur est conseillé</strong>, non seulement pour veiller à ce que l'élève recueille les bénéfices de la posture (zone orange), et ce sans douleur (zone rouge), mais aussi pour l'aider à rester serein(e) pendant tout le maintien de celle-ci.
+                        C&apos;est pourquoi <strong>l&apos;accompagnement d&apos;un professeur est conseillé</strong>, non seulement pour veiller à ce que l&apos;élève recueille les bénéfices de la posture (zone orange), et ce sans douleur (zone rouge), mais aussi pour l&apos;aider à rester serein(e) pendant tout le maintien de celle-ci.
                       </p>
                     </div>
                   </div>
@@ -129,7 +129,7 @@ export default function YinYogaPage() {
 
                 <div className="mt-8 p-6 bg-primary/5 rounded-lg border border-primary/20">
                   <p className="text-lg italic text-text-dark text-center font-serif">
-                    &ldquo;Adapter sa pratique, poser ses limites, ce n'est pas une faiblesse, mais une force&rdquo;
+                    &ldquo;Adapter sa pratique, poser ses limites, ce n&apos;est pas une faiblesse, mais une force&rdquo;
                   </p>
                 </div>
               </div>
@@ -148,7 +148,7 @@ export default function YinYogaPage() {
               
               <div className="bg-white rounded-card p-8 shadow-md border-l-4 border-primary">
                 <p className="text-lg text-text-dark/80 leading-relaxed mb-8">
-                  Au delà d'un réel effet sur la souplesse, via le travail sur les articulations, et le rééquilibrage profond qu'amène l'activation des méridiens, le Yin yoga peut aider dans de nombreuses situations.
+                  Au delà d&apos;un réel effet sur la souplesse, via le travail sur les articulations, et le rééquilibrage profond qu&apos;amène l&apos;activation des méridiens, le Yin yoga peut aider dans de nombreuses situations.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -172,7 +172,7 @@ export default function YinYogaPage() {
                       </li>
                       <li className="flex items-start">
                         <span className="text-primary mr-2">•</span>
-                        <span>Soutien en cas d'arthrose</span>
+                        <span>Soutien en cas d&apos;arthrose</span>
                       </li>
                     </ul>
                   </div>
@@ -189,7 +189,7 @@ export default function YinYogaPage() {
                       </li>
                       <li className="flex items-start">
                         <span className="text-primary mr-2">•</span>
-                        <span>Gestion de l'anxiété</span>
+                        <span>Gestion de l&apos;anxiété</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-primary mr-2">•</span>
@@ -197,7 +197,7 @@ export default function YinYogaPage() {
                       </li>
                       <li className="flex items-start">
                         <span className="text-primary mr-2">•</span>
-                        <span>Aide à l'endormissement</span>
+                        <span>Aide à l&apos;endormissement</span>
                       </li>
                     </ul>
                   </div>

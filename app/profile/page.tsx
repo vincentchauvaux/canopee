@@ -247,7 +247,7 @@ export default function ProfilePage() {
                     disabled
                     className="w-full px-4 py-3 border border-gray rounded-button bg-gray/50 text-text-dark/60 cursor-not-allowed"
                   />
-                  <p className="text-xs text-text-dark/60 mt-1">L'email ne peut pas être modifié</p>
+                  <p className="text-xs text-text-dark/60 mt-1">L&apos;email ne peut pas être modifié</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -369,7 +369,7 @@ export default function ProfilePage() {
                     href="/#agenda"
                     className="inline-block px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
                   >
-                    Voir l'agenda
+                    Voir l&apos;agenda
                   </Link>
                 </div>
               ) : (
@@ -438,7 +438,7 @@ export default function ProfilePage() {
                   </div>
                 )}
                 <div>
-                  <p className="text-text-dark/60">Méthode d'authentification</p>
+                  <p className="text-text-dark/60">Méthode d&apos;authentification</p>
                   <p className="font-semibold text-text-dark capitalize">
                     {user.role === 'admin' ? 'Admin' : 'Utilisateur'}
                   </p>
@@ -456,7 +456,7 @@ export default function ProfilePage() {
                   href="/#agenda"
                   className="block w-full px-4 py-3 bg-accent hover:bg-accent/80 rounded-button text-text-dark transition-colors text-center"
                 >
-                  Voir l'agenda
+                  Voir l&apos;agenda
                 </Link>
                 <Link
                   href="/#actualites"

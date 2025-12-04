@@ -78,7 +78,7 @@ export default function NewsFeed() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-serif font-bold text-text-dark mb-4">
-            Fil d'Actualité
+            Fil d&apos;Actualité
           </h2>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
             Découvrez les thèmes et descriptions des prochains cours

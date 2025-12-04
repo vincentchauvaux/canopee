@@ -29,10 +29,10 @@ export default function MonParcoursPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="p-8">
                   <p className="text-lg text-text-dark/80 leading-relaxed mb-4">
-                    Je m'appelle <strong className="text-primary">Carol Nelissen</strong>.
+                    Je m&apos;appelle <strong className="text-primary">Carol Nelissen</strong>.
                   </p>
                   <p className="text-lg text-text-dark/80 leading-relaxed">
-                    Il y a presque 20 ans que je suis "tombée en yoga", mais ce n'est qu'après 10 ans de pratique collective, en tant qu'élève, que l'envie de transmettre s'est imposée.
+                    Il y a presque 20 ans que je suis &quot;tombée en yoga&quot;, mais ce n&apos;est qu&apos;après 10 ans de pratique collective, en tant qu&apos;élève, que l&apos;envie de transmettre s&apos;est imposée.
                   </p>
                 </div>
                 <div className="relative w-full aspect-square max-w-md mx-auto md:max-w-none rounded-full overflow-hidden shadow-lg">
@@ -70,10 +70,10 @@ export default function MonParcoursPage() {
                         Formation Viniyoga
                       </h3>
                       <p className="text-text-dark/80 leading-relaxed mb-4">
-                        J'ai entamé une formation de <strong>500 heures</strong>, suivie d'une post formation à l'école de <strong>Claude Maréchal (E.T.Y.)</strong> afin d'obtenir le certificat de professeur de yoga.
+                        J&apos;ai entamé une formation de <strong>500 heures</strong>, suivie d&apos;une post formation à l&apos;école de <strong>Claude Maréchal (E.T.Y.)</strong> afin d&apos;obtenir le certificat de professeur de yoga.
                       </p>
                       <p className="text-text-dark/80 leading-relaxed">
-                        Cela fait maintenant <strong>4 ans</strong> que j'enseigne le Viniyoga, pour mon plus grand plaisir.
+                        Cela fait maintenant <strong>4 ans</strong> que j&apos;enseigne le Viniyoga, pour mon plus grand plaisir.
                       </p>
                     </div>
                   </div>
@@ -90,13 +90,13 @@ export default function MonParcoursPage() {
                         Découverte du Yin Yoga
                       </h3>
                       <p className="text-text-dark/80 leading-relaxed mb-4">
-                        La découverte du Yin yoga est plus récente. Elle s'est faite, par hasard, sur les réseaux suite à des problèmes articulaires.
+                        La découverte du Yin yoga est plus récente. Elle s&apos;est faite, par hasard, sur les réseaux suite à des problèmes articulaires.
                       </p>
                       <p className="text-text-dark/80 leading-relaxed mb-4">
-                        Face au mieux-être éprouvé, j'ai voulu me former à ce type de yoga particulier dans l'idée d'en faire bénéficier de futur(e)s élèves.
+                        Face au mieux-être éprouvé, j&apos;ai voulu me former à ce type de yoga particulier dans l&apos;idée d&apos;en faire bénéficier de futur(e)s élèves.
                       </p>
                       <p className="text-text-dark/80 leading-relaxed">
-                        J'ai ainsi repris une formation théorique et pratique de <strong>50 heures, au Karma Yoga Institute</strong>, afin d'être qualifiée pour commencer à donner cours.
+                        J&apos;ai ainsi repris une formation théorique et pratique de <strong>50 heures, au Karma Yoga Institute</strong>, afin d&apos;être qualifiée pour commencer à donner cours.
                       </p>
                     </div>
                   </div>
@@ -119,14 +119,14 @@ export default function MonParcoursPage() {
                 <div className="p-8">
                   <div className="space-y-6">
                     <p className="text-lg text-text-dark/80 leading-relaxed">
-                      Avant ma formation à l'école E.T.Y. et la découverte de la philosophie yogique (<em>Yoga sutra de Patanjali</em>), je n'étais pas spécialement ouverte à la spiritualité.
+                      Avant ma formation à l&apos;école E.T.Y. et la découverte de la philosophie yogique (<em>Yoga sutra de Patanjali</em>), je n&apos;étais pas spécialement ouverte à la spiritualité.
                     </p>
                     <p className="text-lg text-text-dark/80 leading-relaxed">
-                      Mais les nombreux échanges bienveillants, qui ont agrémenté mes heures de formation, m'ont fait découvrir un univers qui m'a passionnée, qui faisait sens avec mes ressentis.
+                      Mais les nombreux échanges bienveillants, qui ont agrémenté mes heures de formation, m&apos;ont fait découvrir un univers qui m&apos;a passionnée, qui faisait sens avec mes ressentis.
                     </p>
                     <div className="p-6 mt-6">
                       <p className="text-lg text-text-dark/80 leading-relaxed italic">
-                        Bref, j'ai, entre autres, trouvé, dans le Yoga, une philosophie de vie qui me correspondait depuis toujours : <strong className="text-primary">bienveillance, non jugement, simplicité</strong>…que l'on retrouve dans les <strong className="text-primary">Yamas et Niyamas</strong> de l'Ashtanga yoga décrits par Patanjali.
+                        Bref, j&apos;ai, entre autres, trouvé, dans le Yoga, une philosophie de vie qui me correspondait depuis toujours : <strong className="text-primary">bienveillance, non jugement, simplicité</strong>…que l&apos;on retrouve dans les <strong className="text-primary">Yamas et Niyamas</strong> de l&apos;Ashtanga yoga décrits par Patanjali.
                       </p>
                     </div>
                   </div>

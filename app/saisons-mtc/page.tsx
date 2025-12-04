@@ -120,13 +120,13 @@ export default function SaisonsMTCPage() {
               Saviez-vous que les saisons chinoises ne correspondent pas tout à fait à celles de notre calendrier grégorien, et que le Nouvel An chinois ne débute jamais le 1er janvier ? 🎆
             </p>
             <p className="text-text-dark/80 mb-4">
-              En Chine le premier jour du premier mois du calendrier lunaire se situe entre fin janvier et mi-février, à l'équinoxe de printemps 🍃
+              En Chine le premier jour du premier mois du calendrier lunaire se situe entre fin janvier et mi-février, à l&apos;équinoxe de printemps 🍃
             </p>
             <p className="text-text-dark/80 mb-4">
               En effet, le calendrier énergétique des saisons chinoises est un calendrier luni-solaire (qui utilise à la fois le calendrier solaire et lunaire ☀️🌕). Il aurait été créé en 2697 avant Jésus-Christ selon de précises observations des Chinois des mouvements de la lune, du soleil, phénomènes climatiques et agricoles, durée relative des jours et des nuits, …
             </p>
             <p className="text-text-dark/80 mb-4">
-              Cette particularité s'explique par l'utilisation d'un calendrier luni-solaire, qui associe les cycles du soleil ☀️ et de la lune 🌕 pour structurer le temps.
+              Cette particularité s&apos;explique par l&apos;utilisation d&apos;un calendrier luni-solaire, qui associe les cycles du soleil ☀️ et de la lune 🌕 pour structurer le temps.
             </p>
             <p className="text-text-dark/80 mb-4">
               Les mois chinois ont 29 jours ou 30 jours reflétant ainsi les révolutions lunaires.
@@ -136,10 +136,10 @@ export default function SaisonsMTCPage() {
               Le principe des 5 saisons en MTC
             </h2>
             <p className="text-text-dark/80 mb-4">
-              Pour la médecine chinoise, on ne peut pas passer brutalement d'une saison à une autre en une seule journée comme l'indique le calendrier.
+              Pour la médecine chinoise, on ne peut pas passer brutalement d&apos;une saison à une autre en une seule journée comme l&apos;indique le calendrier.
             </p>
             <p className="text-text-dark/80 mb-4">
-              C'est pourquoi les Chinois ont intégré une 5ᵉ saison nommée <strong>Intersaison</strong>. Celle-ci correspond à un changement d'état, une transformation. Elle permet la synchronisation à ce « qui vient » mais « qui n'est pas encore ». Ainsi elle représente le passage qui nous permet de quitter l'hiver et de nous préparer au printemps, mais aussi de quitter le printemps et de nous préparer à l'été, ainsi de suite…
+              C&apos;est pourquoi les Chinois ont intégré une 5ᵉ saison nommée <strong>Intersaison</strong>. Celle-ci correspond à un changement d&apos;état, une transformation. Elle permet la synchronisation à ce « qui vient » mais « qui n&apos;est pas encore ». Ainsi elle représente le passage qui nous permet de quitter l&apos;hiver et de nous préparer au printemps, mais aussi de quitter le printemps et de nous préparer à l&apos;été, ainsi de suite…
             </p>
             <p className="text-text-dark/80 mb-8">
               Dans la pensée chinoise, le cycle des saisons repose sur la théorie des 5 éléments ou cinq mouvements. Chacun est représenté par un « élément » (Bois, Feu, Terre, Métal et Eau) qui, est associé à une saison et à un couple organe/entrailles et de ce fait à une fonction énergétique et un mouvement énergétique. Au niveau thérapeutique, chaque saison est donc en relation avec des correspondances somatiques, sensorielles et émotionnelles.
@@ -222,7 +222,7 @@ export default function SaisonsMTCPage() {
                 </div>
 
                 <p className="text-text-dark/80 italic leading-relaxed">
-                  En Médecine Traditionnelle Chinoise, la saison {season.season === 'Intersaison' ? 'de l\'intersaison' : `du ${season.season.toLowerCase()}`} est associée au couple d'organes viscères {season.organ}/{season.viscera.toLowerCase()}.
+                  En Médecine Traditionnelle Chinoise, la saison {season.season === 'Intersaison' ? 'de l&apos;intersaison' : `du ${season.season.toLowerCase()}`} est associée au couple d&apos;organes viscères {season.organ}/{season.viscera.toLowerCase()}.
                 </p>
               </div>
             ))}
@@ -230,13 +230,13 @@ export default function SaisonsMTCPage() {
 
           <div className="mt-12 bg-primary/10 rounded-lg p-8">
             <p className="text-text-dark/80 leading-relaxed mb-4">
-              La vie est en continuel mouvement où l'homme doit s'harmoniser avec son environnement.
+              La vie est en continuel mouvement où l&apos;homme doit s&apos;harmoniser avec son environnement.
             </p>
             <p className="text-text-dark/80 leading-relaxed mb-4">
               Peut-être vous demandez vous « pourquoi les Chinois se soucient-ils autant de tout ceci ? »
             </p>
             <p className="text-text-dark/80 leading-relaxed">
-              C'est parce que pour eux, il existe une hiérarchie à laquelle nous sommes tous reliés. Nous sommes tous une partie d'un grand tout et dans le même temps, tout l'univers est en nous (c'est le tao). Cela nous rend interdépendant de tout et de tous. D'où cette quête permanente de l'harmonie.
+              C&apos;est parce que pour eux, il existe une hiérarchie à laquelle nous sommes tous reliés. Nous sommes tous une partie d&apos;un grand tout et dans le même temps, tout l&apos;univers est en nous (c&apos;est le tao). Cela nous rend interdépendant de tout et de tous. D&apos;où cette quête permanente de l&apos;harmonie.
             </p>
           </div>
         </div>

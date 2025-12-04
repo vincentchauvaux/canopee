@@ -201,7 +201,7 @@ export default function Agenda() {
                 onClick={() => setSelectedDate(new Date())}
                 className="px-4 py-2 bg-secondary text-white rounded-button hover:bg-secondary-light transition-colors"
               >
-                Aujourd'hui
+                Aujourd&apos;hui
               </button>
               <div className="flex items-center gap-2">
                 <button
