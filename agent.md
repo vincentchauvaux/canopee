@@ -359,3 +359,24 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - 🚧 **En cours** - Configuration du VPS-1 OVH et déploiement de l'application
 - 📋 **Checklist disponible** - Voir [CHECKLIST_DEPLOIEMENT.md](./CHECKLIST_DEPLOIEMENT.md) pour suivre l'avancement
 - 🔍 **Guide de vérification** - Voir [VERIFICATION_OVH.md](./VERIFICATION_OVH.md) pour identifier ce qui est déjà configuré
+
+## Corrections Récentes
+
+### Corrections ESLint - Apostrophes et Guillemets (Décembre 2024)
+
+- ✅ Correction de toutes les apostrophes non échappées dans le JSX
+- ✅ Remplacement de `'` par `&apos;` dans le contenu JSX
+- ✅ Remplacement de `"` par `&quot;` dans le contenu JSX
+- ✅ Correction des apostrophes dans les expressions JSX (template literals)
+- ✅ Correction des apostrophes dans les commentaires JSX
+
+**Fichiers corrigés :**
+- `app/mon-parcours/page.tsx` - Toutes les apostrophes échappées
+- `app/profile/page.tsx` - Apostrophes échappées
+- `app/saisons-mtc/page.tsx` - Apostrophes dans les expressions JSX corrigées
+- `app/yin-yoga/page.tsx` - Apostrophes échappées (y compris dans les commentaires)
+- `components/Agenda.tsx` - Apostrophe échappée
+- `components/NewsFeed.tsx` - Apostrophe échappée
+- `components/admin/ClassFormModal.tsx` - Apostrophe échappée
+
+**Note :** Toutes les apostrophes dans le contenu JSX doivent être échappées avec `&apos;` pour respecter les règles ESLint `react/no-unescaped-entities`.

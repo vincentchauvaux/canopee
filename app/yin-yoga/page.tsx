@@ -27,7 +27,7 @@ export default function YinYogaPage() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-4xl mx-auto">
-            {/* Section : Le Yin yoga, c'est quoi ? */}
+            {/* Section : Le Yin yoga, c&apos;est quoi ? */}
             <section className="mb-16">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
