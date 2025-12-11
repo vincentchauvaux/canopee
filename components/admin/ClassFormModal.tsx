@@ -190,7 +190,7 @@ export default function ClassFormModal({ classItem, isOpen, onClose }: ClassForm
               <label className="block text-sm font-medium text-text-dark mb-2">
                 Description
                 <span className="text-xs text-text-dark/60 ml-2 font-normal">
-                  (Thème du cours, exercices, lien avec la MTC, etc. - Visible dans le fil d'actualité)
+                  (Thème du cours, exercices, lien avec la MTC, etc. - Visible dans le fil d&apos;actualité)
                 </span>
               </label>
               <textarea
