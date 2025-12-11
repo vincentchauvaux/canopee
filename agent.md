@@ -371,6 +371,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Correction des apostrophes dans les commentaires JSX
 
 **Fichiers corrigés :**
+
 - `app/mon-parcours/page.tsx` - Toutes les apostrophes échappées
 - `app/profile/page.tsx` - Apostrophes échappées
 - `app/saisons-mtc/page.tsx` - Apostrophes dans les expressions JSX corrigées
@@ -380,3 +381,19 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/admin/ClassFormModal.tsx` - Apostrophe échappée
 
 **Note :** Toutes les apostrophes dans le contenu JSX doivent être échappées avec `&apos;` pour respecter les règles ESLint `react/no-unescaped-entities`.
+
+### Corrections Base de Données - Erreur "prepared statement does not exist" (Décembre 2024)
+
+- ✅ Amélioration de la gestion des connexions Prisma dans `lib/prisma.ts`
+- ✅ Ajout d'une fonction `withRetry` pour réessayer automatiquement les requêtes en cas d'erreur de connexion
+- ✅ Gestion des erreurs de connexion PostgreSQL (codes P1001, P1008, 26000)
+- ✅ Fermeture propre des connexions à l'arrêt de l'application
+- ✅ Documentation créée : `FIX_DATABASE_CONNECTION.md`
+
+**Problème résolu :** L'erreur `prepared statement "s36" does not exist` (code 26000) qui se produisait lorsque Prisma essayait d'utiliser une connexion PostgreSQL fermée ou expirée (problème courant avec Supabase).
+
+**Solution :**
+
+- Détection automatique des erreurs de connexion
+- Réessai automatique des requêtes (jusqu'à 3 tentatives)
+- Recommandation d'ajouter des paramètres de connexion à la DATABASE_URL (`connection_limit`, `pool_timeout`, `connect_timeout`)
