@@ -82,9 +82,31 @@
 
 - **Frontend**: Next.js 14 (App Router), React 18, TypeScript
 - **Styling**: Tailwind CSS
-- **Base de données**: Supabase (recommandé) ou PostgreSQL avec Prisma ORM
+- **Base de données**: PostgreSQL avec Prisma ORM (actuellement hébergé sur Supabase)
 - **Authentification**: NextAuth.js v4
 - **Validation**: Zod
+
+### Indépendance avec Prisma
+
+**Important** : Le projet utilise **Prisma comme ORM**, ce qui offre une **indépendance totale** vis-à-vis du fournisseur de base de données.
+
+- ✅ **Prisma** = ORM (Object-Relational Mapping) - Outil pour interagir avec la base de données
+- ✅ **Supabase** = Hébergement PostgreSQL (peut être remplacé facilement)
+
+**Avantages de Prisma :**
+
+- Indépendance du fournisseur : migration facile entre Supabase, Railway, Neon, PostgreSQL local, AWS RDS, etc.
+- Aucun changement de code nécessaire : il suffit de modifier la `DATABASE_URL` dans `.env`
+- Schéma type-safe avec TypeScript
+- Migrations automatiques
+
+**Pour changer de fournisseur PostgreSQL :**
+
+1. Exporter les données depuis Supabase
+2. Créer une base sur le nouveau fournisseur (Railway, Neon, local, etc.)
+3. Importer les données
+4. Mettre à jour `DATABASE_URL` dans `.env`
+5. Aucun changement de code Prisma nécessaire
 
 ### Structure des fichiers
 
@@ -293,10 +315,11 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Base de Données
 
-- **Type** : PostgreSQL (hébergé sur Supabase)
-- **ORM** : Prisma
+- **Type** : PostgreSQL (actuellement hébergé sur Supabase)
+- **ORM** : Prisma (offre l'indépendance vis-à-vis du fournisseur)
 - **Variable** : `DATABASE_URL` (format : `postgresql://postgres:[PASSWORD]@db.kzogkberupkzpjdojvhn.supabase.co:5432/postgres?schema=public`)
 - **Configuration** : Voir [CONFIGURATION_SUPABASE.md](./CONFIGURATION_SUPABASE.md)
+- **Indépendance** : Prisma permet de migrer facilement vers Railway, Neon, PostgreSQL local, AWS RDS, etc. en changeant uniquement la `DATABASE_URL`
 
 ### Variables d'Environnement Requises
 
@@ -397,3 +420,91 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - Détection automatique des erreurs de connexion
 - Réessai automatique des requêtes (jusqu'à 3 tentatives)
 - Recommandation d'ajouter des paramètres de connexion à la DATABASE_URL (`connection_limit`, `pool_timeout`, `connect_timeout`)
+
+### Problème Admin en Production (Décembre 2024)
+
+**Problème :** L'utilisateur admin fonctionne en local mais pas en production (OVH).
+
+**Causes possibles :**
+
+- L'utilisateur n'existe pas dans la base de données Supabase de production
+- L'utilisateur existe mais n'a pas le rôle `admin` en production
+- Problème de session/authentification (token JWT non régénéré)
+- Variables d'environnement incorrectes (`NEXTAUTH_URL`, `NEXTAUTH_SECRET`)
+
+**Solutions :**
+
+1. **Vérifier l'utilisateur dans Supabase** :
+
+   - Dashboard Supabase → Table Editor → users
+   - Chercher `etibaliomecus@live.be`
+   - Vérifier que `role = 'admin'`
+
+2. **Scripts de diagnostic** :
+
+   ```bash
+   # Sur le VPS
+   node scripts/diagnose-admin.js etibaliomecus@live.be
+   node scripts/check-user-role.js etibaliomecus@live.be
+   ```
+
+3. **Créer/Mettre à jour l'admin** :
+
+   ```bash
+   # Si l'utilisateur existe déjà
+   node scripts/create-admin.js etibaliomecus@live.be
+
+   # Synchroniser depuis local vers production
+   node scripts/sync-admin-to-production.js etibaliomecus@live.be "Vincent" "Chauvaux"
+   ```
+
+4. **Via Supabase SQL Editor** :
+
+   ```sql
+   UPDATE users SET role = 'admin' WHERE email = 'etibaliomecus@live.be';
+   ```
+
+5. **Après mise à jour** :
+   - Déconnectez-vous du site
+   - Videz les cookies du navigateur
+   - Reconnectez-vous pour régénérer le token JWT
+
+📖 **Guide complet** : Voir [FIX_ADMIN_PRODUCTION.md](./FIX_ADMIN_PRODUCTION.md)
+
+### Erreur 500 sur /api/classes (Décembre 2024)
+
+**Problème :** L'API `/api/classes` retourne une erreur 500 lors de la récupération des cours.
+
+**Causes possibles :**
+
+- Table `classes` n'existe pas dans la base de données (migrations non appliquées)
+- Problème de connexion à Supabase
+- Format de date invalide dans les paramètres
+
+**Solutions :**
+
+1. **Vérifier et appliquer les migrations** :
+
+   ```bash
+   # Sur le VPS
+   cd /var/www/canopee
+   npx prisma migrate deploy
+   npx prisma generate
+   pm2 restart canopee
+   ```
+
+2. **Script de diagnostic** :
+
+   ```bash
+   node scripts/check-database.js
+   ```
+
+3. **Vérifier les tables dans Supabase** :
+
+   - Dashboard → Table Editor → Vérifier que `classes` existe
+
+4. **Vérifier DATABASE_URL** :
+   - Vérifier que l'URL est correcte dans `.env`
+   - Ajouter des paramètres de connexion si nécessaire
+
+📖 **Guide complet** : Voir [FIX_API_CLASSES_500.md](./FIX_API_CLASSES_500.md)

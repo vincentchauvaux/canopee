@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
 
 export default function SignIn() {
   const router = useRouter()
+  const { update: updateSession } = useSession()
   const [isLogin, setIsLogin] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -33,10 +35,28 @@ export default function SignIn() {
 
         if (result?.error) {
           setError('Email ou mot de passe incorrect')
-        } else {
-          router.push('/')
-          router.refresh()
+          setLoading(false)
+          return
         }
+
+        // Attendre un peu pour que le cookie soit créé
+        await new Promise(resolve => setTimeout(resolve, 100))
+
+        // Forcer la mise à jour de la session
+        await updateSession()
+        
+        // Vérifier que la session est bien créée
+        const session = await getSession()
+        if (!session) {
+          console.error('Session not created after sign in')
+          setError('Erreur lors de la connexion. Veuillez réessayer.')
+          setLoading(false)
+          return
+        }
+
+        // Rediriger vers la home
+        router.push('/')
+        router.refresh()
       } else {
         // Inscription - à implémenter avec une API route
         const response = await fetch('/api/auth/register', {
@@ -47,11 +67,33 @@ export default function SignIn() {
 
         if (response.ok) {
           // Auto-login après inscription
-          await signIn('credentials', {
+          const result = await signIn('credentials', {
             email: formData.email,
             password: formData.password,
             redirect: false,
           })
+
+          if (result?.error) {
+            setError('Erreur lors de la connexion automatique')
+            setLoading(false)
+            return
+          }
+
+          // Attendre un peu pour que le cookie soit créé
+          await new Promise(resolve => setTimeout(resolve, 100))
+
+          // Forcer la mise à jour de la session
+          await updateSession()
+          
+          // Vérifier que la session est bien créée
+          const session = await getSession()
+          if (!session) {
+            console.error('Session not created after sign up')
+            setError('Compte créé mais erreur lors de la connexion. Veuillez vous connecter.')
+            setLoading(false)
+            return
+          }
+
           router.push('/')
           router.refresh()
         } else {
