@@ -508,3 +508,56 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
    - Ajouter des paramètres de connexion si nécessaire
 
 📖 **Guide complet** : Voir [FIX_API_CLASSES_500.md](./FIX_API_CLASSES_500.md)
+
+### Erreur 404 sur /api/auth/signin (Décembre 2024)
+
+**Problème :** L'erreur `GET https://canopee.be/api/auth/signin?csrf=true 404 (Not Found)` apparaît lors de la tentative de connexion.
+
+**Causes possibles :**
+
+- Route NextAuth non correctement configurée
+- Problème de build (routes API non générées)
+- Configuration `NEXTAUTH_URL` incorrecte
+- Problème avec le reverse proxy Nginx
+
+**Solutions :**
+
+1. **Vérifier la configuration de la route** :
+
+   - Le fichier `app/api/auth/[...nextauth]/route.ts` doit exporter GET et POST
+   - Ajouter `export const dynamic = 'force-dynamic'` pour forcer le mode dynamique
+
+2. **Vérifier NEXTAUTH_URL** :
+
+   ```bash
+   # Sur le VPS
+   cd /var/www/canopee
+   cat .env | grep NEXTAUTH_URL
+   ```
+
+   - Doit être `NEXTAUTH_URL="https://canopee.be"` (pas `http://` ou `localhost`)
+
+3. **Rebuild l'application** :
+
+   ```bash
+   npm run build
+   pm2 restart canopee
+   ```
+
+4. **Vérifier la configuration Nginx** :
+
+   - S'assurer que toutes les routes `/api/*` sont proxifiées vers Next.js
+
+5. **Vérifier les logs** :
+   ```bash
+   pm2 logs canopee
+   sudo tail -f /var/log/nginx/error.log
+   ```
+
+📖 **Guide complet** : Voir [FIX_NEXTAUTH_404.md](./FIX_NEXTAUTH_404.md)
+
+**Scripts et guides utiles :**
+
+- `scripts/compare-env.js` - Comparer les fichiers .env local et VPS
+- [VERIFICATION_ENV_VPS.md](./VERIFICATION_ENV_VPS.md) - Guide de vérification du .env VPS
+- [MODIFIER_ENV_VPS.md](./MODIFIER_ENV_VPS.md) - Comment modifier le fichier .env sur le VPS

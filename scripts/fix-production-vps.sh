@@ -119,3 +119,4 @@ echo "📝 Prochaines étapes:"
 echo "   1. Vérifiez que l'API fonctionne: curl https://canopee.be/api/classes"
 echo "   2. Vérifiez les logs: pm2 logs canopee"
 echo "   3. Testez l'application dans le navigateur"
+

@@ -287,3 +287,4 @@ Si le problème persiste :
 1. Vérifier les logs de l'application : `pm2 logs canopee`
 2. Vérifier les logs Supabase (Dashboard → Logs)
 3. Exécuter le script de diagnostic : `node scripts/diagnose-admin.js etibaliomecus@live.be`
+

@@ -117,3 +117,4 @@ pm2 logs canopee --err --lines 50
 3. **Erreur 500 persiste** :
    - Vérifiez les logs : `pm2 logs canopee --err`
    - Vérifiez la base de données : `node scripts/check-database.js`
+
