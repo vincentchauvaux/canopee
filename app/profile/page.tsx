@@ -1,172 +1,200 @@
-'use client'
+"use client";
 
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { User, Mail, Calendar, MessageCircle, Settings, Shield, Camera, Save, X } from 'lucide-react'
-import { format } from 'date-fns'
-import { fr } from 'date-fns/locale/fr'
-import Link from 'next/link'
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  User,
+  Mail,
+  Calendar,
+  MessageCircle,
+  Settings,
+  Shield,
+  Camera,
+  Save,
+  X,
+} from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale/fr";
+import Link from "next/link";
 
 interface UserProfile {
-  id: string
-  email: string
-  firstName?: string | null
-  lastName?: string | null
-  profilePic?: string | null
-  phone?: string | null
-  dateOfBirth?: string | null
-  role: string
-  createdAt: string
-  lastLogin?: string | null
+  id: string;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  profilePic?: string | null;
+  phone?: string | null;
+  dateOfBirth?: string | null;
+  role: string;
+  createdAt: string;
+  lastLogin?: string | null;
 }
 
 interface Booking {
-  id: string
-  bookedAt: string
+  id: string;
+  bookedAt: string;
   class: {
-    id: string
-    title: string
-    type: string
-    date: string
-    startTime: string
-    endTime: string
-    instructor: string
-  }
+    id: string;
+    title: string;
+    type: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    instructor: string;
+  };
 }
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [user, setUser] = useState<UserProfile | null>(null)
-  const [bookings, setBookings] = useState<Booking[]>([])
-  const [loading, setLoading] = useState(true)
-  const [isEditing, setIsEditing] = useState(false)
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    dateOfBirth: '',
-  })
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
+    firstName: "",
+    lastName: "",
+    phone: "",
+    dateOfBirth: "",
+  });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    if (status === 'loading') return
+    if (status === "loading") return;
 
     if (!session) {
-      router.push('/auth/signin')
-      return
+      router.push("/auth/signin");
+      return;
     }
 
-    fetchProfile()
-    fetchBookings()
-  }, [session, status, router])
+    fetchProfile();
+    fetchBookings();
+  }, [session, status, router]);
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch('/api/profile', {
-        credentials: 'include',
-      })
-      if (!response.ok) throw new Error('Erreur lors du chargement')
-      const data = await response.json()
-      setUser(data)
+      const response = await fetch("/api/profile", {
+        credentials: "include",
+      });
+
+      if (response.status === 401) {
+        // Non authentifié en production : rediriger vers la page de connexion
+        router.push("/auth/signin");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error("Erreur lors du chargement du profil");
+      }
+
+      const data = await response.json();
+      setUser(data);
       setFormData({
-        firstName: data.firstName || '',
-        lastName: data.lastName || '',
-        phone: data.phone || '',
-        dateOfBirth: data.dateOfBirth ? format(new Date(data.dateOfBirth), 'yyyy-MM-dd') : '',
-      })
+        firstName: data.firstName || "",
+        lastName: data.lastName || "",
+        phone: data.phone || "",
+        dateOfBirth: data.dateOfBirth
+          ? format(new Date(data.dateOfBirth), "yyyy-MM-dd")
+          : "",
+      });
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      setError(
+        "Impossible de charger votre profil. Veuillez réessayer plus tard."
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch('/api/bookings', {
-        credentials: 'include',
-      })
+      const response = await fetch("/api/bookings", {
+        credentials: "include",
+      });
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         // Vérifier que c'est bien un tableau
         if (Array.isArray(data)) {
-          setBookings(data)
+          setBookings(data);
         } else {
-          setBookings([])
+          setBookings([]);
         }
       }
     } catch (err) {
-      console.error(err)
-      setBookings([])
+      console.error(err);
+      setBookings([]);
     }
-  }
+  };
 
   const handleSave = async () => {
-    setSaving(true)
-    setError('')
-    setSuccess('')
+    setSaving(true);
+    setError("");
+    setSuccess("");
 
     try {
-      const response = await fetch('/api/profile', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+      const response = await fetch("/api/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(formData),
-      })
+      });
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Erreur lors de la sauvegarde')
+        const data = await response.json();
+        throw new Error(data.error || "Erreur lors de la sauvegarde");
       }
 
-      const updatedUser = await response.json()
-      setUser(updatedUser)
-      setIsEditing(false)
-      setSuccess('Profil mis à jour avec succès')
-      
+      const updatedUser = await response.json();
+      setUser(updatedUser);
+      setIsEditing(false);
+      setSuccess("Profil mis à jour avec succès");
+
       // Mettre à jour la session
-      window.location.reload()
+      window.location.reload();
     } catch (err: any) {
-      setError(err.message || 'Erreur lors de la sauvegarde')
+      setError(err.message || "Erreur lors de la sauvegarde");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const handleCancel = () => {
     if (user) {
       setFormData({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        phone: user.phone || '',
-        dateOfBirth: user.dateOfBirth ? format(new Date(user.dateOfBirth), 'yyyy-MM-dd') : '',
-      })
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        phone: user.phone || "",
+        dateOfBirth: user.dateOfBirth
+          ? format(new Date(user.dateOfBirth), "yyyy-MM-dd")
+          : "",
+      });
     }
-    setIsEditing(false)
-    setError('')
-    setSuccess('')
-  }
+    setIsEditing(false);
+    setError("");
+    setSuccess("");
+  };
 
-  if (status === 'loading' || loading) {
+  if (status === "loading" || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-accent">
         <p className="text-text-dark/60">Chargement...</p>
       </div>
-    )
+    );
   }
 
   if (!session || !user) {
-    return null
+    return null;
   }
 
-  const isAdmin = (session.user as any).role === 'admin'
-  const displayName = user.firstName && user.lastName 
-    ? `${user.firstName} ${user.lastName}` 
-    : user.firstName || user.email.split('@')[0]
+  const isAdmin = (session.user as any).role === "admin";
+  const displayName =
+    user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.firstName || user.email.split("@")[0];
 
   return (
     <div className="min-h-screen bg-accent py-20">
@@ -247,7 +275,9 @@ export default function ProfilePage() {
                     disabled
                     className="w-full px-4 py-3 border border-gray rounded-button bg-gray/50 text-text-dark/60 cursor-not-allowed"
                   />
-                  <p className="text-xs text-text-dark/60 mt-1">L&apos;email ne peut pas être modifié</p>
+                  <p className="text-xs text-text-dark/60 mt-1">
+                    L&apos;email ne peut pas être modifié
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -259,12 +289,17 @@ export default function ProfilePage() {
                       <input
                         type="text"
                         value={formData.firstName}
-                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            firstName: e.target.value,
+                          })
+                        }
                         className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
                       />
                     ) : (
                       <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
-                        {user.firstName || 'Non renseigné'}
+                        {user.firstName || "Non renseigné"}
                       </p>
                     )}
                   </div>
@@ -277,12 +312,14 @@ export default function ProfilePage() {
                       <input
                         type="text"
                         value={formData.lastName}
-                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, lastName: e.target.value })
+                        }
                         className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
                       />
                     ) : (
                       <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
-                        {user.lastName || 'Non renseigné'}
+                        {user.lastName || "Non renseigné"}
                       </p>
                     )}
                   </div>
@@ -296,13 +333,15 @@ export default function ProfilePage() {
                     <input
                       type="tel"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
                       placeholder="+33 6 12 34 56 78"
                       className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
                     />
                   ) : (
                     <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
-                      {user.phone || 'Non renseigné'}
+                      {user.phone || "Non renseigné"}
                     </p>
                   )}
                 </div>
@@ -315,14 +354,21 @@ export default function ProfilePage() {
                     <input
                       type="date"
                       value={formData.dateOfBirth}
-                      onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          dateOfBirth: e.target.value,
+                        })
+                      }
                       className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
                     />
                   ) : (
                     <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
-                      {user.dateOfBirth 
-                        ? format(new Date(user.dateOfBirth), 'd MMMM yyyy', { locale: fr })
-                        : 'Non renseigné'}
+                      {user.dateOfBirth
+                        ? format(new Date(user.dateOfBirth), "d MMMM yyyy", {
+                            locale: fr,
+                          })
+                        : "Non renseigné"}
                     </p>
                   )}
                 </div>
@@ -335,7 +381,7 @@ export default function ProfilePage() {
                       className="flex-1 px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       <Save className="w-4 h-4" />
-                      {saving ? 'Enregistrement...' : 'Enregistrer'}
+                      {saving ? "Enregistrement..." : "Enregistrer"}
                     </button>
                     <button
                       onClick={handleCancel}
@@ -357,14 +403,16 @@ export default function ProfilePage() {
                   Mes Réservations
                 </h3>
                 <span className="text-text-dark/60">
-                  {bookings.length} réservation{bookings.length > 1 ? 's' : ''}
+                  {bookings.length} réservation{bookings.length > 1 ? "s" : ""}
                 </span>
               </div>
 
               {bookings.length === 0 ? (
                 <div className="text-center py-12">
                   <Calendar className="w-16 h-16 text-text-dark/20 mx-auto mb-4" />
-                  <p className="text-text-dark/60 mb-4">Aucune réservation pour le moment</p>
+                  <p className="text-text-dark/60 mb-4">
+                    Aucune réservation pour le moment
+                  </p>
                   <Link
                     href="/#agenda"
                     className="inline-block px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
@@ -387,22 +435,35 @@ export default function ProfilePage() {
                           <div className="space-y-1 text-sm text-text-dark/60">
                             <p>
                               <Calendar className="w-4 h-4 inline mr-1" />
-                              {format(new Date(booking.class.date), 'EEEE d MMMM yyyy', { locale: fr })}
+                              {format(
+                                new Date(booking.class.date),
+                                "EEEE d MMMM yyyy",
+                                { locale: fr }
+                              )}
                             </p>
                             <p>
-                              {format(new Date(booking.class.startTime), 'HH:mm')} -{' '}
-                              {format(new Date(booking.class.endTime), 'HH:mm')}
+                              {format(
+                                new Date(booking.class.startTime),
+                                "HH:mm"
+                              )}{" "}
+                              -{" "}
+                              {format(new Date(booking.class.endTime), "HH:mm")}
                             </p>
                             <p>Professeur: {booking.class.instructor}</p>
                             <p className="text-xs text-text-dark/40">
-                              Réservé le {format(new Date(booking.bookedAt), 'd MMM yyyy à HH:mm', { locale: fr })}
+                              Réservé le{" "}
+                              {format(
+                                new Date(booking.bookedAt),
+                                "d MMM yyyy à HH:mm",
+                                { locale: fr }
+                              )}
                             </p>
                           </div>
                         </div>
                         <span
                           className="px-3 py-1 rounded-full text-sm font-medium text-white"
                           style={{
-                            backgroundColor: '#264E36',
+                            backgroundColor: "#264E36",
                           }}
                         >
                           {booking.class.type}
@@ -426,21 +487,27 @@ export default function ProfilePage() {
                 <div>
                   <p className="text-text-dark/60">Membre depuis</p>
                   <p className="font-semibold text-text-dark">
-                    {format(new Date(user.createdAt), 'MMMM yyyy', { locale: fr })}
+                    {format(new Date(user.createdAt), "MMMM yyyy", {
+                      locale: fr,
+                    })}
                   </p>
                 </div>
                 {user.lastLogin && (
                   <div>
                     <p className="text-text-dark/60">Dernière connexion</p>
                     <p className="font-semibold text-text-dark">
-                      {format(new Date(user.lastLogin), 'd MMM yyyy à HH:mm', { locale: fr })}
+                      {format(new Date(user.lastLogin), "d MMM yyyy à HH:mm", {
+                        locale: fr,
+                      })}
                     </p>
                   </div>
                 )}
                 <div>
-                  <p className="text-text-dark/60">Méthode d&apos;authentification</p>
+                  <p className="text-text-dark/60">
+                    Méthode d&apos;authentification
+                  </p>
                   <p className="font-semibold text-text-dark capitalize">
-                    {user.role === 'admin' ? 'Admin' : 'Utilisateur'}
+                    {user.role === "admin" ? "Admin" : "Utilisateur"}
                   </p>
                 </div>
               </div>
@@ -479,6 +546,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -471,6 +471,12 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 📖 **Guide complet** : Voir [FIX_ADMIN_PRODUCTION.md](./FIX_ADMIN_PRODUCTION.md)
 
+### Amélioration de la page Profil - Gestion des 401 en production (Décembre 2025)
+
+- ✅ Mise à jour de `app/profile/page.tsx` pour mieux gérer les réponses `401 Unauthorized` de `/api/profile` en production.
+- ✅ En cas de 401, la page redirige automatiquement vers `/auth/signin` au lieu de lever une erreur générique.
+- ✅ Affichage d'un message d'erreur utilisateur lorsqu'une erreur inattendue empêche le chargement du profil, au lieu de laisser une erreur React minifiée dans la console.
+
 ### Erreur 500 sur /api/classes (Décembre 2024)
 
 **Problème :** L'API `/api/classes` retourne une erreur 500 lors de la récupération des cours.

@@ -19,9 +19,11 @@ GOOGLE_CLIENT_SECRET="..."                 ✅ Configuré
 ### ⚠️ Points à Vérifier
 
 1. **Format DATABASE_URL** : Le format utilisé est le pooler Supabase :
+
    ```
    postgresql://postgres.kzogkberupkzpjdojvhn:h2usmpssneaky%3F0@aws-1-eu-north-1.pooler.supabase.com:6543/postgres?schema=public
    ```
+
    - ✅ Port 6543 (pooler) - Correct pour la production
    - ✅ `?schema=public` présent - Correct
    - ⚠️ Le mot de passe contient `%3F` (encodage URL pour `?`) - Vérifier si c'est correct
@@ -38,6 +40,7 @@ Pour comparer votre `.env` local avec celui du VPS, vous avez deux options :
 ### Option 1 : Utiliser le script de comparaison
 
 1. Créez un fichier `.env.vps` avec le contenu du `.env` du VPS :
+
    ```bash
    # Dans votre projet local
    nano .env.vps
@@ -53,30 +56,33 @@ Pour comparer votre `.env` local avec celui du VPS, vous avez deux options :
 
 Comparez ces variables critiques :
 
-| Variable | Local (dev) | VPS (prod) | Statut |
-|----------|-------------|------------|--------|
-| `NEXTAUTH_URL` | `http://localhost:3000` | `https://canopee.be` | ✅ Différent (normal) |
-| `NEXTAUTH_SECRET` | `votre-secret` | `wdu9SfsEOeMx44gJuOZyUgSrJYiTB40ZfmMU4Lu0IJ8=` | ⚠️ Doit être différent |
-| `NODE_ENV` | `development` | `production` | ✅ Différent (normal) |
-| `DATABASE_URL` | Format local | Format Supabase pooler | ✅ Différent (normal) |
-| `NEXT_PUBLIC_DOMAIN` | `localhost:3000` | `canopee.be` | ✅ Différent (normal) |
+| Variable             | Local (dev)             | VPS (prod)                                     | Statut                 |
+| -------------------- | ----------------------- | ---------------------------------------------- | ---------------------- |
+| `NEXTAUTH_URL`       | `http://localhost:3000` | `https://canopee.be`                           | ✅ Différent (normal)  |
+| `NEXTAUTH_SECRET`    | `votre-secret`          | `wdu9SfsEOeMx44gJuOZyUgSrJYiTB40ZfmMU4Lu0IJ8=` | ⚠️ Doit être différent |
+| `NODE_ENV`           | `development`           | `production`                                   | ✅ Différent (normal)  |
+| `DATABASE_URL`       | Format local            | Format Supabase pooler                         | ✅ Différent (normal)  |
+| `NEXT_PUBLIC_DOMAIN` | `localhost:3000`        | `canopee.be`                                   | ✅ Différent (normal)  |
 
 ## 🔧 Vérifications Spécifiques pour l'Erreur 404
 
 ### 1. Vérifier que NEXTAUTH_URL est correct
 
 Sur le VPS :
+
 ```bash
 cd /var/www/canopee
 cat .env | grep NEXTAUTH_URL
 ```
 
 **Doit afficher** :
+
 ```
 NEXTAUTH_URL="https://canopee.be"
 ```
 
 **⚠️ Ne doit PAS contenir** :
+
 - `http://` (doit être `https://`)
 - `localhost`
 - `127.0.0.1`
@@ -89,11 +95,13 @@ cat .env | grep NEXTAUTH_SECRET
 ```
 
 **Doit afficher** :
+
 ```
 NEXTAUTH_SECRET="wdu9SfsEOeMx44gJuOZyUgSrJYiTB40ZfmMU4Lu0IJ8="
 ```
 
 **⚠️ Ne doit PAS être** :
+
 - Vide
 - `"A_REMPLACER_PAR_UN_SECRET"`
 - Un placeholder
@@ -106,6 +114,7 @@ node -e "require('dotenv').config(); console.log('NEXTAUTH_URL:', process.env.NE
 ```
 
 Si cela ne fonctionne pas, installez dotenv :
+
 ```bash
 npm install dotenv
 ```
@@ -118,10 +127,12 @@ ls -la .next/server/app/api/auth/
 ```
 
 **Doit contenir** :
+
 - Un dossier `[...nextauth]` ou similaire
 - Des fichiers de route compilés
 
 Si le dossier n'existe pas, rebuilder :
+
 ```bash
 npm run build
 ```
@@ -194,5 +205,3 @@ sudo tail -f /var/log/nginx/error.log
 - [FIX_NEXTAUTH_404.md](./FIX_NEXTAUTH_404.md) - Guide complet pour résoudre l'erreur 404
 - [ENV_SETUP.md](./ENV_SETUP.md) - Guide de configuration des variables d'environnement
 - [CONFIG_ENV_PRODUCTION.md](./CONFIG_ENV_PRODUCTION.md) - Configuration .env pour la production
-
-
