@@ -1,60 +1,22 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Info, ShoppingBag, Package, HelpCircle, Heart, Leaf, Clock, MapPin, User } from 'lucide-react'
+import Link from "next/link";
+import {
+  Info,
+  ShoppingBag,
+  Package,
+  HelpCircle,
+  Heart,
+  Leaf,
+  Clock,
+  MapPin,
+  User,
+} from "lucide-react";
 
 export default function PracticalInfo() {
   return (
     <section id="infos" className="py-20 bg-accent">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-serif font-bold text-text-dark mb-4">
-            Informations Pratiques
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Tarifs */}
-          <div className="bg-white rounded-card p-6 shadow-md hover:shadow-lg transition-shadow">
-            <ShoppingBag className="w-12 h-12 text-primary mb-4" />
-            <h3 className="text-xl font-serif font-semibold mb-3">Tarifs</h3>
-            <ul className="text-text-dark/70 space-y-2">
-              <li><strong>Cours individuel :</strong> 15 euros / séance</li>
-              <li><strong>Cours collectif :</strong> 12 euros / séance</li>
-            </ul>
-          </div>
-
-          {/* Matériel */}
-          <div className="bg-white rounded-card p-6 shadow-md hover:shadow-lg transition-shadow">
-            <Package className="w-12 h-12 text-secondary mb-4" />
-            <h3 className="text-xl font-serif font-semibold mb-3">Matériel</h3>
-            <p className="text-text-dark/70">
-              Tapis et accessoires fournis. Apportez simplement une tenue confortable.
-            </p>
-          </div>
-
-          {/* Débutants */}
-          <div className="bg-white rounded-card p-6 shadow-md hover:shadow-lg transition-shadow">
-            <Info className="w-12 h-12 text-primary mb-4" />
-            <h3 className="text-xl font-serif font-semibold mb-3">Pour débuter</h3>
-            <p className="text-text-dark/70">
-              Tous nos cours sont adaptés aux débutants. Nos professeurs vous guideront pas à pas.
-            </p>
-          </div>
-
-          {/* FAQ */}
-          <div className="bg-white rounded-card p-6 shadow-md hover:shadow-lg transition-shadow">
-            <HelpCircle className="w-12 h-12 text-secondary mb-4" />
-            <h3 className="text-xl font-serif font-semibold mb-3">FAQ</h3>
-            <p className="text-text-dark/70 mb-3">
-              Questions fréquentes sur nos cours, horaires et pratiques.
-            </p>
-            <Link href="/faq" className="text-primary hover:text-primary-light font-medium inline-block">
-              Voir la FAQ →
-            </Link>
-          </div>
-        </div>
-
         {/* Section Yin Yoga */}
         <div className="mt-16 mb-12">
           <div className="rounded-card p-8 md:p-12">
@@ -66,7 +28,8 @@ export default function PracticalInfo() {
                 Cours de Yin Yoga
               </h2>
               <p className="text-lg text-text-dark/70 max-w-2xl mx-auto italic">
-                Inspiré du yoga taoïste et de la médecine traditionnelle chinoise
+                Inspiré du yoga taoïste et de la médecine traditionnelle
+                chinoise
               </p>
             </div>
 
@@ -85,7 +48,10 @@ export default function PracticalInfo() {
                     </li>
                     <li className="flex items-start">
                       <span className="text-primary mr-2">•</span>
-                      <span>La pleine conscience de ses sensations physiques et mentales</span>
+                      <span>
+                        La pleine conscience de ses sensations physiques et
+                        mentales
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-primary mr-2">•</span>
@@ -126,33 +92,32 @@ export default function PracticalInfo() {
                     <Clock className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-text-dark">Horaires</p>
-                      <p className="text-text-dark/70">Le vendredi de 18h à 19h</p>
+                      <p className="text-text-dark/70">
+                        Le vendredi de 18h à 19h
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <MapPin className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-text-dark">Adresse</p>
-                      <p className="text-text-dark/70">
-                        Rue Jean Theys, 10<br />
-                        1440 Wauthier-Braine
+                      <p className="font-semibold text-text-dark">
+                        Localisation
                       </p>
+                      <p className="text-text-dark/70">Wauthier-Braine</p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <User className="w-5 h-5 text-primary mr-3 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-text-dark">Professeure</p>
+                      <p className="font-semibold text-text-dark">
+                        Professeure
+                      </p>
                       <p className="text-text-dark/70">
-                        <Link
-                          href="/mon-parcours"
-                          className="text-primary hover:text-primary-light font-medium transition-colors underline"
-                        >
-                          Carol Nelissen
-                        </Link>
+                        Carol Nelissen
                         <br />
                         <span className="text-sm italic">
-                          Certifiée E.T.Y. et Karma Yoga Institute<br />
+                          Certifiée E.T.Y. et Karma Yoga Institute
+                          <br />
                           Membre ABEFY
                         </span>
                       </p>
@@ -172,8 +137,51 @@ export default function PracticalInfo() {
             </div>
           </div>
         </div>
+
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-serif font-bold text-text-dark mb-4">
+            Informations Pratiques
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Tarifs */}
+          <div className="bg-white rounded-card p-6 shadow-md hover:shadow-lg transition-shadow">
+            <ShoppingBag className="w-12 h-12 text-primary mb-4" />
+            <h3 className="text-xl font-serif font-semibold mb-3">Tarifs</h3>
+            <ul className="text-text-dark/70 space-y-2">
+              <li>
+                <strong>Cours individuel :</strong> 15 euros / séance
+              </li>
+              <li>
+                <strong>Cours collectif :</strong> 12 euros / séance
+              </li>
+            </ul>
+          </div>
+
+          {/* Matériel */}
+          <div className="bg-white rounded-card p-6 shadow-md hover:shadow-lg transition-shadow">
+            <Package className="w-12 h-12 text-secondary mb-4" />
+            <h3 className="text-xl font-serif font-semibold mb-3">Matériel</h3>
+            <p className="text-text-dark/70">
+              Tapis et accessoires fournis. Apportez simplement une tenue
+              confortable.
+            </p>
+          </div>
+
+          {/* Débutants */}
+          <div className="bg-white rounded-card p-6 shadow-md hover:shadow-lg transition-shadow">
+            <Info className="w-12 h-12 text-primary mb-4" />
+            <h3 className="text-xl font-serif font-semibold mb-3">
+              Pour débuter
+            </h3>
+            <p className="text-text-dark/70">
+              Tous les cours sont adaptés aux débutants. Votre professeur vous
+              guidera pas à pas.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
-  )
+  );
 }
-

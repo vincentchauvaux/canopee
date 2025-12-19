@@ -29,9 +29,17 @@ export default function NewsFeed() {
   const [isMounted, setIsMounted] = useState(false)
   const initialDisplayCount = 3
 
+  // Vérifier si l'utilisateur est admin
+  const isAdmin = (session?.user as any)?.role === 'admin'
+
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  // Ne rien afficher si l'utilisateur n'est pas admin
+  if (!isAdmin) {
+    return null
+  }
 
   const fetchUpcomingClasses = async () => {
     try {

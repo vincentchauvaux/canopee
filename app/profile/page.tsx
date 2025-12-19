@@ -57,7 +57,11 @@ export default function ProfilePage() {
     lastName: "",
     phone: "",
     dateOfBirth: "",
+    profilePic: "",
   });
+  const [profilePicPreview, setProfilePicPreview] = useState<string | null>(
+    null
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -71,7 +75,10 @@ export default function ProfilePage() {
     }
 
     fetchProfile();
-    fetchBookings();
+    // Ne charger les réservations que pour les admins
+    if ((session.user as any)?.role === "admin") {
+      fetchBookings();
+    }
   }, [session, status, router]);
 
   const fetchProfile = async () => {
@@ -99,7 +106,9 @@ export default function ProfilePage() {
         dateOfBirth: data.dateOfBirth
           ? format(new Date(data.dateOfBirth), "yyyy-MM-dd")
           : "",
+        profilePic: data.profilePic || "",
       });
+      setProfilePicPreview(data.profilePic || null);
     } catch (err) {
       console.error(err);
       setError(
@@ -150,6 +159,7 @@ export default function ProfilePage() {
 
       const updatedUser = await response.json();
       setUser(updatedUser);
+      setProfilePicPreview(updatedUser.profilePic || null);
       setIsEditing(false);
       setSuccess("Profil mis à jour avec succès");
 
@@ -171,11 +181,45 @@ export default function ProfilePage() {
         dateOfBirth: user.dateOfBirth
           ? format(new Date(user.dateOfBirth), "yyyy-MM-dd")
           : "",
+        profilePic: user.profilePic || "",
       });
+      setProfilePicPreview(user.profilePic || null);
     }
     setIsEditing(false);
     setError("");
     setSuccess("");
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Vérifier la taille du fichier (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError("L'image est trop grande. Taille maximale : 5MB");
+        return;
+      }
+
+      // Vérifier le type de fichier
+      if (!file.type.startsWith("image/")) {
+        setError("Veuillez sélectionner un fichier image");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setFormData({ ...formData, profilePic: base64String });
+        setProfilePicPreview(base64String);
+        setError("");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setFormData({ ...formData, profilePic: url });
+    setProfilePicPreview(url || null);
   };
 
   if (status === "loading" || loading) {
@@ -205,7 +249,7 @@ export default function ProfilePage() {
             Mon Profil
           </h1>
           <p className="text-text-dark/60">
-            Gérez vos informations personnelles et consultez votre activité
+            Gérez vos informations personnelles
           </p>
         </div>
 
@@ -216,7 +260,13 @@ export default function ProfilePage() {
             <div className="bg-white rounded-card shadow-lg p-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-4">
-                  {user.profilePic ? (
+                  {isEditing && profilePicPreview ? (
+                    <img
+                      src={profilePicPreview}
+                      alt={displayName}
+                      className="w-20 h-20 rounded-full object-cover border-4 border-accent"
+                    />
+                  ) : user.profilePic ? (
                     <img
                       src={user.profilePic}
                       alt={displayName}
@@ -279,6 +329,55 @@ export default function ProfilePage() {
                     L&apos;email ne peut pas être modifié
                   </p>
                 </div>
+
+                {isEditing && (
+                  <div>
+                    <label className="block text-sm font-medium text-text-dark mb-2">
+                      <Camera className="w-4 h-4 inline mr-2" />
+                      Photo de profil
+                    </label>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs text-text-dark/60 mb-1">
+                          Uploader une image (max 5MB)
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary text-sm"
+                        />
+                      </div>
+                      <div className="text-center text-text-dark/60 text-sm">
+                        ou
+                      </div>
+                      <div>
+                        <label className="block text-xs text-text-dark/60 mb-1">
+                          Entrer une URL d&apos;image
+                        </label>
+                        <input
+                          type="url"
+                          value={formData.profilePic}
+                          onChange={handleUrlChange}
+                          placeholder="https://exemple.com/image.jpg"
+                          className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                        />
+                      </div>
+                      {profilePicPreview && (
+                        <div className="mt-3">
+                          <p className="text-xs text-text-dark/60 mb-2">
+                            Aperçu :
+                          </p>
+                          <img
+                            src={profilePicPreview}
+                            alt="Aperçu"
+                            className="w-24 h-24 rounded-full object-cover border-2 border-gray"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -395,85 +494,91 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Historique des réservations */}
-            <div className="bg-white rounded-card shadow-lg p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-serif font-bold text-text-dark flex items-center gap-2">
-                  <Calendar className="w-6 h-6 text-primary" />
-                  Mes Réservations
-                </h3>
-                <span className="text-text-dark/60">
-                  {bookings.length} réservation{bookings.length > 1 ? "s" : ""}
-                </span>
-              </div>
+            {/* Historique des réservations - Admin uniquement */}
+            {isAdmin && (
+              <div className="bg-white rounded-card shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-serif font-bold text-text-dark flex items-center gap-2">
+                    <Calendar className="w-6 h-6 text-primary" />
+                    Mes Réservations
+                  </h3>
+                  <span className="text-text-dark/60">
+                    {bookings.length} réservation
+                    {bookings.length > 1 ? "s" : ""}
+                  </span>
+                </div>
 
-              {bookings.length === 0 ? (
-                <div className="text-center py-12">
-                  <Calendar className="w-16 h-16 text-text-dark/20 mx-auto mb-4" />
-                  <p className="text-text-dark/60 mb-4">
-                    Aucune réservation pour le moment
-                  </p>
-                  <Link
-                    href="/#agenda"
-                    className="inline-block px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
-                  >
-                    Voir l&apos;agenda
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {bookings.map((booking) => (
-                    <div
-                      key={booking.id}
-                      className="border border-gray rounded-card p-4 hover:shadow-md transition-shadow"
+                {bookings.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Calendar className="w-16 h-16 text-text-dark/20 mx-auto mb-4" />
+                    <p className="text-text-dark/60 mb-4">
+                      Aucune réservation pour le moment
+                    </p>
+                    <Link
+                      href="/#agenda"
+                      className="inline-block px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
                     >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-lg text-text-dark mb-2">
-                            {booking.class.title}
-                          </h4>
-                          <div className="space-y-1 text-sm text-text-dark/60">
-                            <p>
-                              <Calendar className="w-4 h-4 inline mr-1" />
-                              {format(
-                                new Date(booking.class.date),
-                                "EEEE d MMMM yyyy",
-                                { locale: fr }
-                              )}
-                            </p>
-                            <p>
-                              {format(
-                                new Date(booking.class.startTime),
-                                "HH:mm"
-                              )}{" "}
-                              -{" "}
-                              {format(new Date(booking.class.endTime), "HH:mm")}
-                            </p>
-                            <p>Professeur: {booking.class.instructor}</p>
-                            <p className="text-xs text-text-dark/40">
-                              Réservé le{" "}
-                              {format(
-                                new Date(booking.bookedAt),
-                                "d MMM yyyy à HH:mm",
-                                { locale: fr }
-                              )}
-                            </p>
+                      Voir l&apos;agenda
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {bookings.map((booking) => (
+                      <div
+                        key={booking.id}
+                        className="border border-gray rounded-card p-4 hover:shadow-md transition-shadow"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-lg text-text-dark mb-2">
+                              {booking.class.title}
+                            </h4>
+                            <div className="space-y-1 text-sm text-text-dark/60">
+                              <p>
+                                <Calendar className="w-4 h-4 inline mr-1" />
+                                {format(
+                                  new Date(booking.class.date),
+                                  "EEEE d MMMM yyyy",
+                                  { locale: fr }
+                                )}
+                              </p>
+                              <p>
+                                {format(
+                                  new Date(booking.class.startTime),
+                                  "HH:mm"
+                                )}{" "}
+                                -{" "}
+                                {format(
+                                  new Date(booking.class.endTime),
+                                  "HH:mm"
+                                )}
+                              </p>
+                              <p>Professeur: {booking.class.instructor}</p>
+                              <p className="text-xs text-text-dark/40">
+                                Réservé le{" "}
+                                {format(
+                                  new Date(booking.bookedAt),
+                                  "d MMM yyyy à HH:mm",
+                                  { locale: fr }
+                                )}
+                              </p>
+                            </div>
                           </div>
+                          <span
+                            className="px-3 py-1 rounded-full text-sm font-medium text-white"
+                            style={{
+                              backgroundColor: "#264E36",
+                            }}
+                          >
+                            {booking.class.type}
+                          </span>
                         </div>
-                        <span
-                          className="px-3 py-1 rounded-full text-sm font-medium text-white"
-                          style={{
-                            backgroundColor: "#264E36",
-                          }}
-                        >
-                          {booking.class.type}
-                        </span>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Colonne latérale */}
@@ -513,25 +618,25 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Actions rapides */}
-            <div className="bg-white rounded-card shadow-lg p-6">
-              <h3 className="text-xl font-serif font-bold text-text-dark mb-4">
-                Actions rapides
-              </h3>
-              <div className="space-y-2">
-                <Link
-                  href="/#agenda"
-                  className="block w-full px-4 py-3 bg-accent hover:bg-accent/80 rounded-button text-text-dark transition-colors text-center"
-                >
-                  Voir l&apos;agenda
-                </Link>
-                <Link
-                  href="/#actualites"
-                  className="block w-full px-4 py-3 bg-accent hover:bg-accent/80 rounded-button text-text-dark transition-colors text-center"
-                >
-                  Voir les actualités
-                </Link>
-                {isAdmin && (
+            {/* Actions rapides - Admin uniquement */}
+            {isAdmin && (
+              <div className="bg-white rounded-card shadow-lg p-6">
+                <h3 className="text-xl font-serif font-bold text-text-dark mb-4">
+                  Actions rapides
+                </h3>
+                <div className="space-y-2">
+                  <Link
+                    href="/#agenda"
+                    className="block w-full px-4 py-3 bg-accent hover:bg-accent/80 rounded-button text-text-dark transition-colors text-center"
+                  >
+                    Voir l&apos;agenda
+                  </Link>
+                  <Link
+                    href="/#actualites"
+                    className="block w-full px-4 py-3 bg-accent hover:bg-accent/80 rounded-button text-text-dark transition-colors text-center"
+                  >
+                    Voir les actualités
+                  </Link>
                   <Link
                     href="/admin"
                     className="block w-full px-4 py-3 bg-primary text-white hover:bg-primary-light rounded-button transition-colors text-center"
@@ -539,9 +644,9 @@ export default function ProfilePage() {
                     <Shield className="w-4 h-4 inline mr-2" />
                     Panel Admin
                   </Link>
-                )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

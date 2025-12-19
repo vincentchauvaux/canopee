@@ -212,7 +212,7 @@ export default function Footer() {
   return (
     <footer className="bg-text-dark text-text-light py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 ">
           {/* Colonne 1: Logo + Tagline */}
           <div className="flex flex-col h-full">
             <div>
@@ -241,45 +241,6 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-          </div>
-
-          {/* Colonne 2: Horaires */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Horaires</h4>
-            <ul className="space-y-2 text-text-light/80">
-              <li>Yin Yoga: Vendredi 18h - 19h</li>
-              <li>Autres cours: Sur réservation</li>
-            </ul>
-          </div>
-
-          {/* Colonne 3: Adresse + Contact */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Contact</h4>
-            <ul className="space-y-2 text-text-light/80">
-              {/* <li className="flex items-center">
-                <MapPin className="w-4 h-4 mr-2" />
-                Rue Jean Theys, 10
-                <br />
-                1440 Wauthier-Braine
-              </li> */}
-              <li className="flex items-start">
-                <Mail className="w-4 h-4 mr-2 mt-1 flex-shrink-0" />
-                <span>
-                  <Link
-                    href="/mon-parcours"
-                    className="text-text-light/80 hover:text-primary transition-colors font-medium underline"
-                  >
-                    Carol Nelissen
-                  </Link>
-                  <br />
-                  Professeure de yoga
-                  <br />
-                  Certifiée E.T.Y. et Karma Yoga Institute
-                  <br />
-                  Membre ABEFY
-                </span>
-              </li>
-            </ul>
           </div>
 
           {/* Colonne 4: Infos Spirituelles */}
@@ -338,7 +299,11 @@ export default function Footer() {
         <div className="border-t border-text-light/20 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-text-light/60">
             <p suppressHydrationWarning>
-              © {isMounted && currentYear ? currentYear : new Date().getFullYear()} Canopée. Tous droits réservés.
+              ©{" "}
+              {isMounted && currentYear
+                ? currentYear
+                : new Date().getFullYear()}{" "}
+              Canopée. Tous droits réservés.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-text-light transition-colors">

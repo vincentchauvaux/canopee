@@ -73,6 +73,7 @@ export async function PATCH(request: NextRequest) {
     if (body.dateOfBirth !== undefined) {
       updateData.dateOfBirth = body.dateOfBirth ? new Date(body.dateOfBirth) : null
     }
+    if (body.profilePic !== undefined) updateData.profilePic = body.profilePic || null
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },

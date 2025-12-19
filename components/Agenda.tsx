@@ -31,9 +31,17 @@ export default function Agenda() {
   const [bookingStatus, setBookingStatus] = useState<Record<string, 'loading' | 'success' | 'error'>>({})
   const [today, setToday] = useState<Date | null>(null)
 
+  // Vérifier si l'utilisateur est admin
+  const isAdmin = (session?.user as any)?.role === 'admin'
+
   useEffect(() => {
     setToday(new Date())
   }, [])
+
+  // Ne rien afficher si l'utilisateur n'est pas admin
+  if (!isAdmin) {
+    return null
+  }
 
   // Calculer les dates de la semaine/mois
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 1 })

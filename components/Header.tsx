@@ -64,6 +64,16 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
+            <Link
+              href="/mon-parcours"
+              className={`transition-colors font-medium ${
+                shouldHaveWhiteBackground
+                  ? "text-text-dark hover:text-primary"
+                  : "text-white hover:text-accent"
+              }`}
+            >
+              Mon parcours
+            </Link>
             {session ? (
               <>
                 {(session.user as any)?.role === "admin" && (
@@ -135,6 +145,17 @@ export default function Header() {
               shouldHaveWhiteBackground ? "border-gray" : "border-white/30"
             }`}
           >
+            <Link
+              href="/mon-parcours"
+              className={`transition-colors block mb-3 ${
+                shouldHaveWhiteBackground
+                  ? "text-text-dark hover:text-primary"
+                  : "text-white hover:text-accent"
+              }`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Mon parcours
+            </Link>
             {session ? (
               <div className="flex flex-col space-y-3">
                 {(session.user as any)?.role === "admin" && (

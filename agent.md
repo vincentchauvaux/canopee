@@ -63,9 +63,9 @@
 
 4. **Profil utilisateur**
 
-   - [ ] Page de profil
-   - [ ] Upload de photo de profil
-   - [ ] Édition des informations
+   - [x] Page de profil
+   - [x] Upload de photo de profil (upload fichier ou URL)
+   - [x] Édition des informations
    - [ ] Historique des cours
    - [ ] Calendrier personnel synchronisé
    - [ ] Paramètres de notification
@@ -183,6 +183,7 @@ yoga/
 
 - **Repository GitHub** : `git@github.com:vincentchauvaux/canopee.git`
 - **Branche principale** : `main`
+- **Branche VPS** : `main` (doit être utilisée sur le VPS en production)
 - Projet initialisé et poussé sur GitHub avec commit initial
 
 ## Informations sur le Yin Yoga
@@ -227,6 +228,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/yin-yoga/page.tsx` - Page dédiée au Yin Yoga de Canopée avec présentation complète : origine, pratique, bienfaits et informations pratiques
 - `app/mon-parcours/page.tsx` - Page "Carol Nelissen" présentant son parcours de formation (Viniyoga, Yin Yoga), sa philosophie et ses certifications. La première image est affichée en cercle parfait (rounded-full) et la deuxième image occupe toute la hauteur de sa colonne.
 - `app/faq/page.tsx` - Page FAQ présentant les informations sur les cours de Yin Yoga : types de cours (individuel ou collectif, max 3 personnes), horaires (individuel selon convenance, collectif vendredi 18h-19h), prix (individuel 15€, collectif 12€) et modalités (individuel adapté aux besoins, collectif thématiques annoncées)
+- `app/profile/page.tsx` - Page de profil utilisateur permettant de consulter et modifier les informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). La photo de profil peut être modifiée en uploadant un fichier image (max 5MB) ou en entrant une URL. Pour les utilisateurs admin uniquement : affichage de la section "Mes Réservations" et de la section "Actions rapides" (liens vers l'agenda et les actualités)
 - `app/admin/page.tsx` - Dashboard administrateur
 - `app/admin/classes/page.tsx` - Gestion des cours
 - `app/admin/news/page.tsx` - Gestion des actualités
@@ -248,10 +250,10 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Composants
 
-- `components/Header.tsx` - Header sticky avec transition et adaptation automatique des couleurs de texte selon le background (blanc sur fond transparent, couleurs sombres sur fond blanc). Sur les pages `/profile`, `/mon-parcours`, `/yin-yoga` et `/faq`, le header a un fond blanc dès le départ (pas d'effet de transparence)
+- `components/Header.tsx` - Header sticky avec transition et adaptation automatique des couleurs de texte selon le background (blanc sur fond transparent, couleurs sombres sur fond blanc). Sur les pages `/profile`, `/mon-parcours`, `/yin-yoga` et `/faq`, le header a un fond blanc dès le départ (pas d'effet de transparence). Le menu contient un lien vers "Mon parcours" (`/mon-parcours`) accessible depuis le menu desktop et mobile
 - `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
-- `components/Agenda.tsx` - Section agenda interactive avec calendrier hebdomadaire, réservations
-- `components/NewsFeed.tsx` - Fil d'actualité affichant les descriptions des prochains cours (3 par défaut, bouton "Voir plus" pour afficher plus)
+- `components/Agenda.tsx` - Section agenda interactive avec calendrier hebdomadaire, réservations. Accessible uniquement aux utilisateurs admin
+- `components/NewsFeed.tsx` - Fil d'actualité affichant les descriptions des prochains cours (3 par défaut, bouton "Voir plus" pour afficher plus). Accessible uniquement aux utilisateurs admin
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY)
 - `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
@@ -615,3 +617,28 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 **Résultat :** Le fichier `.env.backup` a été complètement retiré de l'historique Git. Le push vers GitHub devrait maintenant fonctionner sans blocage.
 
 **Note importante :** Les fichiers contenant des secrets (`.env`, `.env.local`, `.env.backup`, etc.) doivent toujours être dans `.gitignore` et ne jamais être commités dans Git.
+
+### Correction des erreurs 400 sur les images Next.js (Décembre 2024)
+
+**Problème :** Erreurs 400 (Bad Request) lors du chargement d'images via Next.js Image Optimizer :
+- `GET http://localhost:3000/_next/image?url=%2Fimages%2Fbackground%2Fbg_01.jpg&w=1920&q=90 400 (Bad Request)`
+- `GET http://localhost:3000/_next/image?url=%2Fimages%2Fbackground%2Fbg_02.jpg&w=1920&q=90 400 (Bad Request)`
+- `GET http://localhost:3000/_next/image?url=%2Fimages%2FInformations%2FCarol_Nelissen_Yoga.png&w=1080&q=75 400 (Bad Request)`
+
+**Causes identifiées :**
+
+1. **Fichiers manquants dans `public/`** : Les images étaient dans `images/` mais pas dans `public/images/`. Next.js sert les fichiers statiques uniquement depuis le dossier `public/`.
+2. **Extensions incorrectes** : Les fichiers étaient en `.jpeg` mais référencés avec `.jpg` dans le code.
+
+**Solutions appliquées :**
+
+1. ✅ Copie des fichiers `bg_01.jpeg` et `bg_02.jpeg` de `images/background/` vers `public/images/background/`
+2. ✅ Correction des extensions dans `components/Hero.tsx` : `.jpg` → `.jpeg`
+3. ✅ Copie du fichier `Carol_Nelissen_Yoga.png` de `images/Informations/` vers `public/images/Informations/`
+
+**Résultat :** Les images se chargent correctement via Next.js Image Optimizer. Toutes les images statiques doivent être dans le dossier `public/` pour être accessibles via les chemins `/images/...`.
+
+**Note importante :** 
+- Les fichiers dans `images/` sont des fichiers sources (peuvent être utilisés pour le développement)
+- Les fichiers dans `public/images/` sont les fichiers servis par Next.js (nécessaires pour la production)
+- Les chemins dans le code doivent correspondre exactement aux extensions des fichiers (`.jpg` vs `.jpeg`, `.png`, etc.)

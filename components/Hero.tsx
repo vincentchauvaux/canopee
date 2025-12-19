@@ -6,10 +6,9 @@ import Image from "next/image";
 const quotes = [
   "Le yoga est la pratique de la tranquillité dans l'action, de la sérénité dans le chaos.",
   "Respirez. Laissez aller. Et rappelez-vous : ce moment est le seul que vous avez.",
-  "Le yoga n'est pas de toucher vos orteils, c'est ce que vous apprenez en chemin.",
   "Dans le silence de votre esprit, vous trouverez la paix.",
   "Le yoga est un voyage de soi, à travers soi, vers soi.",
-  "Acceptez qui vous êtes. Libérez qui vous avez été. Devenez qui vous êtes.",
+  "Acceptez qui vous êtes. Libérez qui vous avez été.",
   "Le corps atteint ce que l'esprit croit.",
   "Le yoga est la lumière qui, une fois allumée, ne s'éteint jamais.",
   "Pratiquez et tout viendra.",
@@ -18,10 +17,8 @@ const quotes = [
 
 // URLs des images locales depuis le dossier public/images/background
 const heroImages = [
-  "/images/background/emm.kayy_yoga_studio_with_warm_atmosphere_wooden_floor_and_soft_c838b1ef-a91b-43e8-85f2-37095cf211ef.png",
-  "/images/background/little.puffy_A_serene_minimalist_indoor_meditation_space_with_s_ae53c4bc-42fd-44b7-a47d-24f8c250af01.png",
-  "/images/background/happy_life50_83858_minimal_yoga_space_with_natural_wooden_floor_5af99ad7-3ccc-44d9-b419-0ab9d676885d.png",
-  "/images/background/inston2_27158_A_woman_in_soft_activewear_doing_a_yoga_pose_on_a_9459735b-9ba7-4742-b8b0-88feab573046.png",
+  "/images/background/bg_01.jpeg",
+  "/images/background/bg_02.jpeg",
 ];
 
 export default function Hero() {
@@ -98,7 +95,8 @@ export default function Hero() {
             "ken-burns-final-4",
           ];
           const kenBurnsClass = kenBurnsClasses[index % kenBurnsClasses.length];
-          const kenBurnsFinalClass = kenBurnsFinalClasses[index % kenBurnsFinalClasses.length];
+          const kenBurnsFinalClass =
+            kenBurnsFinalClasses[index % kenBurnsFinalClasses.length];
 
           return (
             <div
@@ -156,16 +154,6 @@ export default function Hero() {
             </p>
           </div>
         )}
-
-        {/* Call to action */}
-        <div className="mt-12">
-          <a
-            href="#agenda"
-            className="inline-block px-8 py-4 bg-primary text-white rounded-button hover:bg-primary-light transition-all transform hover:scale-105 shadow-lg"
-          >
-            Découvrir nos cours
-          </a>
-        </div>
       </div>
 
       {/* Scroll indicator */}
