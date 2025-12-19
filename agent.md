@@ -82,9 +82,31 @@
 
 - **Frontend**: Next.js 14 (App Router), React 18, TypeScript
 - **Styling**: Tailwind CSS
-- **Base de données**: Supabase (recommandé) ou PostgreSQL avec Prisma ORM
+- **Base de données**: PostgreSQL avec Prisma ORM (actuellement hébergé sur Supabase)
 - **Authentification**: NextAuth.js v4
 - **Validation**: Zod
+
+### Indépendance avec Prisma
+
+**Important** : Le projet utilise **Prisma comme ORM**, ce qui offre une **indépendance totale** vis-à-vis du fournisseur de base de données.
+
+- ✅ **Prisma** = ORM (Object-Relational Mapping) - Outil pour interagir avec la base de données
+- ✅ **Supabase** = Hébergement PostgreSQL (peut être remplacé facilement)
+
+**Avantages de Prisma :**
+
+- Indépendance du fournisseur : migration facile entre Supabase, Railway, Neon, PostgreSQL local, AWS RDS, etc.
+- Aucun changement de code nécessaire : il suffit de modifier la `DATABASE_URL` dans `.env`
+- Schéma type-safe avec TypeScript
+- Migrations automatiques
+
+**Pour changer de fournisseur PostgreSQL :**
+
+1. Exporter les données depuis Supabase
+2. Créer une base sur le nouveau fournisseur (Railway, Neon, local, etc.)
+3. Importer les données
+4. Mettre à jour `DATABASE_URL` dans `.env`
+5. Aucun changement de code Prisma nécessaire
 
 ### Structure des fichiers
 
@@ -293,10 +315,11 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Base de Données
 
-- **Type** : PostgreSQL (hébergé sur Supabase)
-- **ORM** : Prisma
+- **Type** : PostgreSQL (actuellement hébergé sur Supabase)
+- **ORM** : Prisma (offre l'indépendance vis-à-vis du fournisseur)
 - **Variable** : `DATABASE_URL` (format : `postgresql://postgres:[PASSWORD]@db.kzogkberupkzpjdojvhn.supabase.co:5432/postgres?schema=public`)
 - **Configuration** : Voir [CONFIGURATION_SUPABASE.md](./CONFIGURATION_SUPABASE.md)
+- **Indépendance** : Prisma permet de migrer facilement vers Railway, Neon, PostgreSQL local, AWS RDS, etc. en changeant uniquement la `DATABASE_URL`
 
 ### Variables d'Environnement Requises
 
@@ -371,6 +394,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Correction des apostrophes dans les commentaires JSX
 
 **Fichiers corrigés :**
+
 - `app/mon-parcours/page.tsx` - Toutes les apostrophes échappées
 - `app/profile/page.tsx` - Apostrophes échappées
 - `app/saisons-mtc/page.tsx` - Apostrophes dans les expressions JSX corrigées
@@ -380,3 +404,160 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/admin/ClassFormModal.tsx` - Apostrophe échappée
 
 **Note :** Toutes les apostrophes dans le contenu JSX doivent être échappées avec `&apos;` pour respecter les règles ESLint `react/no-unescaped-entities`.
+
+### Corrections Base de Données - Erreur "prepared statement does not exist" (Décembre 2024)
+
+- ✅ Amélioration de la gestion des connexions Prisma dans `lib/prisma.ts`
+- ✅ Ajout d'une fonction `withRetry` pour réessayer automatiquement les requêtes en cas d'erreur de connexion
+- ✅ Gestion des erreurs de connexion PostgreSQL (codes P1001, P1008, 26000)
+- ✅ Fermeture propre des connexions à l'arrêt de l'application
+- ✅ Documentation créée : `FIX_DATABASE_CONNECTION.md`
+
+**Problème résolu :** L'erreur `prepared statement "s36" does not exist` (code 26000) qui se produisait lorsque Prisma essayait d'utiliser une connexion PostgreSQL fermée ou expirée (problème courant avec Supabase).
+
+**Solution :**
+
+- Détection automatique des erreurs de connexion
+- Réessai automatique des requêtes (jusqu'à 3 tentatives)
+- Recommandation d'ajouter des paramètres de connexion à la DATABASE_URL (`connection_limit`, `pool_timeout`, `connect_timeout`)
+
+### Problème Admin en Production (Décembre 2024)
+
+**Problème :** L'utilisateur admin fonctionne en local mais pas en production (OVH).
+
+**Causes possibles :**
+
+- L'utilisateur n'existe pas dans la base de données Supabase de production
+- L'utilisateur existe mais n'a pas le rôle `admin` en production
+- Problème de session/authentification (token JWT non régénéré)
+- Variables d'environnement incorrectes (`NEXTAUTH_URL`, `NEXTAUTH_SECRET`)
+
+**Solutions :**
+
+1. **Vérifier l'utilisateur dans Supabase** :
+
+   - Dashboard Supabase → Table Editor → users
+   - Chercher `etibaliomecus@live.be`
+   - Vérifier que `role = 'admin'`
+
+2. **Scripts de diagnostic** :
+
+   ```bash
+   # Sur le VPS
+   node scripts/diagnose-admin.js etibaliomecus@live.be
+   node scripts/check-user-role.js etibaliomecus@live.be
+   ```
+
+3. **Créer/Mettre à jour l'admin** :
+
+   ```bash
+   # Si l'utilisateur existe déjà
+   node scripts/create-admin.js etibaliomecus@live.be
+
+   # Synchroniser depuis local vers production
+   node scripts/sync-admin-to-production.js etibaliomecus@live.be "Vincent" "Chauvaux"
+   ```
+
+4. **Via Supabase SQL Editor** :
+
+   ```sql
+   UPDATE users SET role = 'admin' WHERE email = 'etibaliomecus@live.be';
+   ```
+
+5. **Après mise à jour** :
+   - Déconnectez-vous du site
+   - Videz les cookies du navigateur
+   - Reconnectez-vous pour régénérer le token JWT
+
+📖 **Guide complet** : Voir [FIX_ADMIN_PRODUCTION.md](./FIX_ADMIN_PRODUCTION.md)
+
+### Erreur 500 sur /api/classes (Décembre 2024)
+
+**Problème :** L'API `/api/classes` retourne une erreur 500 lors de la récupération des cours.
+
+**Causes possibles :**
+
+- Table `classes` n'existe pas dans la base de données (migrations non appliquées)
+- Problème de connexion à Supabase
+- Format de date invalide dans les paramètres
+
+**Solutions :**
+
+1. **Vérifier et appliquer les migrations** :
+
+   ```bash
+   # Sur le VPS
+   cd /var/www/canopee
+   npx prisma migrate deploy
+   npx prisma generate
+   pm2 restart canopee
+   ```
+
+2. **Script de diagnostic** :
+
+   ```bash
+   node scripts/check-database.js
+   ```
+
+3. **Vérifier les tables dans Supabase** :
+
+   - Dashboard → Table Editor → Vérifier que `classes` existe
+
+4. **Vérifier DATABASE_URL** :
+   - Vérifier que l'URL est correcte dans `.env`
+   - Ajouter des paramètres de connexion si nécessaire
+
+📖 **Guide complet** : Voir [FIX_API_CLASSES_500.md](./FIX_API_CLASSES_500.md)
+
+### Erreur 404 sur /api/auth/signin (Décembre 2024)
+
+**Problème :** L'erreur `GET https://canopee.be/api/auth/signin?csrf=true 404 (Not Found)` apparaît lors de la tentative de connexion.
+
+**Causes possibles :**
+
+- Route NextAuth non correctement configurée
+- Problème de build (routes API non générées)
+- Configuration `NEXTAUTH_URL` incorrecte
+- Problème avec le reverse proxy Nginx
+
+**Solutions :**
+
+1. **Vérifier la configuration de la route** :
+
+   - Le fichier `app/api/auth/[...nextauth]/route.ts` doit exporter GET et POST
+   - Ajouter `export const dynamic = 'force-dynamic'` pour forcer le mode dynamique
+
+2. **Vérifier NEXTAUTH_URL** :
+
+   ```bash
+   # Sur le VPS
+   cd /var/www/canopee
+   cat .env | grep NEXTAUTH_URL
+   ```
+
+   - Doit être `NEXTAUTH_URL="https://canopee.be"` (pas `http://` ou `localhost`)
+
+3. **Rebuild l'application** :
+
+   ```bash
+   npm run build
+   pm2 restart canopee
+   ```
+
+4. **Vérifier la configuration Nginx** :
+
+   - S'assurer que toutes les routes `/api/*` sont proxifiées vers Next.js
+
+5. **Vérifier les logs** :
+   ```bash
+   pm2 logs canopee
+   sudo tail -f /var/log/nginx/error.log
+   ```
+
+📖 **Guide complet** : Voir [FIX_NEXTAUTH_404.md](./FIX_NEXTAUTH_404.md)
+
+**Scripts et guides utiles :**
+
+- `scripts/compare-env.js` - Comparer les fichiers .env local et VPS
+- [VERIFICATION_ENV_VPS.md](./VERIFICATION_ENV_VPS.md) - Guide de vérification du .env VPS
+- [MODIFIER_ENV_VPS.md](./MODIFIER_ENV_VPS.md) - Comment modifier le fichier .env sur le VPS

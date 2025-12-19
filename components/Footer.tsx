@@ -252,12 +252,12 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-text-light/80">
-              <li className="flex items-center">
+              {/* <li className="flex items-center">
                 <MapPin className="w-4 h-4 mr-2" />
                 Rue Jean Theys, 10
                 <br />
                 1440 Wauthier-Braine
-              </li>
+              </li> */}
               <li className="flex items-start">
                 <Mail className="w-4 h-4 mr-2 mt-1 flex-shrink-0" />
                 <span>
@@ -286,7 +286,8 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <MoonPhase size={60} className="flex-shrink-0" />
                 <div className="flex flex-col">
-                  {lunarPhase?.illumination !== null && lunarPhase?.illumination !== undefined ? (
+                  {lunarPhase?.illumination !== null &&
+                  lunarPhase?.illumination !== undefined ? (
                     <p className="text-2xl font-bold text-text-light">
                       {Math.round(lunarPhase.illumination)}%
                     </p>
@@ -320,7 +321,9 @@ export default function Footer() {
                 </div>
               ) : (
                 <div>
-                  <p className="text-xs text-text-light/60">Chargement de la saison...</p>
+                  <p className="text-xs text-text-light/60">
+                    Chargement de la saison...
+                  </p>
                 </div>
               )}
             </div>
