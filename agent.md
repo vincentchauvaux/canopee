@@ -567,3 +567,18 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `scripts/compare-env.js` - Comparer les fichiers .env local et VPS
 - [VERIFICATION_ENV_VPS.md](./VERIFICATION_ENV_VPS.md) - Guide de vérification du .env VPS
 - [MODIFIER_ENV_VPS.md](./MODIFIER_ENV_VPS.md) - Comment modifier le fichier .env sur le VPS
+
+### Correction des secrets dans Git (Décembre 2024)
+
+**Problème :** GitHub bloque le push car des secrets (Google OAuth Client ID et Secret) ont été détectés dans un fichier `.env.backup` commité dans l'historique Git.
+
+**Solution appliquée :**
+
+1. ✅ Ajout de `.env.backup` et `*.env.backup` dans `.gitignore` pour éviter les commits futurs
+2. ✅ Utilisation de `git rebase -i` pour modifier le commit `bf6258b` et supprimer le fichier `.env.backup`
+3. ✅ Suppression du fichier de l'historique Git avec `git rm --cached .env.backup`
+4. ✅ Réécriture de l'historique pour éliminer les secrets
+
+**Résultat :** Le fichier `.env.backup` a été complètement retiré de l'historique Git. Le push vers GitHub devrait maintenant fonctionner sans blocage.
+
+**Note importante :** Les fichiers contenant des secrets (`.env`, `.env.local`, `.env.backup`, etc.) doivent toujours être dans `.gitignore` et ne jamais être commités dans Git.
