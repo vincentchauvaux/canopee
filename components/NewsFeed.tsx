@@ -26,10 +26,11 @@ export default function NewsFeed() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showAll, setShowAll] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const initialDisplayCount = 3
 
   useEffect(() => {
-    fetchUpcomingClasses()
+    setIsMounted(true)
   }, [])
 
   const fetchUpcomingClasses = async () => {
@@ -69,6 +70,13 @@ export default function NewsFeed() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (isMounted) {
+      fetchUpcomingClasses()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted])
 
   const displayedClasses = showAll ? classes : classes.slice(0, initialDisplayCount)
   const hasMoreClasses = classes.length > initialDisplayCount

@@ -29,6 +29,11 @@ export default function Agenda() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [bookingStatus, setBookingStatus] = useState<Record<string, 'loading' | 'success' | 'error'>>({})
+  const [today, setToday] = useState<Date | null>(null)
+
+  useEffect(() => {
+    setToday(new Date())
+  }, [])
 
   // Calculer les dates de la semaine/mois
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 1 })
@@ -279,7 +284,7 @@ export default function Agenda() {
               <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
                 {weekDays.map((day, index) => {
                   const dayClasses = getClassesForDay(day)
-                  const isToday = isSameDay(day, new Date())
+                  const isToday = today ? isSameDay(day, today) : false
 
                   return (
                     <div
@@ -381,7 +386,7 @@ export default function Agenda() {
                 <div className="grid grid-cols-7 gap-2">
                   {monthDays.map((day, index) => {
                     const dayClasses = getClassesForDay(day)
-                    const isToday = isSameDay(day, new Date())
+                    const isToday = today ? isSameDay(day, today) : false
                     const isCurrentMonth = day.getMonth() === selectedDate.getMonth()
 
                     return (

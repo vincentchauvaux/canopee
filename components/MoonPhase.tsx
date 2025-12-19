@@ -1,32 +1,44 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 interface MoonPhaseProps {
   size?: number;
   className?: string;
 }
 
 export default function MoonPhase({ size = 80, className = "" }: MoonPhaseProps) {
-  // Calcul de la phase lunaire en temps réel
-  const calculateMoonPhase = () => {
-    const now = new Date();
-    const referenceNewMoon = new Date("2024-01-11T00:00:00Z").getTime();
-    const lunarCycle = 29.530588 * 24 * 60 * 60 * 1000;
-    const daysSinceNewMoon = (now.getTime() - referenceNewMoon) % lunarCycle;
-    const dayOfCycle = daysSinceNewMoon / (24 * 60 * 60 * 1000);
-    
-    // Calcul de l'illumination (0 = nouvelle lune, 1 = pleine lune)
-    // Utiliser une formule plus précise basée sur l'angle de phase
-    const phaseAngle = (2 * Math.PI * dayOfCycle) / 29.530588;
-    const illumination = 0.5 - 0.5 * Math.cos(phaseAngle);
-    
-    return {
-      illumination: Math.max(0, Math.min(1, illumination)),
-      dayOfCycle,
-      phaseAngle,
-    };
-  };
+  const [moonData, setMoonData] = useState<{
+    illumination: number;
+    dayOfCycle: number;
+  } | null>(null);
 
-  const { illumination, dayOfCycle } = calculateMoonPhase();
+  useEffect(() => {
+    // Calcul de la phase lunaire en temps réel (uniquement côté client)
+    const calculateMoonPhase = () => {
+      const now = new Date();
+      const referenceNewMoon = new Date("2024-01-11T00:00:00Z").getTime();
+      const lunarCycle = 29.530588 * 24 * 60 * 60 * 1000;
+      const daysSinceNewMoon = (now.getTime() - referenceNewMoon) % lunarCycle;
+      const dayOfCycle = daysSinceNewMoon / (24 * 60 * 60 * 1000);
+      
+      // Calcul de l'illumination (0 = nouvelle lune, 1 = pleine lune)
+      // Utiliser une formule plus précise basée sur l'angle de phase
+      const phaseAngle = (2 * Math.PI * dayOfCycle) / 29.530588;
+      const illumination = 0.5 - 0.5 * Math.cos(phaseAngle);
+      
+      return {
+        illumination: Math.max(0, Math.min(1, illumination)),
+        dayOfCycle,
+      };
+    };
+
+    setMoonData(calculateMoonPhase());
+  }, []);
+
+  // Valeurs par défaut pour le rendu serveur
+  const illumination = moonData?.illumination ?? 0.5;
+  const dayOfCycle = moonData?.dayOfCycle ?? 14.765;
   const radius = size / 2;
   const center = size / 2;
 

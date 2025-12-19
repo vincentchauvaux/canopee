@@ -29,6 +29,8 @@ export default function Footer() {
   const [lunarPhase, setLunarPhase] = useState<LunarPhase | null>(null);
   const [quoteOfDay, setQuoteOfDay] = useState<string>("");
   const [mtcSeason, setMtcSeason] = useState<MTCSeason | null>(null);
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const dailyIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fonction pour récupérer la phase lunaire depuis lunopia.com
@@ -167,6 +169,8 @@ export default function Footer() {
   }, []);
 
   useEffect(() => {
+    setIsMounted(true);
+    setCurrentYear(new Date().getFullYear());
     // Mettre à jour les informations au chargement
     updateSpiritualInfo();
 
@@ -333,7 +337,9 @@ export default function Footer() {
         {/* Footer bottom */}
         <div className="border-t border-text-light/20 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-text-light/60">
-            <p>© {new Date().getFullYear()} Canopée. Tous droits réservés.</p>
+            <p suppressHydrationWarning>
+              © {isMounted && currentYear ? currentYear : new Date().getFullYear()} Canopée. Tous droits réservés.
+            </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-text-light transition-colors">
                 Mentions légales

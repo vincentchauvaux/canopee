@@ -25,15 +25,17 @@ const heroImages = [
 ];
 
 export default function Hero() {
-  const [currentQuote, setCurrentQuote] = useState(quotes[0]);
+  const [currentQuote, setCurrentQuote] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
     new Array(heroImages.length).fill(false)
   );
   const [animatedImages, setAnimatedImages] = useState<Set<number>>(new Set());
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Changer la citation à chaque visite
+    setIsMounted(true);
+    // Changer la citation à chaque visite (uniquement côté client)
     const randomIndex = Math.floor(Math.random() * quotes.length);
     setCurrentQuote(quotes[randomIndex]);
   }, []);
@@ -147,11 +149,13 @@ export default function Hero() {
         </p>
 
         {/* Citation */}
-        <div className="mt-12 p-6 bg-white/10 backdrop-blur-sm rounded-card border border-white/20">
-          <p className="text-lg md:text-xl italic font-serif">
-            &ldquo;{currentQuote}&rdquo;
-          </p>
-        </div>
+        {isMounted && currentQuote && (
+          <div className="mt-12 p-6 bg-white/10 backdrop-blur-sm rounded-card border border-white/20">
+            <p className="text-lg md:text-xl italic font-serif">
+              &ldquo;{currentQuote}&rdquo;
+            </p>
+          </div>
+        )}
 
         {/* Call to action */}
         <div className="mt-12">

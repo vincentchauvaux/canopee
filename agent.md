@@ -477,6 +477,39 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ En cas de 401, la page redirige automatiquement vers `/auth/signin` au lieu de lever une erreur générique.
 - ✅ Affichage d'un message d'erreur utilisateur lorsqu'une erreur inattendue empêche le chargement du profil, au lieu de laisser une erreur React minifiée dans la console.
 
+### Correction des erreurs d'hydratation React (Décembre 2024)
+
+**Problème :** Erreurs React minifiées #425, #418, #423 causées par des différences entre le rendu serveur et client.
+
+**Causes identifiées :**
+
+- Utilisation de `Math.random()` et `new Date()` dans le rendu initial, causant des différences entre SSR et client
+- Calculs dynamiques (phase lunaire, citations, dates) exécutés pendant le rendu serveur
+- Comparaisons de dates avec `new Date()` qui peuvent varier entre serveur et client
+
+**Solutions appliquées :**
+
+1. **Hero.tsx** :
+   - ✅ Ajout d'un état `isMounted` pour s'assurer que la citation aléatoire n'est générée qu'après l'hydratation
+   - ✅ La citation n'est affichée qu'après le montage du composant côté client
+
+2. **Footer.tsx** :
+   - ✅ Ajout d'un état `currentYear` et `isMounted` pour éviter les différences de rendu
+   - ✅ Utilisation de `suppressHydrationWarning` sur l'élément contenant l'année
+
+3. **MoonPhase.tsx** :
+   - ✅ Déplacement du calcul de la phase lunaire dans un `useEffect` pour qu'il ne s'exécute qu'après l'hydratation
+   - ✅ Valeurs par défaut pour le rendu serveur
+
+4. **Agenda.tsx** :
+   - ✅ Ajout d'un état `today` calculé uniquement après le montage
+   - ✅ La comparaison `isToday` utilise maintenant l'état `today` au lieu de `new Date()` directement
+
+5. **NewsFeed.tsx** :
+   - ✅ Ajout d'un état `isMounted` pour s'assurer que les données ne sont chargées qu'après l'hydratation
+
+**Résultat :** Les erreurs d'hydratation React sont résolues. Le rendu serveur et client sont maintenant cohérents, évitant les erreurs #425, #418, et #423.
+
 ### Erreur 500 sur /api/classes (Décembre 2024)
 
 **Problème :** L'API `/api/classes` retourne une erreur 500 lors de la récupération des cours.
