@@ -242,7 +242,47 @@ export default function Footer() {
               </div>
             </div>
           </div>
+          {/* Colonne 2: Navigation */}
+          <div className="flex flex-col">
+            <h4 className="text-lg font-semibold mb-4">Navigation</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/"
+                  className="text-text-light/80 hover:text-primary transition-colors"
+                >
+                  Accueil
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/mon-parcours"
+                  className="text-text-light/80 hover:text-primary transition-colors"
+                >
+                  Mon parcours
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/yin-yoga"
+                  className="text-text-light/80 hover:text-primary transition-colors"
+                >
+                  Yin Yoga
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/saisons-mtc"
+                  className="text-text-light/80 hover:text-primary transition-colors"
+                >
+                  Saisons MTC
+                </Link>
+              </li>
+            </ul>
+          </div>
 
+          {/* Colonne 3: Contact */}
+          <div className="flex flex-col"></div>
           {/* Colonne 4: Infos Spirituelles */}
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-4">Infos Spirituelles</h4>

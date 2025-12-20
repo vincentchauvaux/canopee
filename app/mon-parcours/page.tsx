@@ -170,7 +170,7 @@ export default function MonParcoursPage() {
                     src="/images/Informations/IMG-20240822-WA0055.jpg"
                     alt="Pratique du yoga en extérieur"
                     fill
-                    className="object-cover"
+                    className="object-cover scale-[2]"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
