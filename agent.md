@@ -512,6 +512,29 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 **Résultat :** Les erreurs d'hydratation React sont résolues. Le rendu serveur et client sont maintenant cohérents, évitant les erreurs #425, #418, et #423.
 
+### Correction des erreurs de hooks React - Build échoué (Décembre 2024)
+
+**Problème :** Le build Next.js échouait avec l'erreur "React Hook 'useEffect' is called conditionally" dans `Agenda.tsx` et `NewsFeed.tsx`.
+
+**Causes identifiées :**
+
+- Les hooks `useEffect` étaient appelés après un `return null` conditionnel (vérification `isAdmin`)
+- Violation de la règle des hooks React : les hooks doivent toujours être appelés dans le même ordre, avant tout return conditionnel
+
+**Solutions appliquées :**
+
+1. **Agenda.tsx** :
+   - ✅ Déplacement du `useEffect` qui appelle `fetchClasses()` avant le `return null`
+   - ✅ Ajout d'une vérification `isAdmin` dans le `useEffect` et dans `fetchClasses()`
+   - ✅ Ajout de `isAdmin` dans les dépendances du `useEffect`
+
+2. **NewsFeed.tsx** :
+   - ✅ Déplacement du `useEffect` qui appelle `fetchUpcomingClasses()` avant le `return null`
+   - ✅ Ajout d'une vérification `isAdmin` dans le `useEffect` et dans `fetchUpcomingClasses()`
+   - ✅ Ajout de `isAdmin` dans les dépendances du `useEffect`
+
+**Résultat :** Le build passe maintenant sans erreurs. Les hooks sont correctement appelés avant tout return conditionnel, respectant les règles des hooks React.
+
 ### Erreur 500 sur /api/classes (Décembre 2024)
 
 **Problème :** L'API `/api/classes` retourne une erreur 500 lors de la récupération des cours.

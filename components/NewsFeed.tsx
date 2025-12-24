@@ -36,12 +36,9 @@ export default function NewsFeed() {
     setIsMounted(true)
   }, [])
 
-  // Ne rien afficher si l'utilisateur n'est pas admin
-  if (!isAdmin) {
-    return null
-  }
-
   const fetchUpcomingClasses = async () => {
+    if (!isAdmin) return
+    
     try {
       setLoading(true)
       const today = startOfToday()
@@ -80,11 +77,16 @@ export default function NewsFeed() {
   }
 
   useEffect(() => {
-    if (isMounted) {
+    if (isMounted && isAdmin) {
       fetchUpcomingClasses()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted])
+  }, [isMounted, isAdmin])
+
+  // Ne rien afficher si l'utilisateur n'est pas admin
+  if (!isAdmin) {
+    return null
+  }
 
   const displayedClasses = showAll ? classes : classes.slice(0, initialDisplayCount)
   const hasMoreClasses = classes.length > initialDisplayCount

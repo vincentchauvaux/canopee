@@ -38,11 +38,6 @@ export default function Agenda() {
     setToday(new Date())
   }, [])
 
-  // Ne rien afficher si l'utilisateur n'est pas admin
-  if (!isAdmin) {
-    return null
-  }
-
   // Calculer les dates de la semaine/mois
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 1 })
   const weekEnd = endOfWeek(selectedDate, { weekStartsOn: 1 })
@@ -56,10 +51,19 @@ export default function Agenda() {
   const monthDays = eachDayOfInterval({ start: monthStartWeek, end: monthEndWeek })
 
   useEffect(() => {
-    fetchClasses()
-  }, [selectedDate, view, session])
+    if (isAdmin) {
+      fetchClasses()
+    }
+  }, [selectedDate, view, session, isAdmin])
+
+  // Ne rien afficher si l'utilisateur n'est pas admin
+  if (!isAdmin) {
+    return null
+  }
 
   const fetchClasses = async () => {
+    if (!isAdmin) return
+    
     try {
       setLoading(true)
       const start = view === 'week' ? weekStart : monthStartWeek
