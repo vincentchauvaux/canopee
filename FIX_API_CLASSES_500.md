@@ -212,3 +212,4 @@ Si le problème persiste :
 
 3. Vérifier les logs Supabase (Dashboard → Logs)
 
+

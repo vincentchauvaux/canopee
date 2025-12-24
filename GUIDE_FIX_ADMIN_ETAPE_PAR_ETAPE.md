@@ -217,3 +217,4 @@ Si vous préférez utiliser SQL directement dans Supabase :
 
 **Besoin d'aide ?** Dites-moi à quelle étape vous êtes bloqué ! 🚀
 
+
