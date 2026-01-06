@@ -13,6 +13,9 @@ export async function getSessionFromRequest(request: NextRequest) {
 
     if (!token || !token.id) {
       console.log("[getSessionFromRequest] No token or token.id");
+      console.log("[getSessionFromRequest] Token value:", token ? "exists but no id" : "null");
+      console.log("[getSessionFromRequest] NEXTAUTH_SECRET configured:", !!process.env.NEXTAUTH_SECRET);
+      console.log("[getSessionFromRequest] NEXTAUTH_URL:", process.env.NEXTAUTH_URL || "not set");
       return null;
     }
 

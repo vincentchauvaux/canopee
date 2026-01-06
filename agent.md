@@ -740,3 +740,152 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 **Résultat :** Les logs d'authentification sont maintenant plus détaillés et aideront à identifier rapidement la cause de l'erreur 401. Un script de diagnostic permet de vérifier la configuration et l'état de l'utilisateur. Un script de synchronisation permet de copier l'utilisateur depuis local vers production.
 
 📖 **Guide complet** : Voir [FIX_LOGIN_401.md](./FIX_LOGIN_401.md)
+
+### Guide pour voir les logs (Décembre 2024)
+
+**Documentation créée** : `VOIR_LOGS.md` - Guide complet pour visualiser les logs de l'application.
+
+**Contenu du guide :**
+
+1. ✅ **Logs en développement local** :
+   - Console du terminal
+   - Logs Prisma (requêtes SQL, erreurs)
+
+2. ✅ **Logs en production (VPS)** :
+   - Logs PM2 (application Next.js)
+   - Logs Nginx (reverse proxy)
+   - Logs d'authentification
+   - Logs de la base de données
+
+3. ✅ **Commandes utiles** :
+   - `pm2 logs canopee` - Voir tous les logs
+   - `pm2 logs canopee --err` - Voir uniquement les erreurs
+   - `pm2 logs canopee --lines 50` - Voir les 50 dernières lignes
+   - Filtrage et recherche dans les logs
+
+4. ✅ **Emplacement des fichiers** :
+   - Logs PM2 : `/var/www/canopee/logs/`
+   - Logs Nginx : `/var/log/nginx/`
+
+5. ✅ **Scripts de diagnostic** :
+   - `check-database.js` - Vérifier la base de données
+   - `diagnose-admin.js` - Diagnostiquer les problèmes admin
+   - `diagnose-login.js` - Diagnostiquer les problèmes de connexion
+
+📖 **Guide complet** : Voir [VOIR_LOGS.md](./VOIR_LOGS.md)
+
+### Correction de l'erreur "Tenant or user not found" (Janvier 2025)
+
+**Problème :** Erreur `FATAL: Tenant or user not found` lors de la connexion à Supabase, empêchant l'authentification et l'accès à l'application.
+
+**Causes identifiées :**
+- Mot de passe incorrect dans `DATABASE_URL`
+- Mot de passe Supabase changé sans mise à jour de `.env`
+- Caractères spéciaux dans le mot de passe non encodés en URL
+- Format incorrect de `DATABASE_URL`
+
+**Solutions appliquées :**
+
+1. ✅ **Guide de correction complet** `FIX_TENANT_NOT_FOUND.md` :
+   - Étapes détaillées pour récupérer la connection string depuis Supabase
+   - Instructions pour mettre à jour `DATABASE_URL` sur le VPS
+   - Guide pour encoder les caractères spéciaux dans le mot de passe
+   - Instructions pour réinitialiser le mot de passe Supabase
+   - Commandes de test et vérification
+
+2. ✅ **Amélioration du script de diagnostic** `scripts/check-database.js` :
+   - Détection spécifique de l'erreur "Tenant or user not found"
+   - Messages d'aide contextuels avec solutions étape par étape
+   - Lien vers le guide complet
+
+**Résultat :** Un guide complet permet de résoudre rapidement l'erreur "Tenant or user not found" en vérifiant et corrigeant la `DATABASE_URL`. Le script de diagnostic détecte automatiquement cette erreur et fournit des instructions précises.
+
+📖 **Guide complet** : Voir [FIX_TENANT_NOT_FOUND.md](./FIX_TENANT_NOT_FOUND.md)
+
+### Correction de l'erreur "No token or token.id" sur la page profil (Janvier 2025)
+
+**Problème :** Erreur `[getSessionFromRequest] No token or token.id` lors de l'accès à la page `/profile`, empêchant l'affichage du profil utilisateur.
+
+**Causes identifiées :**
+- Utilisateur non connecté (pas de session active)
+- Cookie de session non envoyé avec la requête
+- `NEXTAUTH_SECRET` incorrect ou manquant
+- Cookie expiré ou invalide
+- Problème de configuration des cookies (secure, sameSite, domaine)
+- `NEXTAUTH_URL` incorrect ou non configuré
+
+**Solutions appliquées :**
+
+1. ✅ **Guide de correction complet** `FIX_NO_TOKEN_PROFILE.md` :
+   - Vérification de la connexion utilisateur
+   - Vérification de `NEXTAUTH_SECRET` et `NEXTAUTH_URL`
+   - Instructions pour vider les cookies et se reconnecter
+   - Vérification de la configuration des cookies
+   - Tests de diagnostic côté navigateur et serveur
+   - Checklist complète de vérification
+
+2. ✅ **Amélioration des logs** dans `lib/get-session.ts` :
+   - Logs supplémentaires pour diagnostiquer l'absence de token
+   - Vérification de la configuration `NEXTAUTH_SECRET` et `NEXTAUTH_URL`
+   - Messages plus détaillés pour identifier rapidement le problème
+
+**Résultat :** Un guide complet permet de résoudre rapidement l'erreur "No token or token.id" en vérifiant la configuration NextAuth et la session utilisateur. Les logs améliorés aident à identifier rapidement la cause du problème.
+
+📖 **Guide complet** : Voir [FIX_NO_TOKEN_PROFILE.md](./FIX_NO_TOKEN_PROFILE.md)
+
+### Correction de la redirection vers signin lors de l'accès au profil (Janvier 2025)
+
+**Problème :** Lors de l'accès à la page `/profile`, l'utilisateur est automatiquement redirigé vers `/auth/signin`, même s'il est connecté.
+
+**Causes identifiées :**
+- `NEXTAUTH_URL` non configuré ou incorrect
+- Cookie de session non lu par NextAuth côté client
+- Session expirée ou invalide
+- Problème de configuration du `SessionProvider`
+- Cookie bloqué par le navigateur
+
+**Solutions appliquées :**
+
+1. ✅ **Guide de correction complet** `FIX_REDIRECT_SIGNIN_PROFILE.md` :
+   - Vérification de `NEXTAUTH_URL` (doit être `https://canopee.be`)
+   - Instructions pour vider les cookies et se reconnecter
+   - Vérification des cookies dans les requêtes réseau
+   - Tests de diagnostic (API de session, console navigateur)
+   - Checklist complète de vérification
+
+2. ✅ **Amélioration du SessionProvider** dans `app/providers.tsx` :
+   - Ajout de `refetchInterval={0}` pour éviter les rechargements inutiles
+   - Ajout de `refetchOnWindowFocus={true}` pour recharger la session au focus
+
+**Résultat :** Un guide complet permet de résoudre rapidement le problème de redirection vers signin en vérifiant la configuration NextAuth et la session utilisateur. Le `SessionProvider` a été amélioré pour mieux gérer le rechargement de la session.
+
+📖 **Guide complet** : Voir [FIX_REDIRECT_SIGNIN_PROFILE.md](./FIX_REDIRECT_SIGNIN_PROFILE.md)
+
+### Rebuild nécessaire après changement de NEXTAUTH_URL (Janvier 2025)
+
+**Problème :** Après avoir modifié `NEXTAUTH_URL` dans `.env`, l'application redirige toujours vers `/auth/signin` même après redémarrage de PM2.
+
+**Cause identifiée :**
+- Next.js compile certaines variables d'environnement au moment du build
+- `NEXTAUTH_URL` est utilisé par NextAuth pour valider les cookies
+- Un simple redémarrage ne suffit pas, il faut **rebuild l'application**
+
+**Solution appliquée :**
+
+1. ✅ **Guide de correction complet** `FIX_REBUILD_AFTER_ENV_CHANGE.md` :
+   - Instructions pour vider le cache Next.js (`.next`)
+   - Procédure de rebuild complète (`npm run build`)
+   - Redémarrage de PM2 après rebuild
+   - Tests de vérification
+   - Checklist complète
+
+**Procédure à suivre après modification de NEXTAUTH_URL :**
+1. Vérifier que `NEXTAUTH_URL` est correct dans `.env`
+2. Vider le cache : `rm -rf .next`
+3. Rebuild : `npm run build`
+4. Redémarrer : `pm2 restart canopee`
+5. Vider les cookies du navigateur et se reconnecter
+
+**Résultat :** Un guide complet explique pourquoi un rebuild est nécessaire après modification de variables d'environnement importantes et comment procéder étape par étape.
+
+📖 **Guide complet** : Voir [FIX_REBUILD_AFTER_ENV_CHANGE.md](./FIX_REBUILD_AFTER_ENV_CHANGE.md)

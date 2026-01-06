@@ -5,7 +5,11 @@ import { ReactNode } from 'react'
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <SessionProvider>
+    <SessionProvider
+      // Forcer le rechargement de la session si nécessaire
+      refetchInterval={0}
+      refetchOnWindowFocus={true}
+    >
       {children}
     </SessionProvider>
   )

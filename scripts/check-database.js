@@ -95,7 +95,25 @@ async function checkDatabase() {
     console.error("\n❌ Erreur:", error.message);
     console.error("Code:", error.code);
 
-    if (error.code === "P1001") {
+    // Détecter l'erreur "Tenant or user not found"
+    if (
+      error.message.includes("Tenant or user not found") ||
+      error.message.includes("FATAL: Tenant or user not found")
+    ) {
+      console.log("\n💡 ERREUR: Tenant or user not found");
+      console.log("   Cette erreur indique un problème d'authentification Supabase.");
+      console.log("\n   Solutions possibles:");
+      console.log("   1. Le mot de passe dans DATABASE_URL est incorrect");
+      console.log("   2. Le mot de passe Supabase a été changé");
+      console.log("   3. Caractères spéciaux dans le mot de passe non encodés");
+      console.log("\n   Actions à effectuer:");
+      console.log("   1. Allez sur https://kzogkberupkzpjdojvhn.supabase.co");
+      console.log("   2. Settings → Database → Vérifiez/réinitialisez le mot de passe");
+      console.log("   3. Mettez à jour DATABASE_URL dans .env avec le bon mot de passe");
+      console.log("   4. Si le mot de passe contient @, #, %, etc., encodez-les en URL");
+      console.log("   5. Redémarrez: pm2 restart canopee");
+      console.log("\n   📖 Guide complet: Voir FIX_TENANT_NOT_FOUND.md");
+    } else if (error.code === "P1001") {
       console.log("\n💡 Problème de connexion à la base de données");
       console.log("   - Vérifiez DATABASE_URL dans .env");
       console.log("   - Vérifiez que l'IP n'est pas bloquée dans Supabase");
@@ -112,6 +130,7 @@ async function checkDatabase() {
 }
 
 checkDatabase();
+
 
 
 
