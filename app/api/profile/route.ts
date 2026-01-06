@@ -5,14 +5,25 @@ import { getSessionFromRequest } from '@/lib/get-session'
 // GET - Récupérer le profil de l'utilisateur connecté
 export async function GET(request: NextRequest) {
   try {
+    // Log pour diagnostiquer
+    console.log('[API Profile] Request headers:', {
+      host: request.headers.get('host'),
+      cookie: request.headers.get('cookie') ? 'present' : 'missing',
+      origin: request.headers.get('origin'),
+      referer: request.headers.get('referer'),
+    });
+
     const session = await getSessionFromRequest(request)
 
     if (!session) {
+      console.log('[API Profile] No session found, returning 401');
       return NextResponse.json(
         { error: 'Non authentifié' },
         { status: 401 }
       )
     }
+
+    console.log('[API Profile] Session found:', { userId: session.user.id, email: session.user.email });
 
     const userId = (session.user as any).id
 

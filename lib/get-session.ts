@@ -6,6 +6,16 @@ import { prisma } from "@/lib/prisma";
 // Utilise getToken qui est plus fiable dans les API routes Next.js 14
 export async function getSessionFromRequest(request: NextRequest) {
   try {
+    // Log des headers pour diagnostiquer
+    const cookieHeader = request.headers.get('cookie');
+    const hostHeader = request.headers.get('host');
+    console.log("[getSessionFromRequest] Request info:", {
+      host: hostHeader,
+      hasCookie: !!cookieHeader,
+      cookieLength: cookieHeader?.length || 0,
+      hasNextAuthCookie: cookieHeader?.includes('next-auth.session-token') || false,
+    });
+
     const token = await getToken({
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
@@ -16,6 +26,13 @@ export async function getSessionFromRequest(request: NextRequest) {
       console.log("[getSessionFromRequest] Token value:", token ? "exists but no id" : "null");
       console.log("[getSessionFromRequest] NEXTAUTH_SECRET configured:", !!process.env.NEXTAUTH_SECRET);
       console.log("[getSessionFromRequest] NEXTAUTH_URL:", process.env.NEXTAUTH_URL || "not set");
+      
+      // Log supplémentaire si le cookie est présent mais non lu
+      if (cookieHeader?.includes('next-auth.session-token')) {
+        console.log("[getSessionFromRequest] WARNING: Cookie present but token is null - possible domain mismatch");
+        console.log("[getSessionFromRequest] Cookie domain might not match NEXTAUTH_URL");
+      }
+      
       return null;
     }
 
