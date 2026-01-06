@@ -289,3 +289,4 @@ Si le problème persiste :
 3. Exécuter le script de diagnostic : `node scripts/diagnose-admin.js etibaliomecus@live.be`
 
 
+

@@ -14,32 +14,52 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Mot de passe', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        try {
+          if (!credentials?.email || !credentials?.password) {
+            console.error('[AUTH] Credentials manquants:', {
+              hasEmail: !!credentials?.email,
+              hasPassword: !!credentials?.password,
+            })
+            return null
+          }
+
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          })
+
+          if (!user) {
+            console.error('[AUTH] Utilisateur non trouvé:', credentials.email)
+            return null
+          }
+
+          if (!user.passwordHash) {
+            console.error('[AUTH] Utilisateur sans passwordHash:', {
+              email: user.email,
+              authProvider: user.authProvider,
+            })
+            return null
+          }
+
+          const isValid = await bcrypt.compare(credentials.password, user.passwordHash)
+
+          if (!isValid) {
+            console.error('[AUTH] Mot de passe incorrect pour:', credentials.email)
+            return null
+          }
+
+          console.log('[AUTH] Connexion réussie pour:', credentials.email)
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.firstName || user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            image: user.profilePic,
+            role: user.role,
+          }
+        } catch (error) {
+          console.error('[AUTH] Erreur lors de l\'autorisation:', error)
           return null
-        }
-
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        })
-
-        if (!user || !user.passwordHash) {
-          return null
-        }
-
-        const isValid = await bcrypt.compare(credentials.password, user.passwordHash)
-
-        if (!isValid) {
-          return null
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.firstName || user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          image: user.profilePic,
-          role: user.role,
         }
       },
     }),

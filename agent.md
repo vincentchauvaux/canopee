@@ -665,3 +665,78 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - Les fichiers dans `images/` sont des fichiers sources (peuvent être utilisés pour le développement)
 - Les fichiers dans `public/images/` sont les fichiers servis par Next.js (nécessaires pour la production)
 - Les chemins dans le code doivent correspondre exactement aux extensions des fichiers (`.jpg` vs `.jpeg`, `.png`, etc.)
+
+### Reformulation de la page Saisons MTC (Décembre 2024)
+
+**Objectif :** Reformuler le contenu de la page `/saisons-mtc` pour éviter le copier-coller tout en conservant le sens, et améliorer la qualité rédactionnelle.
+
+**Modifications apportées :**
+
+1. ✅ **Descriptions des saisons reformulées** :
+   - Printemps : "Période d&apos;épanouissement et de croissance" au lieu de "La saison de l&apos;expansion"
+   - Été : "Moment d&apos;expression et de rayonnement maximal" au lieu de "La saison de l&apos;extériorisation"
+   - Intersaison : "Temps de mutation et de réorganisation" au lieu de "La saison de la transformation"
+   - Automne : "Phase de changement et de ralentissement" au lieu de "La saison de la transition"
+   - Hiver : "Temps de repli et de ressourcement" au lieu de "La saison de l&apos;introspection"
+
+2. ✅ **Texte d&apos;introduction reformulé** :
+   - Reformulation complète des paragraphes d&apos;introduction sur le calendrier chinois
+   - Amélioration de la fluidité et de la clarté du texte
+   - Conservation de toutes les informations essentielles
+
+3. ✅ **Titres et sous-titres améliorés** :
+   - "période d&apos;épanouissement" au lieu de "saison de l&apos;expansion"
+   - "période de rayonnement" au lieu de "saison de l&apos;extériorisation"
+   - "période de mutation" au lieu de "saison de la transformation"
+   - "période de changement" au lieu de "saison de la transition"
+   - "période de repli" au lieu de "saison de l&apos;introspection"
+
+4. ✅ **Texte de conclusion reformulé** :
+   - Reformulation du paragraphe sur l&apos;harmonie et le tao
+   - Amélioration de la formulation de la question introductive
+
+5. ✅ **Correction des problèmes d&apos;encodage** :
+   - Vérification que tous les `&apos;` sont correctement utilisés (déjà en place)
+   - Amélioration de la cohérence dans l&apos;utilisation des apostrophes
+
+**Résultat :** Le contenu de la page est maintenant entièrement reformulé, plus fluide et original, tout en conservant fidèlement le sens et les informations essentielles sur les saisons en Médecine Traditionnelle Chinoise.
+
+### Correction de l'erreur 401 lors de la connexion (Décembre 2024)
+
+**Problème :** Erreur `POST https://canopee.be/api/auth/callback/credentials 401 (Unauthorized)` lors de la tentative de connexion avec `etibaliomecus@live.be`.
+
+**Causes possibles :**
+- L'utilisateur n'existe pas dans la base de données
+- L'utilisateur n'a pas de passwordHash (créé via OAuth)
+- Le mot de passe est incorrect
+- Problème de connexion à la base de données
+- NEXTAUTH_SECRET manquant ou incorrect
+
+**Solutions appliquées :**
+
+1. ✅ **Amélioration des logs d'authentification** dans `lib/auth.ts` :
+   - Logs détaillés pour chaque étape de l'authentification
+   - Messages d'erreur spécifiques (utilisateur non trouvé, pas de passwordHash, mot de passe incorrect)
+   - Logs de succès pour le débogage
+
+2. ✅ **Script de diagnostic** `scripts/diagnose-login.js` :
+   - Vérifie la configuration (DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL)
+   - Vérifie l'existence de l'utilisateur
+   - Vérifie la présence d'un passwordHash
+   - Aide à identifier rapidement le problème
+
+3. ✅ **Documentation complète** `FIX_LOGIN_401.md` :
+   - Guide étape par étape pour diagnostiquer et résoudre l'erreur 401
+   - Solutions pour chaque cause possible
+   - Commandes à exécuter sur le VPS
+
+**Solutions appliquées (suite) :**
+
+4. ✅ **Script de synchronisation** `scripts/sync-user-to-production.js` :
+   - Synchronise l'utilisateur depuis la base locale vers la production (Supabase)
+   - Copie le passwordHash et toutes les informations utilisateur
+   - Résout le problème "ça fonctionne en local mais pas en production"
+
+**Résultat :** Les logs d'authentification sont maintenant plus détaillés et aideront à identifier rapidement la cause de l'erreur 401. Un script de diagnostic permet de vérifier la configuration et l'état de l'utilisateur. Un script de synchronisation permet de copier l'utilisateur depuis local vers production.
+
+📖 **Guide complet** : Voir [FIX_LOGIN_401.md](./FIX_LOGIN_401.md)

@@ -92,3 +92,4 @@ cat /var/www/canopee/.env | grep -E "^[A-Z_]+=" | cut -d'=' -f1
 
 
 
+

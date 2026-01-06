@@ -75,3 +75,4 @@ pm2 restart canopee
 - Le cookie est créé côté serveur par NextAuth, il faut juste laisser le temps au navigateur de le recevoir
 
 
+

@@ -119,3 +119,4 @@ pm2 logs canopee --err --lines 50
    - Vérifiez la base de données : `node scripts/check-database.js`
 
 
+

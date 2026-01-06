@@ -22,7 +22,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Bois",
     dates: "3 février – 15 avril 2025",
     description:
-      "La saison de l'expansion. L'éveil de la nature, après le long silence froid de l'hiver. L'énergie remonte du sol, nous sommes en énergie Yin, la phase ascendante.",
+      "Période d&apos;épanouissement et de croissance. La nature sort de sa torpeur hivernale et s&apos;anime progressivement. Les forces vitales remontent depuis les profondeurs, marquant le début d&apos;un cycle énergétique ascendant de type Yin.",
     organ: "Foie",
     viscera: "Vésicule biliaire",
     color: "Verte",
@@ -38,7 +38,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Feu",
     dates: "5 mai – 18 juillet 2025",
     description:
-      "La saison de l'extériorisation. L'énergie atteint son activité maximale, les jours sont longs, la chaleur est puissante, les végétaux s'épanouissent et fleurissent.",
+      "Moment d&apos;expression et de rayonnement maximal. Les forces vitales culminent, la lumière domine avec des journées étendues, tandis que la température s&apos;élève. Le règne végétal déploie toute sa splendeur et sa floraison.",
     organ: "Cœur",
     viscera: "Intestin Grêle",
     color: "Rouge",
@@ -55,7 +55,7 @@ const seasons: MTCSeasonInfo[] = [
     dates:
       "16 janvier – 2 février, 16 avril – 4 mai, 19 juillet – 4 août, 19 octobre – 6 novembre 2025",
     description:
-      "La saison de la transformation. Une fonction énergétique importante de la Terre est la transformation. C'est elle qui va nous permettre de passer correctement de la saison mourante à la saison naissante.",
+      "Temps de mutation et de réorganisation. L&apos;élément Terre joue un rôle central dans les processus de métamorphose énergétique. Il facilite la transition harmonieuse entre une période qui s&apos;achève et celle qui s&apos;annonce.",
     organ: "Rate",
     viscera: "Estomac",
     color: "Jaune",
@@ -71,7 +71,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Métal",
     dates: "5 août – 18 octobre 2025",
     description:
-      "La saison de la transition. Entre l'apogée de l'énergie et celle du repos, l'hiver. Les journées sont plus courtes, le temps moins clément et la nature ralentit.",
+      "Phase de changement et de ralentissement. Cette période s&apos;inscrit entre le pic énergétique estival et la quiétude hivernale. La durée du jour diminue, les conditions météorologiques se durcissent et le rythme naturel s&apos;apaise.",
     organ: "Poumon",
     viscera: "Gros intestin",
     color: "Blanc",
@@ -87,7 +87,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Eau",
     dates: "7 novembre 2025 – 20 janvier 2026",
     description:
-      "La saison de l'introspection. La nature et l'organisme se mettent au repos. C'est aussi le temps de l'introspection et des émotions enfouies au fond de soi, comme la peur, ou de facultés comme la volonté.",
+      "Temps de repli et de ressourcement. Le monde naturel et le corps humain entrent dans une phase de repos profond. Cette période favorise le retour sur soi, l&apos;exploration des sentiments refoulés tels que l&apos;appréhension, ainsi que le développement de capacités intérieures comme la détermination.",
     organ: "Rein",
     viscera: "Vessie",
     color: "Noir",
@@ -127,58 +127,61 @@ export default function SaisonsMTCPage() {
 
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-text-dark/80 mb-4">
-              Saviez-vous que les saisons chinoises ne correspondent pas tout à
-              fait à celles de notre calendrier grégorien, et que le Nouvel An
-              chinois ne débute jamais le 1er janvier ? 🎆
+              Le calendrier des saisons en Chine diffère sensiblement du nôtre.
+              Contrairement à notre Nouvel An fixé au 1er janvier, le Nouvel An
+              chinois varie chaque année 🎆
             </p>
             <p className="text-text-dark/80 mb-4">
-              En Chine le premier jour du premier mois du calendrier lunaire se
-              situe entre fin janvier et mi-février, à l&apos;équinoxe de
-              printemps 🍃
+              Le début du premier mois lunaire chinois se produit généralement
+              entre la fin du mois de janvier et la mi-février, coïncidant avec
+              l&apos;équinoxe printanier 🍃
             </p>
             <p className="text-text-dark/80 mb-4">
-              En effet, le calendrier énergétique des saisons chinoises est un
-              calendrier luni-solaire (qui utilise à la fois le calendrier
-              solaire et lunaire ☀️🌕). Il aurait été créé en 2697 avant
-              Jésus-Christ selon de précises observations des Chinois des
-              mouvements de la lune, du soleil, phénomènes climatiques et
-              agricoles, durée relative des jours et des nuits, …
+              Cette différence provient de l&apos;utilisation d&apos;un système
+              calendaire luni-solaire combinant les cycles solaires ☀️ et lunaires
+              🌕. Ce calendrier remonterait à l&apos;an 2697 avant notre ère,
+              élaboré grâce à l&apos;observation minutieuse des astres, des
+              variations climatiques, des cycles agricoles et de l&apos;alternance
+              jour-nuit par les anciens Chinois.
             </p>
             <p className="text-text-dark/80 mb-4">
-              Cette particularité s&apos;explique par l&apos;utilisation
-              d&apos;un calendrier luni-solaire, qui associe les cycles du
-              soleil ☀️ et de la lune 🌕 pour structurer le temps.
+              La structure temporelle chinoise intègre donc simultanément les
+              rythmes solaires et lunaires, créant une harmonie entre ces deux
+              cycles célestes pour organiser le temps.
             </p>
             <p className="text-text-dark/80 mb-4">
-              Les mois chinois ont 29 jours ou 30 jours reflétant ainsi les
-              révolutions lunaires.
+              Chaque mois lunaire compte alternativement 29 ou 30 jours, suivant
+              fidèlement les phases de notre satellite naturel.
             </p>
 
             <h2 className="text-2xl font-serif font-bold text-text-dark mt-8 mb-4">
               Le principe des 5 saisons en MTC
             </h2>
             <p className="text-text-dark/80 mb-4">
-              Pour la médecine chinoise, on ne peut pas passer brutalement
-              d&apos;une saison à une autre en une seule journée comme
-              l&apos;indique le calendrier.
+              Selon la médecine traditionnelle chinoise, le passage entre deux
+              saisons ne peut s&apos;effectuer de manière abrupte en une seule
+              journée, contrairement à ce que suggèrent nos calendriers
+              conventionnels.
             </p>
             <p className="text-text-dark/80 mb-4">
-              C&apos;est pourquoi les Chinois ont intégré une 5ᵉ saison nommée{" "}
-              <strong>Intersaison</strong>. Celle-ci correspond à un changement
-              d&apos;état, une transformation. Elle permet la synchronisation à
-              ce « qui vient » mais « qui n&apos;est pas encore ». Ainsi elle
-              représente le passage qui nous permet de quitter l&apos;hiver et
-              de nous préparer au printemps, mais aussi de quitter le printemps
-              et de nous préparer à l&apos;été, ainsi de suite…
+              Pour cette raison, la tradition chinoise a introduit une cinquième
+              période appelée <strong>Intersaison</strong>. Cette phase
+              représente un état de mutation et de réorganisation. Elle assure
+              l&apos;alignement avec ce qui émerge sans être encore pleinement
+              manifesté. Elle constitue ainsi le pont permettant de sortir de
+              l&apos;hiver pour accueillir le printemps, de quitter le printemps
+              pour entrer dans l&apos;été, et ainsi de suite pour chaque
+              transition saisonnière.
             </p>
             <p className="text-text-dark/80 mb-8">
-              Dans la pensée chinoise, le cycle des saisons repose sur la
-              théorie des 5 éléments ou cinq mouvements. Chacun est représenté
-              par un « élément » (Bois, Feu, Terre, Métal et Eau) qui, est
-              associé à une saison et à un couple organe/entrailles et de ce
-              fait à une fonction énergétique et un mouvement énergétique. Au
-              niveau thérapeutique, chaque saison est donc en relation avec des
-              correspondances somatiques, sensorielles et émotionnelles.
+              La vision chinoise des saisons s&apos;appuie sur la théorie des
+              cinq éléments, également nommés cinq mouvements. Chaque élément
+              (Bois, Feu, Terre, Métal et Eau) se rattache à une saison
+              spécifique ainsi qu&apos;à une paire organe-viscère, déterminant
+              ainsi une fonction et un mouvement énergétiques particuliers. Sur
+              le plan thérapeutique, chaque période saisonnière entretient des
+              liens avec des correspondances corporelles, sensorielles et
+              affectives.
             </p>
           </div>
 
@@ -198,22 +201,22 @@ export default function SaisonsMTCPage() {
                       {season.season === "Intersaison"
                         ? "L&apos;INTERSAISON"
                         : `LE ${season.season.toUpperCase()}`}{" "}
-                      – la saison{" "}
+                      – période{" "}
                       {season.season === "Printemps"
-                        ? "de l&apos;expansion"
+                        ? "d&apos;épanouissement"
                         : season.season === "Été"
-                        ? "de l&apos;extériorisation"
+                        ? "de rayonnement"
                         : season.season === "Intersaison"
-                        ? "de la transformation"
+                        ? "de mutation"
                         : season.season === "Automne"
-                        ? "de la transition"
-                        : "de l&apos;introspection"}
+                        ? "de changement"
+                        : "de repli"}
                     </h2>
                     <p className="text-lg text-text-dark/70 mb-2">
                       {season.season === "Intersaison"
-                        ? "L&apos;intersaison, l&apos;élément"
-                        : `Au ${season.season.toLowerCase()}, l&apos;élément`}{" "}
-                      <strong>{season.element}</strong> domine
+                        ? "Durant l&apos;intersaison, l&apos;élément"
+                        : `Pendant le ${season.season.toLowerCase()}, l&apos;élément`}{" "}
+                      <strong>{season.element}</strong> prédomine
                     </p>
                     <p className="text-sm text-text-dark/60 font-medium">
                       {season.dates}
@@ -304,12 +307,12 @@ export default function SaisonsMTCPage() {
                 </div>
 
                 <p className="text-text-dark/80 italic leading-relaxed">
-                  En Médecine Traditionnelle Chinoise, la saison{" "}
+                  Dans la Médecine Traditionnelle Chinoise,{" "}
                   {season.season === "Intersaison"
-                    ? "de l&apos;intersaison"
-                    : `du ${season.season.toLowerCase()}`}{" "}
-                  est associée au couple d&apos;organes viscères {season.organ}/
-                  {season.viscera.toLowerCase()}.
+                    ? "l&apos;intersaison"
+                    : `le ${season.season.toLowerCase()}`}{" "}
+                  se rattache à la paire organe-viscère formée par {season.organ}{" "}
+                  et {season.viscera.toLowerCase()}.
                 </p>
               </div>
             ))}
@@ -317,19 +320,23 @@ export default function SaisonsMTCPage() {
 
           <div className="mt-12 bg-primary/10 rounded-lg p-8">
             <p className="text-text-dark/80 leading-relaxed mb-4">
-              La vie est en continuel mouvement où l&apos;homme doit
-              s&apos;harmoniser avec son environnement.
+              L&apos;existence se caractérise par un mouvement perpétuel, et
+              l&apos;être humain doit trouver son équilibre en s&apos;accordant
+              avec le monde qui l&apos;entoure.
             </p>
             <p className="text-text-dark/80 leading-relaxed mb-4">
-              Peut-être vous demandez vous « pourquoi les Chinois se
-              soucient-ils autant de tout ceci ? »
+              Vous pourriez vous interroger : « Pourquoi cette attention si
+              particulière portée à ces cycles par la culture chinoise ? »
             </p>
             <p className="text-text-dark/80 leading-relaxed">
-              C&apos;est parce que pour eux, il existe une hiérarchie à laquelle
-              nous sommes tous reliés. Nous sommes tous une partie d&apos;un
-              grand tout et dans le même temps, tout l&apos;univers est en nous
-              (c&apos;est le tao). Cela nous rend interdépendant de tout et de
-              tous. D&apos;où cette quête permanente de l&apos;harmonie.
+              La réponse réside dans leur conception d&apos;un ordre universel
+              auquel nous participons tous. Chacun de nous forme une partie
+              intégrante d&apos;un ensemble plus vaste, tandis que l&apos;univers
+              entier réside également en nous (c&apos;est le principe du tao).
+              Cette interconnexion crée une dépendance mutuelle entre tous les
+              êtres et toutes les choses. C&apos;est ce qui motive leur
+              recherche constante de l&apos;équilibre et de
+              l&apos;harmonie.
             </p>
           </div>
         </div>
