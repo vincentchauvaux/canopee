@@ -67,17 +67,26 @@ export default function ProfilePage() {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    if (status === "loading") return;
+    // Attendre que le statut de la session soit déterminé
+    if (status === "loading") {
+      return;
+    }
 
-    if (!session) {
+    // Si pas de session après le chargement, rediriger
+    if (status === "unauthenticated" || !session) {
+      console.log("[Profile] No session, redirecting to signin", { status, hasSession: !!session });
       router.push("/auth/signin");
       return;
     }
 
-    fetchProfile();
-    // Ne charger les réservations que pour les admins
-    if ((session.user as any)?.role === "admin") {
-      fetchBookings();
+    // Si on a une session, charger le profil
+    if (session && status === "authenticated") {
+      console.log("[Profile] Session found, loading profile", { email: session.user?.email });
+      fetchProfile();
+      // Ne charger les réservations que pour les admins
+      if ((session.user as any)?.role === "admin") {
+        fetchBookings();
+      }
     }
   }, [session, status, router]);
 

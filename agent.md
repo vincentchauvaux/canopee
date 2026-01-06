@@ -889,3 +889,70 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 **Résultat :** Un guide complet explique pourquoi un rebuild est nécessaire après modification de variables d'environnement importantes et comment procéder étape par étape.
 
 📖 **Guide complet** : Voir [FIX_REBUILD_AFTER_ENV_CHANGE.md](./FIX_REBUILD_AFTER_ENV_CHANGE.md)
+
+### Guide de diagnostic pour la page profile en production (Janvier 2025)
+
+**Problème :** La page `/profile` fonctionne en local mais pas en production (redirection vers `/auth/signin`) malgré tous les changements effectués.
+
+**Guide de diagnostic créé** : `DIAGNOSTIC_PROFILE_PRODUCTION.md` - Guide complet pour diagnostiquer et résoudre le problème de la page profile en production.
+
+**Contenu du guide :**
+
+1. ✅ **Diagnostic étape par étape** :
+   - Vérification de la session (`fetch('/api/auth/session')`)
+   - Vérification de `NEXTAUTH_URL` sur le VPS
+   - Vérification que le rebuild a été fait
+   - Vérification des logs d'authentification
+   - Vérification des cookies dans le navigateur
+   - Vérification de la requête API dans le navigateur
+
+2. ✅ **Solutions selon le diagnostic** :
+   - Solution si vous n'êtes pas connecté
+   - Solution si `NEXTAUTH_URL` est incorrect
+   - Solution si le rebuild n'a pas été fait
+   - Solution si les cookies ne sont pas envoyés
+   - Solution si problème de base de données
+
+3. ✅ **Procédure complète de correction** :
+   - Commandes complètes à exécuter sur le VPS
+   - Actions côté navigateur
+   - Tests de la session dans la console
+
+4. ✅ **Checklist complète** :
+   - Liste de vérification de tous les points importants
+   - Informations à collecter pour le diagnostic
+
+**Résultat :** Un guide de diagnostic complet permet d'identifier rapidement la cause du problème et d'appliquer la solution appropriée.
+
+📖 **Guide complet** : Voir [DIAGNOSTIC_PROFILE_PRODUCTION.md](./DIAGNOSTIC_PROFILE_PRODUCTION.md)
+
+### Correction : useSession() ne détecte pas la session côté client (Janvier 2025)
+
+**Problème :** La session API fonctionne (`/api/auth/session` retourne bien la session), mais `useSession()` côté client dans la page profile retourne `null`, causant une redirection vers `/auth/signin`.
+
+**Cause identifiée :**
+- Le `SessionProvider` de NextAuth ne charge pas correctement la session côté client
+- Problème de configuration du `SessionProvider` (manque de `basePath`)
+- Problème de timing où `useSession()` est appelé avant que la session soit chargée
+
+**Solutions appliquées :**
+
+1. ✅ **Amélioration du SessionProvider** dans `app/providers.tsx` :
+   - Ajout de `basePath="/api/auth"` pour s'assurer que le SessionProvider utilise le bon chemin
+   - Configuration de `refetchOnWindowFocus={true}` pour recharger la session au focus
+   - Configuration de `refetchInterval={5 * 60}` pour recharger la session toutes les 5 minutes
+
+2. ✅ **Amélioration de la page profile** dans `app/profile/page.tsx` :
+   - Meilleure gestion du statut `loading` vs `unauthenticated`
+   - Logs de débogage pour identifier le problème
+   - Vérification explicite du statut `authenticated` avant de charger le profil
+
+3. ✅ **Guide de correction** `FIX_USESESSION_NOT_DETECTING.md` :
+   - Explication du problème
+   - Instructions de déploiement
+   - Tests à effectuer
+   - Checklist complète
+
+**Résultat :** Le `SessionProvider` est maintenant correctement configuré et la page profile gère mieux le chargement de la session. Les logs aident à identifier si le problème persiste.
+
+📖 **Guide complet** : Voir [FIX_USESESSION_NOT_DETECTING.md](./FIX_USESESSION_NOT_DETECTING.md)
