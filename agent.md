@@ -956,3 +956,40 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 **Résultat :** Le `SessionProvider` est maintenant correctement configuré et la page profile gère mieux le chargement de la session. Les logs aident à identifier si le problème persiste.
 
 📖 **Guide complet** : Voir [FIX_USESESSION_NOT_DETECTING.md](./FIX_USESESSION_NOT_DETECTING.md)
+
+### Vérification : Les données de profil existent-elles dans Supabase ? (Janvier 2025)
+
+**Question :** Le problème de la page profile est-il lié au fait que Supabase ne dispose pas des informations à afficher sur cette page ?
+
+**Réponse :** Probablement NON. D'après l'analyse du code, le problème vient plutôt de l'authentification (session, cookies) que de l'absence de données. Cependant, il est important de vérifier que les données existent bien dans Supabase.
+
+**Guide de vérification créé** : `VERIFICATION_DONNEES_PROFILE.md` - Guide complet pour vérifier si les données de profil existent dans Supabase.
+
+**Contenu du guide :**
+
+1. ✅ **Méthodes de vérification** :
+   - Via l'interface Supabase (Table Editor) - Recommandé
+   - Via SQL Editor dans Supabase
+   - Via Prisma Studio (local)
+   - Via la ligne de commande (psql)
+
+2. ✅ **Analyse du code** :
+   - Ce que la page profile attend (interface UserProfile)
+   - Ce que l'API profile récupère
+   - Conclusion : Les champs optionnels peuvent être NULL
+
+3. ✅ **Diagnostic** :
+   - Si la table `users` est vide → C'est le problème
+   - Si la table `users` contient des utilisateurs → Le problème vient de l'authentification
+
+4. ✅ **Vérification des permissions RLS** :
+   - Comment vérifier si Row Level Security bloque l'accès
+   - Comment désactiver temporairement RLS pour tester
+
+5. ✅ **Checklist de vérification** :
+   - Liste de tous les points à vérifier
+   - Actions recommandées selon le diagnostic
+
+**Résultat :** Un guide complet permet de vérifier rapidement si le problème vient de l'absence de données dans Supabase ou d'un problème d'authentification. La plupart du temps, le problème vient de l'authentification (session, cookies, NEXTAUTH_URL) plutôt que de l'absence de données.
+
+📖 **Guide complet** : Voir [VERIFICATION_DONNEES_PROFILE.md](./VERIFICATION_DONNEES_PROFILE.md)
