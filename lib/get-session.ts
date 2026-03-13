@@ -13,12 +13,19 @@ export async function getSessionFromRequest(request: NextRequest) {
       host: hostHeader,
       hasCookie: !!cookieHeader,
       cookieLength: cookieHeader?.length || 0,
-      hasNextAuthCookie: cookieHeader?.includes('next-auth.session-token') || false,
+      hasNextAuthCookie:
+        cookieHeader?.includes("next-auth.session-token") || false,
     });
+
+    // Utiliser le même nom de cookie que dans lib/auth.ts (cookies.sessionToken.name)
+    // pour que le token soit trouvé en production (sans quoi getToken cherche __Secure-* par défaut)
+    const cookieName = "next-auth.session-token";
 
     const token = await getToken({
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
+      secureCookie: process.env.NODE_ENV === "production",
+      cookieName,
     });
 
     if (!token || !token.id) {
@@ -28,7 +35,7 @@ export async function getSessionFromRequest(request: NextRequest) {
       console.log("[getSessionFromRequest] NEXTAUTH_URL:", process.env.NEXTAUTH_URL || "not set");
       
       // Log supplémentaire si le cookie est présent mais non lu
-      if (cookieHeader?.includes('next-auth.session-token')) {
+      if (cookieHeader?.includes("next-auth.session-token")) {
         console.log("[getSessionFromRequest] WARNING: Cookie present but token is null - possible domain mismatch");
         console.log("[getSessionFromRequest] Cookie domain might not match NEXTAUTH_URL");
       }

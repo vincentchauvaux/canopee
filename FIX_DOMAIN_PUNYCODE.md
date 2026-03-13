@@ -37,11 +37,17 @@ NEXTAUTH_URL="https://canopée.be"
 
 **Important** : Utilisez `canopée.be` (avec accent), pas `canopee.be` (sans accent), car c'est votre domaine réel.
 
-### Solution 1b : Si la page /profile ne s’affiche toujours pas (cookie IDN)
+### Solution 1b : Nom du cookie et getToken (401 sur /api/profile)
 
-Le code force désormais le **domaine du cookie** en production pour le domaine IDN (dans `lib/auth.ts`) : le cookie de session est défini avec `domain: '.xn--canope-fva.be'` pour que le navigateur l’envoie bien quand vous visitez `canopée.be`.
+En production, NextAuth utilise par défaut le cookie `__Secure-next-auth.session-token`, alors que l’app définit un cookie personnalisé `next-auth.session-token` dans `lib/auth.ts`. Si `getToken()` ne reçoit pas le même nom, il ne trouve pas le token → 401 sur `/api/profile` alors que la session existe côté client.
 
-Si après rebuild et vidage des cookies le problème persiste, essayez d’utiliser l’URL en **Punycode** dans `.env` :
+Le code dans `lib/get-session.ts` passe désormais **`cookieName: "next-auth.session-token"`** à `getToken()` pour qu’il lise le bon cookie.
+
+### Solution 1c : Si la page /profile ne s’affiche toujours pas (cookie IDN)
+
+Le code force le **domaine du cookie** en production pour le domaine IDN (dans `lib/auth.ts`) : le cookie de session est défini avec `domain: '.xn--canope-fva.be'` pour que le navigateur l’envoie bien quand vous visitez `canopée.be`.
+
+Si après rebuild et vidage des cookies le problème persiste, essayez l’URL en **Punycode** dans `.env` :
 
 ```bash
 NEXTAUTH_URL="https://xn--canope-fva.be"
