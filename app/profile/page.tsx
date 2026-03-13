@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -103,6 +103,19 @@ export default function ProfilePage() {
       }
 
       if (!response.ok) {
+        // Si le backend renvoie une erreur 500 ou autre, on force une vraie déconnexion
+        console.error(
+          "[Profile] /api/profile returned error status",
+          response.status
+        );
+
+        if (response.status >= 500) {
+          // Session côté client mais profil impossible à charger :
+          // on nettoie la session et on renvoie l'utilisateur vers la connexion
+          await signOut({ callbackUrl: "/auth/signin" });
+          return;
+        }
+
         throw new Error("Erreur lors du chargement du profil");
       }
 

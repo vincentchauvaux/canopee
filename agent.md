@@ -977,6 +977,12 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Après la déconnexion, l’utilisateur est systématiquement redirigé vers la page d’accueil `/`, ce qui évite les cas où la session semble encore active si la page courante ne se recharge pas correctement.
 - ✅ Sur mobile, le menu est toujours refermé juste après l’appel à `signOut`, pour garder un comportement cohérent.
 
+### Amélioration de la page profil en cas d’erreur 500 (Mars 2026)
+
+- ✅ La page `app/profile/page.tsx` importe désormais `signOut` de NextAuth.
+- ✅ Lorsque l’appel à `/api/profile` renvoie une erreur serveur (statut ≥ 500), la page déclenche automatiquement `signOut({ callbackUrl: "/auth/signin" })` au lieu de rester bloquée sur « Redirection vers la connexion... » avec une session encore active dans le header.
+- ✅ Objectif : éviter l’état incohérent « session côté client mais profil impossible à charger » et forcer une vraie déconnexion propre avant de renvoyer vers la page de connexion.
+
 ### Vérification : Les données de profil existent-elles dans Supabase ? (Janvier 2025)
 
 **Question :** Le problème de la page profile est-il lié au fait que Supabase ne dispose pas des informations à afficher sur cette page ?
