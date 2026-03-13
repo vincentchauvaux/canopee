@@ -971,6 +971,12 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 📖 **Guide complet** : Voir [FIX_USESESSION_NOT_DETECTING.md](./FIX_USESESSION_NOT_DETECTING.md)
 
+### Amélioration du bouton de déconnexion dans le Header (Mars 2026)
+
+- ✅ Le bouton **« Déconnexion »** (desktop et mobile) dans `components/Header.tsx` appelle désormais `signOut({ callbackUrl: "/" })` au lieu de `signOut()` sans argument.
+- ✅ Après la déconnexion, l’utilisateur est systématiquement redirigé vers la page d’accueil `/`, ce qui évite les cas où la session semble encore active si la page courante ne se recharge pas correctement.
+- ✅ Sur mobile, le menu est toujours refermé juste après l’appel à `signOut`, pour garder un comportement cohérent.
+
 ### Vérification : Les données de profil existent-elles dans Supabase ? (Janvier 2025)
 
 **Question :** Le problème de la page profile est-il lié au fait que Supabase ne dispose pas des informations à afficher sur cette page ?

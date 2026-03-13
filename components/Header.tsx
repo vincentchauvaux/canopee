@@ -99,7 +99,7 @@ export default function Header() {
                   {displayName}
                 </Link>
                 <button
-                  onClick={() => signOut()}
+                  onClick={() => signOut({ callbackUrl: "/" })}
                   className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
                 >
                   Déconnexion
@@ -184,7 +184,7 @@ export default function Header() {
                 </Link>
                 <button
                   onClick={() => {
-                    signOut();
+                    signOut({ callbackUrl: "/" });
                     setIsMobileMenuOpen(false);
                   }}
                   className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors text-left"
