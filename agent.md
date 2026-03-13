@@ -890,6 +890,20 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 📖 **Guide complet** : Voir [FIX_REBUILD_AFTER_ENV_CHANGE.md](./FIX_REBUILD_AFTER_ENV_CHANGE.md)
 
+### Cookie domaine IDN pour canopée.be (Mars 2025)
+
+**Problème :** La page `/profile` sur https://canopée.be ne s’affiche pas (redirection signin ou chargement infini) car le cookie de session n’est pas correctement associé au domaine en Punycode (`xn--canope-fva.be`).
+
+**Solutions appliquées :**
+
+1. ✅ **Cookie domaine en production** dans `lib/auth.ts` : si `NEXTAUTH_URL` contient `canopée`, le cookie de session est défini avec `domain: '.xn--canope-fva.be'` pour que le navigateur l’envoie quand l’utilisateur visite `canopée.be`.
+2. ✅ **Page profile** : lorsqu’il n’y a pas de session ou de profil, la page affiche « Redirection vers la connexion... » au lieu de rester blanche (`return null`).
+3. ✅ **FIX_DOMAIN_PUNYCODE.md** : ajout de la solution 1b (essayer `NEXTAUTH_URL="https://xn--canope-fva.be"` si le problème persiste).
+
+**À faire après déploiement :** rebuild (`rm -rf .next && npm run build`), redémarrage PM2, puis vider les cookies du site et se reconnecter.
+
+📖 **Guide** : [FIX_DOMAIN_PUNYCODE.md](./FIX_DOMAIN_PUNYCODE.md)
+
 ### Guide de diagnostic pour la page profile en production (Janvier 2025)
 
 **Problème :** La page `/profile` fonctionne en local mais pas en production (redirection vers `/auth/signin`) malgré tous les changements effectués.

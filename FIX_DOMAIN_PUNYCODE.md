@@ -20,7 +20,7 @@ GET https://xn--canope-fva.be/api/classes 500 (Internal Server Error)
 
 Puisque votre domaine réel est `canopée.be` (avec accent), vous devez configurer `NEXTAUTH_URL` avec ce domaine.
 
-### Solution : Mettre à jour NEXTAUTH_URL
+### Solution 1 : Mettre à jour NEXTAUTH_URL
 
 Sur le VPS, modifiez `.env` pour utiliser le domaine avec accent :
 
@@ -36,6 +36,18 @@ NEXTAUTH_URL="https://canopée.be"
 ```
 
 **Important** : Utilisez `canopée.be` (avec accent), pas `canopee.be` (sans accent), car c'est votre domaine réel.
+
+### Solution 1b : Si la page /profile ne s’affiche toujours pas (cookie IDN)
+
+Le code force désormais le **domaine du cookie** en production pour le domaine IDN (dans `lib/auth.ts`) : le cookie de session est défini avec `domain: '.xn--canope-fva.be'` pour que le navigateur l’envoie bien quand vous visitez `canopée.be`.
+
+Si après rebuild et vidage des cookies le problème persiste, essayez d’utiliser l’URL en **Punycode** dans `.env` :
+
+```bash
+NEXTAUTH_URL="https://xn--canope-fva.be"
+```
+
+Puis rebuild et redémarrage (voir Solution 2).
 
 ### Solution 2 : Rebuild après modification
 

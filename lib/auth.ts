@@ -171,6 +171,11 @@ export const authOptions: NextAuthOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
+        // En production avec domaine IDN (canopée.be → xn--canope-fva.be), forcer le domaine
+        // pour que le cookie soit bien envoyé quand l'utilisateur visite canopée.be
+        ...(process.env.NODE_ENV === 'production' && process.env.NEXTAUTH_URL?.includes('canopée')
+          ? { domain: '.xn--canope-fva.be' }
+          : {}),
       },
     },
   },

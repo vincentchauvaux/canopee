@@ -239,8 +239,13 @@ export default function ProfilePage() {
     );
   }
 
+  // Pas de session ou profil non chargé : afficher un état de redirection au lieu d'une page blanche
   if (!session || !user) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-accent">
+        <p className="text-text-dark/60">Redirection vers la connexion...</p>
+      </div>
+    );
   }
 
   const isAdmin = (session.user as any).role === "admin";
