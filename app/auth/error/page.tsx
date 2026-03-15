@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const messages: Record<string, string> = {
   AccessDenied: "Email ou mot de passe incorrect. Vérifiez vos identifiants et réessayez.",
@@ -10,7 +11,7 @@ const messages: Record<string, string> = {
   Default: "Une erreur est survenue lors de la connexion.",
 };
 
-export default function AuthErrorPage() {
+function AuthErrorContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error") || "Default";
   const message = messages[error] || messages.Default;
@@ -30,5 +31,19 @@ export default function AuthErrorPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-accent py-12 px-4">
+        <div className="max-w-md w-full bg-white p-8 rounded-card shadow-lg text-center">
+          <p className="text-text-dark/80">Chargement...</p>
+        </div>
+      </div>
+    }>
+      <AuthErrorContent />
+    </Suspense>
   );
 }
