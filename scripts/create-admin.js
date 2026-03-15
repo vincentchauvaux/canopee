@@ -52,7 +52,15 @@ async function createAdmin() {
       console.log(`   ⚠️  Changez ce mot de passe après la première connexion !`)
     }
   } catch (error) {
-    console.error('❌ Erreur:', error.message)
+    console.error('❌ Erreur:', error.message || error.toString())
+    const full = error?.meta?.message || error?.message || (error + '')
+    if (full && full !== (error.message || '')) console.error('   Détail:', full)
+    if (!process.env.DATABASE_URL) {
+      console.error('   💡 DATABASE_URL manquante. Lance le script depuis /var/www/canopee (cd /var/www/canopee) et vérifie le fichier .env')
+    } else {
+      console.error('   💡 Vérifie que les migrations sont appliquées : npx prisma migrate deploy')
+      console.error('   💡 Vérifie que PostgreSQL tourne et que la base existe.')
+    }
     process.exit(1)
   } finally {
     await prisma.$disconnect()

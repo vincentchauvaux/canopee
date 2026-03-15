@@ -116,6 +116,7 @@ export default function SignIn() {
                 <input
                   id="firstName"
                   type="text"
+                  autoComplete="given-name"
                   required={!isLogin}
                   value={formData.firstName}
                   onChange={(e) =>
@@ -134,6 +135,7 @@ export default function SignIn() {
                 <input
                   id="lastName"
                   type="text"
+                  autoComplete="family-name"
                   required={!isLogin}
                   value={formData.lastName}
                   onChange={(e) =>
@@ -157,6 +159,7 @@ export default function SignIn() {
               <input
                 id="email"
                 type="email"
+                autoComplete="email"
                 required
                 value={formData.email}
                 onChange={(e) =>
@@ -179,6 +182,7 @@ export default function SignIn() {
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
+                autoComplete={isLogin ? "current-password" : "new-password"}
                 required
                 value={formData.password}
                 onChange={(e) =>
