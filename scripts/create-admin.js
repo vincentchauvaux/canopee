@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '.env' })
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcryptjs')
 
@@ -20,12 +21,18 @@ async function createAdmin() {
     })
 
     if (existingUser) {
-      // Mettre à jour le rôle
+      // Mettre à jour le rôle ET le mot de passe (pour pouvoir se connecter en email/mot de passe)
+      const passwordHash = await bcrypt.hash(password, 10)
       await prisma.user.update({
         where: { email },
-        data: { role: 'admin' },
+        data: {
+          role: 'admin',
+          passwordHash,
+          authProvider: 'local',
+        },
       })
-      console.log(`✅ Utilisateur ${email} mis à jour en admin`)
+      console.log(`✅ Utilisateur ${email} mis à jour en admin (mot de passe défini)`)
+      console.log(`   Tu peux te connecter avec : ${email} / ${password}`)
     } else {
       // Créer un nouvel utilisateur admin
       const passwordHash = await bcrypt.hash(password, 10)

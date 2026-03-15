@@ -112,7 +112,8 @@ export default function ProfilePage() {
         if (response.status >= 500) {
           // Session côté client mais profil impossible à charger :
           // on nettoie la session et on renvoie l'utilisateur vers la connexion
-          await signOut({ callbackUrl: "/auth/signin" });
+          await signOut({ redirect: false });
+          window.location.href = "/auth/signin";
           return;
         }
 

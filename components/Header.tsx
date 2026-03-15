@@ -99,7 +99,11 @@ export default function Header() {
                   {displayName}
                 </Link>
                 <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={() => {
+                    signOut({ redirect: false }).then(() => {
+                      window.location.href = "/";
+                    });
+                  }}
                   className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
                 >
                   Déconnexion
@@ -184,7 +188,9 @@ export default function Header() {
                 </Link>
                 <button
                   onClick={() => {
-                    signOut({ callbackUrl: "/" });
+                    signOut({ redirect: false }).then(() => {
+                      window.location.href = "/";
+                    });
                     setIsMobileMenuOpen(false);
                   }}
                   className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors text-left"
