@@ -2,7 +2,7 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
-import { prisma } from './prisma'
+import { prisma, withRetry } from './prisma'
 import bcrypt from 'bcryptjs'
 
 export const authOptions: NextAuthOptions = {
@@ -23,9 +23,11 @@ export const authOptions: NextAuthOptions = {
             return null
           }
 
-          const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
-          })
+          const user = await withRetry(() =>
+            prisma.user.findUnique({
+              where: { email: credentials!.email },
+            })
+          )
 
           if (!user) {
             console.error('[AUTH] Utilisateur non trouvé:', credentials.email)
@@ -76,12 +78,14 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === 'google' || account?.provider === 'facebook') {
         try {
-          const existingUser = await prisma.user.findUnique({
-            where: { email: user.email! },
-          })
+          const existingUser = await withRetry(() =>
+            prisma.user.findUnique({
+              where: { email: user.email! },
+            })
+          )
 
           if (!existingUser) {
-            await prisma.user.create({
+            await withRetry(() => prisma.user.create({
               data: {
                 email: user.email!,
                 firstName: user.name?.split(' ')[0] || null,
@@ -90,15 +94,15 @@ export const authOptions: NextAuthOptions = {
                 authProvider: account.provider === 'google' ? 'google' : 'facebook',
                 role: 'user',
               },
-            })
+            }))
           } else {
-            await prisma.user.update({
+            await withRetry(() => prisma.user.update({
               where: { id: existingUser.id },
               data: {
                 lastLogin: new Date(),
                 profilePic: user.image || existingUser.profilePic,
               },
-            })
+            }))
           }
         } catch (error) {
           console.error('Error in signIn callback:', error)
@@ -113,10 +117,12 @@ export const authOptions: NextAuthOptions = {
         // Pour OAuth (Google/Facebook), récupérer l'utilisateur depuis la DB
         if (account?.provider === 'google' || account?.provider === 'facebook') {
           try {
-            const dbUser = await prisma.user.findUnique({
-              where: { email: user.email! },
-              select: { id: true, role: true },
-            })
+            const dbUser = await withRetry(() =>
+              prisma.user.findUnique({
+                where: { email: user.email! },
+                select: { id: true, role: true },
+              })
+            )
             if (dbUser) {
               token.id = dbUser.id
               token.role = dbUser.role
@@ -158,12 +164,14 @@ export const authOptions: NextAuthOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
-        // En production avec domaine IDN (canopée.be → xn--canope-fva.be), forcer le domaine
-        // pour que le cookie soit bien envoyé quand l'utilisateur visite canopée.be
-        ...(process.env.NODE_ENV === 'production' && process.env.NEXTAUTH_URL?.includes('canopée')
-          ? { domain: '.xn--canope-fva.be' }
-          : {}),
+        // Ne pas définir domain : le cookie est lié au host actuel (canopee.be ou xn--...),
+        // ce qui permet à la déconnexion de supprimer correctement le cookie.
       },
+    },
+  },
+  events: {
+    async signOut() {
+      // Déconnexion explicite : le cookie est supprimé par NextAuth
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

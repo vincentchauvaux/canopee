@@ -789,6 +789,21 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 📖 **Guide** : Voir [FIX_PREPARED_STATEMENT_LOGOUT.md](./FIX_PREPARED_STATEMENT_LOGOUT.md)
 
+### PostgreSQL sur le VPS (sans Supabase) et renforcement auth (Mars 2025)
+
+**Objectif :** Utiliser PostgreSQL installé directement sur le VPS au lieu de Supabase ; corriger déconnexion et connexion email/mot de passe.
+
+**Modifications :**
+
+1. ✅ **Guide `CONFIG_POSTGRES_VPS.md`** : installation PostgreSQL sur le VPS, création base et utilisateur, `DATABASE_URL` locale, migrations, création d’un admin (ex. `admin@canopee.be` / `admin`), rebuild et redémarrage.
+2. ✅ **`lib/auth.ts`** : appels Prisma (authorize, signIn, jwt OAuth) passés dans `withRetry` pour limiter les échecs en cas d’erreur transitoire ; suppression du domaine personnalisé du cookie de session pour que la déconnexion supprime correctement le cookie sur le host actuel ; ajout du bloc `events.signOut`.
+3. ✅ **`scripts/create-admin.js`** : valeurs par défaut `admin@canopee.be` / `admin` pour créer rapidement un compte admin (sans arguments : `node scripts/create-admin.js`).
+4. ✅ **`GUIDE_INSTALLATION_VPS.md`** : mention de l’option « PostgreSQL sur le VPS » et lien vers `CONFIG_POSTGRES_VPS.md`.
+
+**Résultat :** L’app peut tourner entièrement avec PostgreSQL sur le VPS (plus de dépendance Supabase). Connexion par email/mot de passe et déconnexion fonctionnent après déploiement du code et configuration de la base locale. Création d’un admin en une commande.
+
+📖 **Guide** : Voir [CONFIG_POSTGRES_VPS.md](./CONFIG_POSTGRES_VPS.md)
+
 ### Correction de l'erreur "Tenant or user not found" (Janvier 2025)
 
 **Problème :** Erreur `FATAL: Tenant or user not found` lors de la connexion à Supabase, empêchant l'authentification et l'accès à l'application.

@@ -4,10 +4,12 @@ const bcrypt = require('bcryptjs')
 const prisma = new PrismaClient()
 
 async function createAdmin() {
-  const email = process.argv[2] || 'admin@yogastudio.fr'
-  const password = process.argv[3] || 'admin123'
+  // Usage: node scripts/create-admin.js [email] [password] [firstName] [lastName]
+  // Exemple admin/admin : node scripts/create-admin.js admin@canopee.be admin Admin Admin
+  const email = process.argv[2] || 'admin@canopee.be'
+  const password = process.argv[3] || 'admin'
   const firstName = process.argv[4] || 'Admin'
-  const lastName = process.argv[5] || 'User'
+  const lastName = process.argv[5] || 'Admin'
 
   try {
     console.log(`🔍 Recherche de l'utilisateur ${email}...`)

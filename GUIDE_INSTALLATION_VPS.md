@@ -7,7 +7,7 @@ Guide complet pour installer et déployer Canopée sur un VPS OVH (Ubuntu 22.04)
 - **VPS OVH** : VPS Essentials 2 vCores / 4 Go RAM / 80 Go SSD (recommandé)
 - **Système** : Ubuntu 22.04 LTS
 - **Accès** : SSH avec droits root
-- **Base de données** : Supabase (déjà configurée) - https://kzogkberupkzpjdojvhn.supabase.co
+- **Base de données** : **PostgreSQL sur le VPS** (recommandé) ou Supabase. Voir [CONFIG_POSTGRES_VPS.md](./CONFIG_POSTGRES_VPS.md) pour tout configurer avec PostgreSQL local sur le VPS (sans Supabase).
 
 ## 🎯 Méthode 1 : Installation Automatique (Recommandée)
 
@@ -93,6 +93,10 @@ nano .env
 
 Contenu du fichier `.env` :
 
+**Option A – PostgreSQL sur le VPS (recommandé, sans Supabase)** : voir [CONFIG_POSTGRES_VPS.md](./CONFIG_POSTGRES_VPS.md).
+
+**Option B – Supabase** :
+
 ```env
 # Base de données Supabase
 DATABASE_URL="postgresql://postgres:[PASSWORD]@db.kzogkberupkzpjdojvhn.supabase.co:5432/postgres?schema=public"
@@ -119,7 +123,7 @@ NEXT_PUBLIC_DOMAIN="canopee.be"
 openssl rand -base64 32
 ```
 
-**Important** : Remplacez `[PASSWORD]` par votre vrai mot de passe Supabase (récupéré dans Settings → Database).
+**Important** : Remplacez `[PASSWORD]` par votre vrai mot de passe Supabase (récupéré dans Settings → Database). Pour utiliser PostgreSQL sur le VPS à la place, suivez [CONFIG_POSTGRES_VPS.md](./CONFIG_POSTGRES_VPS.md).
 
 ### Étape 4 : Initialiser la base de données
 
