@@ -130,22 +130,9 @@ export const authOptions: NextAuthOptions = {
           token.role = (user as any).role
         }
       }
-      
-      // Toujours récupérer le rôle depuis la DB pour s'assurer qu'il est à jour
-      if (token.id) {
-        try {
-          const dbUser = await prisma.user.findUnique({
-            where: { id: token.id as string },
-            select: { role: true },
-          })
-          if (dbUser) {
-            token.role = dbUser.role
-          }
-        } catch (error) {
-          console.error('Error fetching user role in JWT callback:', error)
-        }
-      }
-      
+      // Ne pas appeler la DB à chaque requête : évite l'erreur Prisma 42P05
+      // ("prepared statement already exists") avec le pooler Supabase et permet
+      // à la déconnexion de fonctionner correctement. Le rôle est mis à jour à la prochaine connexion.
       return token
     },
     async session({ session, token }) {

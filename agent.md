@@ -774,6 +774,21 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 📖 **Guide complet** : Voir [VOIR_LOGS.md](./VOIR_LOGS.md)
 
+### Correction "prepared statement already exists" et déconnexion impossible (Mars 2025)
+
+**Problème :** Erreur Prisma 42P05 `prepared statement "s2" already exists` dans les logs, et impossible de se déconnecter (réconnexion automatique apparente).
+
+**Causes :** (1) Prisma avec le pooler Supabase (PgBouncer) déclenche des conflits de prepared statements ; (2) le callback JWT appelait la DB à chaque requête pour rafraîchir le rôle, ce qui provoquait l’erreur et une session incohérente au signOut.
+
+**Solutions appliquées :**
+
+1. ✅ **`lib/auth.ts`** : suppression de l’appel Prisma à chaque requête dans le callback JWT. Le rôle est conservé dans le token (mis à jour à la connexion), plus d’appel DB à chaque chargement → plus d’erreur 42P05 sur la session, déconnexion fonctionnelle.
+2. ✅ **Documentation** : `FIX_PREPARED_STATEMENT_LOGOUT.md` – ajout de `?pgbouncer=true` à la `DATABASE_URL` sur le VPS si utilisation du pooler (port 6543).
+
+**Résultat :** La déconnexion fonctionne à nouveau. Les erreurs "prepared statement already exists" en session sont évitées. Pour les autres appels Prisma, ajouter `&pgbouncer=true` à la `DATABASE_URL` sur le VPS si besoin.
+
+📖 **Guide** : Voir [FIX_PREPARED_STATEMENT_LOGOUT.md](./FIX_PREPARED_STATEMENT_LOGOUT.md)
+
 ### Correction de l'erreur "Tenant or user not found" (Janvier 2025)
 
 **Problème :** Erreur `FATAL: Tenant or user not found` lors de la connexion à Supabase, empêchant l'authentification et l'accès à l'application.

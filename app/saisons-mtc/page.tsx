@@ -138,11 +138,11 @@ export default function SaisonsMTCPage() {
             </p>
             <p className="text-text-dark/80 mb-4">
               Cette différence provient de l&apos;utilisation d&apos;un système
-              calendaire luni-solaire combinant les cycles solaires ☀️ et lunaires
-              🌕. Ce calendrier remonterait à l&apos;an 2697 avant notre ère,
-              élaboré grâce à l&apos;observation minutieuse des astres, des
-              variations climatiques, des cycles agricoles et de l&apos;alternance
-              jour-nuit par les anciens Chinois.
+              calendaire luni-solaire combinant les cycles solaires ☀️ et
+              lunaires 🌕. Ce calendrier remonterait à l&apos;an 2697 avant
+              notre ère, élaboré grâce à l&apos;observation minutieuse des
+              astres, des variations climatiques, des cycles agricoles et de
+              l&apos;alternance jour-nuit par les anciens Chinois.
             </p>
             <p className="text-text-dark/80 mb-4">
               La structure temporelle chinoise intègre donc simultanément les
@@ -205,12 +205,12 @@ export default function SaisonsMTCPage() {
                       {season.season === "Printemps"
                         ? "d&apos;épanouissement"
                         : season.season === "Été"
-                        ? "de rayonnement"
-                        : season.season === "Intersaison"
-                        ? "de mutation"
-                        : season.season === "Automne"
-                        ? "de changement"
-                        : "de repli"}
+                          ? "de rayonnement"
+                          : season.season === "Intersaison"
+                            ? "de mutation"
+                            : season.season === "Automne"
+                              ? "de changement"
+                              : "de repli"}
                     </h2>
                     <p className="text-lg text-text-dark/70 mb-2">
                       {season.season === "Intersaison"
@@ -311,8 +311,8 @@ export default function SaisonsMTCPage() {
                   {season.season === "Intersaison"
                     ? "l&apos;intersaison"
                     : `le ${season.season.toLowerCase()}`}{" "}
-                  se rattache à la paire organe-viscère formée par {season.organ}{" "}
-                  et {season.viscera.toLowerCase()}.
+                  se rattache à la paire organe-viscère formée par{" "}
+                  {season.organ} et {season.viscera.toLowerCase()}.
                 </p>
               </div>
             ))}
@@ -331,11 +331,11 @@ export default function SaisonsMTCPage() {
             <p className="text-text-dark/80 leading-relaxed">
               La réponse réside dans leur conception d&apos;un ordre universel
               auquel nous participons tous. Chacun de nous forme une partie
-              intégrante d&apos;un ensemble plus vaste, tandis que l&apos;univers
-              entier réside également en nous (c&apos;est le principe du tao).
-              Cette interconnexion crée une dépendance mutuelle entre tous les
-              êtres et toutes les choses. C&apos;est ce qui motive leur
-              recherche constante de l&apos;équilibre et de
+              intégrante d&apos;un ensemble plus vaste, tandis que
+              l&apos;univers entier réside également en nous (c&apos;est le
+              principe du tao). Cette interconnexion crée une dépendance
+              mutuelle entre tous les êtres et toutes les choses. C&apos;est ce
+              qui motive leur recherche constante de l&apos;équilibre et de
               l&apos;harmonie.
             </p>
           </div>
