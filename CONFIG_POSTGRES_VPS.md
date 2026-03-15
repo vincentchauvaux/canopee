@@ -2,7 +2,24 @@
 
 Ce guide permet de faire tourner Canopée avec **PostgreSQL installé directement sur le VPS**, sans Supabase. Connexion email/mot de passe et déconnexion fonctionnent correctement avec cette configuration.
 
-## 1. Installer PostgreSQL sur le VPS
+## Option rapide : script automatique
+
+Si le projet est à jour sur le VPS (avec `scripts/setup-postgres-vps.sh`) :
+
+```bash
+# Sur le VPS, une fois connecté en SSH
+cd /var/www/canopee
+git pull   # pour récupérer le script si besoin
+bash scripts/setup-postgres-vps.sh
+```
+
+Le script : installe PostgreSQL si besoin, te demande le mot de passe pour l’utilisateur `canopee`, crée la base, met à jour le `.env`, lance les migrations, crée l’admin `admin@canopee.be` / `admin`, build et redémarre PM2.
+
+---
+
+## Méthode manuelle
+
+### 1. Installer PostgreSQL sur le VPS
 
 ```bash
 sudo apt update
@@ -12,7 +29,7 @@ sudo systemctl start postgresql
 sudo systemctl status postgresql
 ```
 
-## 2. Créer la base et l’utilisateur
+### 2. Créer la base et l’utilisateur
 
 ```bash
 sudo -u postgres psql -c "
@@ -27,7 +44,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO canopee;
 
 Remplacez `VOTRE_MOT_DE_PASSE_ICI` par un mot de passe fort. Pour une configuration plus sécurisée, créez l’utilisateur sans mot de passe en ligne de commande et saisissez-le quand PostgreSQL le demande.
 
-## 3. Configurer le fichier .env sur le VPS
+### 3. Configurer le fichier .env sur le VPS
 
 Sur le VPS, dans `/var/www/canopee/.env`, utilisez une **seule** `DATABASE_URL` qui pointe vers PostgreSQL local (plus de Supabase) :
 
@@ -56,7 +73,7 @@ Générer un nouveau `NEXTAUTH_SECRET` si besoin :
 openssl rand -base64 32
 ```
 
-## 4. Appliquer les migrations Prisma
+### 4. Appliquer les migrations Prisma
 
 ```bash
 cd /var/www/canopee
@@ -65,7 +82,7 @@ npx prisma migrate deploy
 
 Si les migrations n’ont jamais été appliquées sur cette base, toutes les tables (users, classes, bookings, etc.) seront créées.
 
-## 5. Créer un utilisateur admin (email + mot de passe)
+### 5. Créer un utilisateur admin (email + mot de passe)
 
 Pour vous connecter avec **email / mot de passe** (pas seulement Google), il faut au moins un utilisateur avec `authProvider: 'local'` et un `passwordHash`. Utilisez le script fourni :
 
@@ -83,7 +100,7 @@ Par défaut (sans arguments), le script crée : `admin@yogastudio.fr` / `admin12
 
 Après la première connexion, changez le mot de passe (par exemple via la page profil ou en recréant l’admin avec un mot de passe fort).
 
-## 6. Rebuild et redémarrer l’application
+### 6. Rebuild et redémarrer l’application
 
 Après toute modification de `.env` ou du code, rebuild et redémarrage sont nécessaires :
 
@@ -94,7 +111,7 @@ pm2 restart canopee
 pm2 logs canopee --lines 30
 ```
 
-## 7. Vérifications
+### 7. Vérifications
 
 - **Connexion email/mot de passe** : aller sur `/auth/signin`, onglet « Connexion », saisir l’email et le mot de passe de l’admin créé.
 - **Déconnexion** : cliquer sur « Déconnexion » → vous devez être redirigé et ne plus être connecté.
