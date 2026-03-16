@@ -701,6 +701,18 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 **Résultat :** Le contenu de la page est maintenant entièrement reformulé, plus fluide et original, tout en conservant fidèlement le sens et les informations essentielles sur les saisons en Médecine Traditionnelle Chinoise.
 
+### Ajustements de formulation sur les titres des saisons (Mars 2026)
+
+- ✅ Correction des articles devant les saisons pour un français naturel : `LE PRINTEMPS`, `L&apos;ÉTÉ`, `L&apos;AUTOMNE`, `L&apos;HIVER` au lieu de formulations incorrectes comme `LE HIVER`.
+- ✅ Reformulation de la phrase d&apos;introduction de chaque saison : « Au printemps / Pendant l&apos;été / Pendant l&apos;automne / Pendant l&apos;hiver, l&apos;élément … prédomine » pour un ton plus fluide et pédagogique.
+
+### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
+
+- ✅ Ajout d&apos;un champ optionnel `eventDate` dans le modèle Prisma `News` pour dater explicitement une actualité (par ex. « samedi sans cours »).
+- ✅ Mise à jour de l&apos;API `/api/news` (POST/GET) et `/api/news/[id]` (PATCH) pour lire/écrire `eventDate` et trier les actualités d&apos;abord par `eventDate`, puis par `createdAt`.
+- ✅ Mise à jour de `NewsFormModal` pour permettre le choix d&apos;une date de l&apos;actualité via un champ `type="date"`.
+- ✅ Assouplissement du `NewsFeed` : le Fil d&apos;actualité affiche maintenant tous les cours à venir (date ≥ aujourd&apos;hui), même si la description est vide (le filtre qui exigeait une description non vide a été retiré).
+
 ### Correction de l'erreur 401 lors de la connexion (Décembre 2024)
 
 **Problème :** Erreur `POST https://canopee.be/api/auth/callback/credentials 401 (Unauthorized)` lors de la tentative de connexion avec `etibaliomecus@live.be`.

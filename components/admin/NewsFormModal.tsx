@@ -8,6 +8,7 @@ interface News {
   title: string
   content: string
   coverImage?: string | null
+  eventDate?: string | null
 }
 
 interface NewsFormModalProps {
@@ -21,22 +22,29 @@ export default function NewsFormModal({ news, isOpen, onClose }: NewsFormModalPr
     title: '',
     content: '',
     coverImage: '',
+    eventDate: '',
   })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
     if (news) {
+      const eventDate =
+        news.eventDate && news.eventDate !== ''
+          ? new Date(news.eventDate).toISOString().split('T')[0]
+          : ''
       setFormData({
         title: news.title,
         content: news.content,
         coverImage: news.coverImage || '',
+        eventDate,
       })
     } else {
       setFormData({
         title: '',
         content: '',
         coverImage: '',
+        eventDate: '',
       })
     }
     setError('')
@@ -52,6 +60,7 @@ export default function NewsFormModal({ news, isOpen, onClose }: NewsFormModalPr
         title: formData.title,
         content: formData.content,
         coverImage: formData.coverImage || null,
+        eventDate: formData.eventDate ? new Date(formData.eventDate).toISOString() : null,
       }
 
       const url = news ? `/api/news/${news.id}` : '/api/news'
@@ -141,6 +150,23 @@ export default function NewsFormModal({ news, isOpen, onClose }: NewsFormModalPr
                   }}
                 />
               )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-text-dark mb-2">
+                Date de l&apos;actualité / de l&apos;événement
+              </label>
+              <input
+                type="date"
+                value={formData.eventDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, eventDate: e.target.value })
+                }
+                className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+              />
+              <p className="mt-2 text-xs text-text-dark/60">
+                Par exemple, la date d&apos;un cours annulé ou d&apos;un événement à venir. Si vous ne renseignez rien, la date de création sera utilisée.
+              </p>
             </div>
 
             <div>

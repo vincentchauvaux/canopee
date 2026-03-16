@@ -73,6 +73,9 @@ export async function PATCH(
     if (body.title) updateData.title = body.title
     if (body.content) updateData.content = body.content
     if (body.coverImage !== undefined) updateData.coverImage = body.coverImage
+    if (body.eventDate !== undefined) {
+      updateData.eventDate = body.eventDate ? new Date(body.eventDate) : null
+    }
 
     const updatedNews = await prisma.news.update({
       where: { id: params.id },

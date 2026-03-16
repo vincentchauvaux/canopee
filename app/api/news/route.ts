@@ -22,9 +22,14 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [
+        {
+          eventDate: 'desc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
     })
 
     // Formater les données
@@ -63,7 +68,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { title, content, coverImage } = body
+    const { title, content, coverImage, eventDate } = body
 
     if (!title || !content) {
       return NextResponse.json(
@@ -81,6 +86,7 @@ export async function POST(request: NextRequest) {
         coverImage: coverImage || null,
         authorId: userId,
         viewCount: 0,
+        eventDate: eventDate ? new Date(eventDate) : undefined,
       },
       include: {
         author: {

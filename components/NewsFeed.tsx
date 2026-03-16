@@ -61,7 +61,6 @@ export default function NewsFeed() {
           const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate())
           return classDateOnly >= todayOnly
         })
-        .filter((cls: UpcomingClass) => cls.description && cls.description.trim() !== '')
         .sort((a: UpcomingClass, b: UpcomingClass) => {
           return new Date(a.date).getTime() - new Date(b.date).getTime()
         })

@@ -22,7 +22,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Bois",
     dates: "3 février – 15 avril 2025",
     description:
-      "Période d&apos;épanouissement et de croissance. La nature sort de sa torpeur hivernale et s&apos;anime progressivement. Les forces vitales remontent depuis les profondeurs, marquant le début d&apos;un cycle énergétique ascendant de type Yin.",
+      "Période d'épanouissement et de croissance. La nature sort de sa torpeur hivernale et s'anime progressivement. Les forces vitales remontent depuis les profondeurs, marquant le début d'un cycle énergétique ascendant de type Yin.",
     organ: "Foie",
     viscera: "Vésicule biliaire",
     color: "Verte",
@@ -38,7 +38,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Feu",
     dates: "5 mai – 18 juillet 2025",
     description:
-      "Moment d&apos;expression et de rayonnement maximal. Les forces vitales culminent, la lumière domine avec des journées étendues, tandis que la température s&apos;élève. Le règne végétal déploie toute sa splendeur et sa floraison.",
+      "Moment d'expression et de rayonnement maximal. Les forces vitales culminent, la lumière domine avec des journées étendues, tandis que la température s'élève. Le règne végétal déploie toute sa splendeur et sa floraison.",
     organ: "Cœur",
     viscera: "Intestin Grêle",
     color: "Rouge",
@@ -55,7 +55,7 @@ const seasons: MTCSeasonInfo[] = [
     dates:
       "16 janvier – 2 février, 16 avril – 4 mai, 19 juillet – 4 août, 19 octobre – 6 novembre 2025",
     description:
-      "Temps de mutation et de réorganisation. L&apos;élément Terre joue un rôle central dans les processus de métamorphose énergétique. Il facilite la transition harmonieuse entre une période qui s&apos;achève et celle qui s&apos;annonce.",
+      "Temps de mutation et de réorganisation. L'élément Terre joue un rôle central dans les processus de métamorphose énergétique. Il facilite la transition harmonieuse entre une période qui s'achève et celle qui s'annonce.",
     organ: "Rate",
     viscera: "Estomac",
     color: "Jaune",
@@ -71,7 +71,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Métal",
     dates: "5 août – 18 octobre 2025",
     description:
-      "Phase de changement et de ralentissement. Cette période s&apos;inscrit entre le pic énergétique estival et la quiétude hivernale. La durée du jour diminue, les conditions météorologiques se durcissent et le rythme naturel s&apos;apaise.",
+      "Phase de changement et de ralentissement. Cette période s'inscrit entre le pic énergétique estival et la quiétude hivernale. La durée du jour diminue, les conditions météorologiques se durcissent et le rythme naturel s'apaise.",
     organ: "Poumon",
     viscera: "Gros intestin",
     color: "Blanc",
@@ -87,7 +87,7 @@ const seasons: MTCSeasonInfo[] = [
     element: "Eau",
     dates: "7 novembre 2025 – 20 janvier 2026",
     description:
-      "Temps de repli et de ressourcement. Le monde naturel et le corps humain entrent dans une phase de repos profond. Cette période favorise le retour sur soi, l&apos;exploration des sentiments refoulés tels que l&apos;appréhension, ainsi que le développement de capacités intérieures comme la détermination.",
+      "Temps de repli et de ressourcement. Le monde naturel et le corps humain entrent dans une phase de repos profond. Cette période favorise le retour sur soi, l'exploration des sentiments refoulés tels que l'appréhension, ainsi que le développement de capacités intérieures comme la détermination.",
     organ: "Rein",
     viscera: "Vessie",
     color: "Noir",
@@ -134,15 +134,15 @@ export default function SaisonsMTCPage() {
             <p className="text-text-dark/80 mb-4">
               Le début du premier mois lunaire chinois se produit généralement
               entre la fin du mois de janvier et la mi-février, coïncidant avec
-              l&apos;équinoxe printanier 🍃
+              l'équinoxe printanier 🍃
             </p>
             <p className="text-text-dark/80 mb-4">
-              Cette différence provient de l&apos;utilisation d&apos;un système
-              calendaire luni-solaire combinant les cycles solaires ☀️ et
-              lunaires 🌕. Ce calendrier remonterait à l&apos;an 2697 avant
-              notre ère, élaboré grâce à l&apos;observation minutieuse des
-              astres, des variations climatiques, des cycles agricoles et de
-              l&apos;alternance jour-nuit par les anciens Chinois.
+              Cette différence provient de l'utilisation d'un système calendaire
+              luni-solaire combinant les cycles solaires ☀️ et lunaires 🌕. Ce
+              calendrier remonterait à l'an 2697 avant notre ère, élaboré grâce
+              à l'observation minutieuse des astres, des variations climatiques,
+              des cycles agricoles et de l'alternance jour-nuit par les anciens
+              Chinois.
             </p>
             <p className="text-text-dark/80 mb-4">
               La structure temporelle chinoise intègre donc simultanément les
@@ -159,7 +159,7 @@ export default function SaisonsMTCPage() {
             </h2>
             <p className="text-text-dark/80 mb-4">
               Selon la médecine traditionnelle chinoise, le passage entre deux
-              saisons ne peut s&apos;effectuer de manière abrupte en une seule
+              saisons ne peut s'effectuer de manière abrupte en une seule
               journée, contrairement à ce que suggèrent nos calendriers
               conventionnels.
             </p>
@@ -167,21 +167,20 @@ export default function SaisonsMTCPage() {
               Pour cette raison, la tradition chinoise a introduit une cinquième
               période appelée <strong>Intersaison</strong>. Cette phase
               représente un état de mutation et de réorganisation. Elle assure
-              l&apos;alignement avec ce qui émerge sans être encore pleinement
+              l'alignement avec ce qui émerge sans être encore pleinement
               manifesté. Elle constitue ainsi le pont permettant de sortir de
-              l&apos;hiver pour accueillir le printemps, de quitter le printemps
-              pour entrer dans l&apos;été, et ainsi de suite pour chaque
-              transition saisonnière.
+              l'hiver pour accueillir le printemps, de quitter le printemps pour
+              entrer dans l'été, et ainsi de suite pour chaque transition
+              saisonnière.
             </p>
             <p className="text-text-dark/80 mb-8">
-              La vision chinoise des saisons s&apos;appuie sur la théorie des
-              cinq éléments, également nommés cinq mouvements. Chaque élément
-              (Bois, Feu, Terre, Métal et Eau) se rattache à une saison
-              spécifique ainsi qu&apos;à une paire organe-viscère, déterminant
-              ainsi une fonction et un mouvement énergétiques particuliers. Sur
-              le plan thérapeutique, chaque période saisonnière entretient des
-              liens avec des correspondances corporelles, sensorielles et
-              affectives.
+              La vision chinoise des saisons s'appuie sur la théorie des cinq
+              éléments, également nommés cinq mouvements. Chaque élément (Bois,
+              Feu, Terre, Métal et Eau) se rattache à une saison spécifique
+              ainsi qu'à une paire organe-viscère, déterminant ainsi une
+              fonction et un mouvement énergétiques particuliers. Sur le plan
+              thérapeutique, chaque période saisonnière entretient des liens
+              avec des correspondances corporelles, sensorielles et affectives.
             </p>
           </div>
 
@@ -199,11 +198,17 @@ export default function SaisonsMTCPage() {
                   <div className="flex-1">
                     <h2 className="text-3xl font-serif font-bold text-text-dark mb-2">
                       {season.season === "Intersaison"
-                        ? "L&apos;INTERSAISON"
-                        : `LE ${season.season.toUpperCase()}`}{" "}
+                        ? "L'INTERSAISON"
+                        : season.season === "Printemps"
+                          ? "LE PRINTEMPS"
+                          : season.season === "Été"
+                            ? "L'ÉTÉ"
+                            : season.season === "Automne"
+                              ? "L'AUTOMNE"
+                              : "L'HIVER"}{" "}
                       – période{" "}
                       {season.season === "Printemps"
-                        ? "d&apos;épanouissement"
+                        ? "d'épanouissement"
                         : season.season === "Été"
                           ? "de rayonnement"
                           : season.season === "Intersaison"
@@ -214,8 +219,14 @@ export default function SaisonsMTCPage() {
                     </h2>
                     <p className="text-lg text-text-dark/70 mb-2">
                       {season.season === "Intersaison"
-                        ? "Durant l&apos;intersaison, l&apos;élément"
-                        : `Pendant le ${season.season.toLowerCase()}, l&apos;élément`}{" "}
+                        ? "Durant l'intersaison, l'élément"
+                        : season.season === "Printemps"
+                          ? "Au printemps, l'élément"
+                          : season.season === "Été"
+                            ? "Pendant l'été, l'élément"
+                            : season.season === "Automne"
+                              ? "Pendant l'automne, l'élément"
+                              : "Pendant l'hiver, l'élément"}{" "}
                       <strong>{season.element}</strong> prédomine
                     </p>
                     <p className="text-sm text-text-dark/60 font-medium">
@@ -309,7 +320,7 @@ export default function SaisonsMTCPage() {
                 <p className="text-text-dark/80 italic leading-relaxed">
                   Dans la Médecine Traditionnelle Chinoise,{" "}
                   {season.season === "Intersaison"
-                    ? "l&apos;intersaison"
+                    ? "l'intersaison"
                     : `le ${season.season.toLowerCase()}`}{" "}
                   se rattache à la paire organe-viscère formée par{" "}
                   {season.organ} et {season.viscera.toLowerCase()}.
@@ -320,23 +331,22 @@ export default function SaisonsMTCPage() {
 
           <div className="mt-12 bg-primary/10 rounded-lg p-8">
             <p className="text-text-dark/80 leading-relaxed mb-4">
-              L&apos;existence se caractérise par un mouvement perpétuel, et
-              l&apos;être humain doit trouver son équilibre en s&apos;accordant
-              avec le monde qui l&apos;entoure.
+              L'existence se caractérise par un mouvement perpétuel, et l'être
+              humain doit trouver son équilibre en s'accordant avec le monde qui
+              l'entoure.
             </p>
             <p className="text-text-dark/80 leading-relaxed mb-4">
               Vous pourriez vous interroger : « Pourquoi cette attention si
               particulière portée à ces cycles par la culture chinoise ? »
             </p>
             <p className="text-text-dark/80 leading-relaxed">
-              La réponse réside dans leur conception d&apos;un ordre universel
+              La réponse réside dans leur conception d'un ordre universel
               auquel nous participons tous. Chacun de nous forme une partie
-              intégrante d&apos;un ensemble plus vaste, tandis que
-              l&apos;univers entier réside également en nous (c&apos;est le
-              principe du tao). Cette interconnexion crée une dépendance
-              mutuelle entre tous les êtres et toutes les choses. C&apos;est ce
-              qui motive leur recherche constante de l&apos;équilibre et de
-              l&apos;harmonie.
+              intégrante d'un ensemble plus vaste, tandis que l'univers entier
+              réside également en nous (c'est le principe du tao). Cette
+              interconnexion crée une dépendance mutuelle entre tous les êtres
+              et toutes les choses. C'est ce qui motive leur recherche constante
+              de l'équilibre et de l'harmonie.
             </p>
           </div>
         </div>

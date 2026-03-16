@@ -84,6 +84,8 @@ model News {
   coverImage  String?
   viewCount   Int      @default(0)
   authorId    String
+  /// Date à laquelle l'événement ou l'actualité est censé se produire
+  eventDate   DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
