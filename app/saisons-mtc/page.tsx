@@ -119,7 +119,8 @@ export default function SaisonsMTCPage() {
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="pt-16 pb-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-serif font-bold text-text-dark mb-4">
             Les saisons en Énergétique Chinoise
@@ -349,6 +350,7 @@ export default function SaisonsMTCPage() {
               de l'équilibre et de l'harmonie.
             </p>
           </div>
+        </div>
         </div>
       </div>
       <Footer />
