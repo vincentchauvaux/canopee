@@ -17,15 +17,23 @@ export default function Header() {
   const isMonParcoursPage = pathname === "/mon-parcours";
   const isYinYogaPage = pathname === "/yin-yoga";
   const isFAQPage = pathname === "/faq";
+  const isSaisonsMTCPage = pathname === "/saisons-mtc";
   const shouldHaveWhiteBackground =
     isProfilePage ||
     isMonParcoursPage ||
     isYinYogaPage ||
     isFAQPage ||
+    isSaisonsMTCPage ||
     isScrolled;
 
   useEffect(() => {
-    if (isProfilePage || isMonParcoursPage || isYinYogaPage || isFAQPage) {
+    if (
+      isProfilePage ||
+      isMonParcoursPage ||
+      isYinYogaPage ||
+      isFAQPage ||
+      isSaisonsMTCPage
+    ) {
       setIsScrolled(true);
       return;
     }
@@ -36,7 +44,13 @@ export default function Header() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isProfilePage, isMonParcoursPage, isYinYogaPage, isFAQPage]);
+  }, [
+    isProfilePage,
+    isMonParcoursPage,
+    isYinYogaPage,
+    isFAQPage,
+    isSaisonsMTCPage,
+  ]);
 
   const displayName =
     session?.user?.name || (session?.user as any)?.firstName || "Utilisateur";
