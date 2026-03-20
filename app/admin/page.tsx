@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Calendar, Newspaper, Users, BarChart3, Plus } from 'lucide-react'
+import { Calendar, Newspaper, Users } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AdminDashboard() {
@@ -13,7 +13,6 @@ export default function AdminDashboard() {
     classes: 0,
     news: 0,
     users: 0,
-    bookings: 0,
   })
   const [loading, setLoading] = useState(true)
 
@@ -36,39 +35,27 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const [classesRes, newsRes, usersRes, bookingsRes] = await Promise.all([
+      const [classesRes, newsRes, usersRes] = await Promise.all([
         fetch('/api/classes', { credentials: 'include' }),
         fetch('/api/news', { credentials: 'include' }),
         fetch('/api/admin/users', { credentials: 'include' }),
-        fetch('/api/admin/bookings', { credentials: 'include' }),
       ])
 
       const classes = await classesRes.json()
       const news = await newsRes.json()
       
-      // Gérer les erreurs 403 pour les routes admin
       let users = { users: [] }
-      let bookings = { bookings: [] }
-      
+
       if (usersRes.ok) {
         users = await usersRes.json()
       } else if (usersRes.status === 403) {
-        // Utilisateur non admin, ignorer silencieusement
         console.debug('Accès admin refusé pour les utilisateurs')
-      }
-      
-      if (bookingsRes.ok) {
-        bookings = await bookingsRes.json()
-      } else if (bookingsRes.status === 403) {
-        // Utilisateur non admin, ignorer silencieusement
-        console.debug('Accès admin refusé pour les réservations')
       }
 
       setStats({
         classes: Array.isArray(classes) ? classes.length : 0,
         news: news.news ? news.news.length : 0,
         users: users.users ? users.users.length : 0,
-        bookings: bookings.bookings ? bookings.bookings.length : 0,
       })
     } catch (error) {
       console.error('Error fetching stats:', error)
@@ -103,7 +90,7 @@ export default function AdminDashboard() {
 
         <div className="flex flex-col gap-8">
         {/* Statistiques — sous les actions sur mobile (order) */}
-        <div className="order-2 md:order-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="order-2 md:order-1 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-card p-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
@@ -131,16 +118,6 @@ export default function AdminDashboard() {
                 <p className="text-3xl font-bold text-text-dark">{stats.users}</p>
               </div>
               <Users className="w-12 h-12 text-primary" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-card p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-text-dark/60 text-sm mb-1">Réservations</p>
-                <p className="text-3xl font-bold text-text-dark">{stats.bookings}</p>
-              </div>
-              <BarChart3 className="w-12 h-12 text-secondary" />
             </div>
           </div>
         </div>

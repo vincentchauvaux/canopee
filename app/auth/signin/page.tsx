@@ -1,21 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function SignIn() {
-  const router = useRouter();
-  const { update: updateSession } = useSession();
-  const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    firstName: "",
-    lastName: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,53 +19,20 @@ export default function SignIn() {
     setLoading(true);
 
     try {
-      if (isLogin) {
-        const result = await signIn("credentials", {
-          email: formData.email,
-          password: formData.password,
-          redirect: false,
-        });
+      const result = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
 
-        if (result?.error) {
-          setError("Email ou mot de passe incorrect");
-          setLoading(false);
-          return;
-        }
-
-        // Si la connexion réussit, rediriger directement
-        // La session sera créée côté serveur via le cookie
-        // Utiliser window.location pour forcer un rechargement complet
-        window.location.href = "/";
-      } else {
-        // Inscription - à implémenter avec une API route
-        const response = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          // Auto-login après inscription
-          const result = await signIn("credentials", {
-            email: formData.email,
-            password: formData.password,
-            redirect: false,
-          });
-
-          if (result?.error) {
-            setError("Erreur lors de la connexion automatique");
-            setLoading(false);
-            return;
-          }
-
-          // Si la connexion réussit, rediriger directement
-          window.location.href = "/";
-        } else {
-          const data = await response.json();
-          setError(data.error || "Erreur lors de l'inscription");
-        }
+      if (result?.error) {
+        setError("Email ou mot de passe incorrect");
+        setLoading(false);
+        return;
       }
-    } catch (err) {
+
+      window.location.href = "/";
+    } catch {
       setError("Une erreur est survenue");
     } finally {
       setLoading(false);
@@ -88,12 +48,10 @@ export default function SignIn() {
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-card shadow-lg">
         <div>
           <h2 className="text-center text-3xl font-serif font-bold text-text-dark">
-            {isLogin ? "Connexion" : "Inscription"}
+            Connexion
           </h2>
           <p className="mt-2 text-center text-sm text-text-dark/60">
-            {isLogin
-              ? "Connectez-vous à votre compte"
-              : "Créez votre compte pour commencer"}
+            Connectez-vous à votre compte
           </p>
         </div>
 
@@ -104,49 +62,6 @@ export default function SignIn() {
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {!isLogin && (
-            <>
-              <div>
-                <label
-                  htmlFor="firstName"
-                  className="block text-sm font-medium text-text-dark mb-2"
-                >
-                  Prénom
-                </label>
-                <input
-                  id="firstName"
-                  type="text"
-                  autoComplete="given-name"
-                  required={!isLogin}
-                  value={formData.firstName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, firstName: e.target.value })
-                  }
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="lastName"
-                  className="block text-sm font-medium text-text-dark mb-2"
-                >
-                  Nom
-                </label>
-                <input
-                  id="lastName"
-                  type="text"
-                  autoComplete="family-name"
-                  required={!isLogin}
-                  value={formData.lastName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, lastName: e.target.value })
-                  }
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
-                />
-              </div>
-            </>
-          )}
-
           <div>
             <label
               htmlFor="email"
@@ -182,7 +97,7 @@ export default function SignIn() {
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                autoComplete={isLogin ? "current-password" : "new-password"}
+                autoComplete="current-password"
                 required
                 value={formData.password}
                 onChange={(e) =>
@@ -209,11 +124,7 @@ export default function SignIn() {
             disabled={loading}
             className="w-full flex justify-center py-3 px-4 border border-transparent rounded-button text-white bg-primary hover:bg-primary-light focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading
-              ? "Chargement..."
-              : isLogin
-              ? "Se connecter"
-              : "S'inscrire"}
+            {loading ? "Chargement..." : "Se connecter"}
           </button>
         </form>
 
@@ -231,6 +142,7 @@ export default function SignIn() {
 
           <div className="mt-6 grid grid-cols-2 gap-3">
             <button
+              type="button"
               onClick={() => handleOAuth("google")}
               className="w-full inline-flex justify-center py-3 px-4 border border-gray rounded-button bg-white text-sm font-medium text-text-dark hover:bg-accent"
             >
@@ -255,6 +167,7 @@ export default function SignIn() {
               Google
             </button>
             <button
+              type="button"
               onClick={() => handleOAuth("facebook")}
               className="w-full inline-flex justify-center py-3 px-4 border border-gray rounded-button bg-white text-sm font-medium text-text-dark hover:bg-accent"
             >
@@ -264,20 +177,6 @@ export default function SignIn() {
               Facebook
             </button>
           </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => {
-              setIsLogin(!isLogin);
-              setError("");
-            }}
-            className="text-primary hover:text-primary-light font-medium"
-          >
-            {isLogin
-              ? "Pas encore de compte ? S'inscrire"
-              : "Déjà un compte ? Se connecter"}
-          </button>
         </div>
       </div>
     </div>

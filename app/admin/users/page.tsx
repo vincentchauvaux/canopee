@@ -17,9 +17,6 @@ interface User {
   role: string
   createdAt: string
   lastLogin?: string | null
-  _count: {
-    bookings: number
-  }
 }
 
 export default function AdminUsers() {
@@ -83,7 +80,7 @@ export default function AdminUsers() {
             Gestion des Utilisateurs
           </h1>
           <p className="text-text-dark/60">
-            Consultez la liste des membres et leurs statistiques
+            Consultez la liste des membres
           </p>
         </div>
 
@@ -101,7 +98,6 @@ export default function AdminUsers() {
                     <th className="px-6 py-4 text-left text-sm font-semibold text-text-dark">Email</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-text-dark">Connexion</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-text-dark">Inscription</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-text-dark">Statistiques</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-text-dark">Rôle</th>
                   </tr>
                 </thead>
@@ -145,11 +141,6 @@ export default function AdminUsers() {
                       </td>
                       <td className="px-6 py-4 text-text-dark">
                         {format(new Date(user.createdAt), 'd MMM yyyy', { locale: fr })}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-text-dark/60">
-                          <div>{user._count.bookings} réservations</div>
-                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <span

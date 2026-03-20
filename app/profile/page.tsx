@@ -4,10 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
-  User,
   Mail,
-  Calendar,
-  MessageCircle,
   Settings,
   Shield,
   Camera,
@@ -31,25 +28,10 @@ interface UserProfile {
   lastLogin?: string | null;
 }
 
-interface Booking {
-  id: string;
-  bookedAt: string;
-  class: {
-    id: string;
-    title: string;
-    type: string;
-    date: string;
-    startTime: string;
-    endTime: string;
-    instructor: string;
-  };
-}
-
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -83,10 +65,6 @@ export default function ProfilePage() {
     if (session && status === "authenticated") {
       console.log("[Profile] Session found, loading profile", { email: session.user?.email });
       fetchProfile();
-      // Ne charger les réservations que pour les admins
-      if ((session.user as any)?.role === "admin") {
-        fetchBookings();
-      }
     }
   }, [session, status, router]);
 
@@ -139,26 +117,6 @@ export default function ProfilePage() {
       );
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchBookings = async () => {
-    try {
-      const response = await fetch("/api/bookings", {
-        credentials: "include",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        // Vérifier que c'est bien un tableau
-        if (Array.isArray(data)) {
-          setBookings(data);
-        } else {
-          setBookings([]);
-        }
-      }
-    } catch (err) {
-      console.error(err);
-      setBookings([]);
     }
   };
 
@@ -521,92 +479,6 @@ export default function ProfilePage() {
                 )}
               </div>
             </div>
-
-            {/* Historique des réservations - Admin uniquement */}
-            {isAdmin && (
-              <div className="bg-white rounded-card shadow-lg p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-serif font-bold text-text-dark flex items-center gap-2">
-                    <Calendar className="w-6 h-6 text-primary" />
-                    Mes Réservations
-                  </h3>
-                  <span className="text-text-dark/60">
-                    {bookings.length} réservation
-                    {bookings.length > 1 ? "s" : ""}
-                  </span>
-                </div>
-
-                {bookings.length === 0 ? (
-                  <div className="text-center py-12">
-                    <Calendar className="w-16 h-16 text-text-dark/20 mx-auto mb-4" />
-                    <p className="text-text-dark/60 mb-4">
-                      Aucune réservation pour le moment
-                    </p>
-                    <Link
-                      href="/#agenda"
-                      className="inline-block px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
-                    >
-                      Voir l&apos;agenda
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {bookings.map((booking) => (
-                      <div
-                        key={booking.id}
-                        className="border border-gray rounded-card p-4 hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-lg text-text-dark mb-2">
-                              {booking.class.title}
-                            </h4>
-                            <div className="space-y-1 text-sm text-text-dark/60">
-                              <p>
-                                <Calendar className="w-4 h-4 inline mr-1" />
-                                {format(
-                                  new Date(booking.class.date),
-                                  "EEEE d MMMM yyyy",
-                                  { locale: fr }
-                                )}
-                              </p>
-                              <p>
-                                {format(
-                                  new Date(booking.class.startTime),
-                                  "HH:mm"
-                                )}{" "}
-                                -{" "}
-                                {format(
-                                  new Date(booking.class.endTime),
-                                  "HH:mm"
-                                )}
-                              </p>
-                              <p>Professeur: {booking.class.instructor}</p>
-                              <p className="text-xs text-text-dark/40">
-                                Réservé le{" "}
-                                {format(
-                                  new Date(booking.bookedAt),
-                                  "d MMM yyyy à HH:mm",
-                                  { locale: fr }
-                                )}
-                              </p>
-                            </div>
-                          </div>
-                          <span
-                            className="px-3 py-1 rounded-full text-sm font-medium text-white"
-                            style={{
-                              backgroundColor: "#264E36",
-                            }}
-                          >
-                            {booking.class.type}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
           </div>
 
           {/* Colonne latérale */}

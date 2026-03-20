@@ -124,24 +124,12 @@ export default function Header() {
                 </button>
               </>
             ) : (
-              <>
-                <button
-                  onClick={() => signIn()}
-                  className={`px-4 py-2 transition-colors font-medium ${
-                    shouldHaveWhiteBackground
-                      ? "text-text-dark hover:text-primary"
-                      : "text-white hover:text-accent"
-                  }`}
-                >
-                  Se connecter
-                </button>
-                <button
-                  onClick={() => signIn()}
-                  className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
-                >
-                  S&apos;inscrire
-                </button>
-              </>
+              <button
+                onClick={() => signIn()}
+                className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
+              >
+                Se connecter
+              </button>
             )}
           </div>
 
@@ -213,30 +201,15 @@ export default function Header() {
                 </button>
               </div>
             ) : (
-              <div className="flex flex-col space-y-3">
-                <button
-                  onClick={() => {
-                    signIn();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`px-4 py-2 transition-colors text-left ${
-                    shouldHaveWhiteBackground
-                      ? "text-text-dark hover:text-primary"
-                      : "text-white hover:text-accent"
-                  }`}
-                >
-                  Se connecter
-                </button>
-                <button
-                  onClick={() => {
-                    signIn();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors text-left"
-                >
-                  S&apos;inscrire
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  signIn();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors text-left w-full"
+              >
+                Se connecter
+              </button>
             )}
           </div>
         )}

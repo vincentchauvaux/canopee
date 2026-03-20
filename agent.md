@@ -27,8 +27,8 @@
 4. **Authentification**
    - Configuration NextAuth.js
    - Support Email/Password, Google OAuth, Facebook OAuth
-   - Page de connexion/inscription
-   - API route pour l'inscription
+   - Page de connexion (inscription compte masquée côté front depuis mars 2026)
+   - API route `register` conservée pour usage backend / scripts
    - Types TypeScript pour NextAuth
    - Gestion optimisée de Prisma (singleton pattern)
 
@@ -58,8 +58,8 @@
    - [x] Dashboard admin avec statistiques
    - [x] Gestion des actualités (CRUD complet)
    - [x] Gestion de l'agenda (CRUD complet)
-   - [x] Gestion des utilisateurs (liste et statistiques)
-   - [x] Statistiques de fréquentation (réservations, vues)
+   - [x] Gestion des utilisateurs (liste ; compteur de réservations retiré du front mars 2026)
+   - [x] API réservations / admin bookings : toujours en place pour usage backend ; plus d&apos;affichage des stats réservations sur le dashboard admin côté front
 
 4. **Profil utilisateur**
 
@@ -223,13 +223,13 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/page.tsx` - Page d'accueil one-page
 - `app/globals.css` - Styles globaux et polices
 - `app/providers.tsx` - Providers React (NextAuth)
-- `app/auth/signin/page.tsx` - Page de connexion/inscription
+- `app/auth/signin/page.tsx` - Connexion uniquement (email / mot de passe + OAuth Google / Facebook). Plus de formulaire ni de bascule « créer un compte » ; l&apos;API `POST /api/auth/register` reste disponible hors UI
 - `app/saisons-mtc/page.tsx` - Page dédiée aux saisons en Médecine Traditionnelle Chinoise avec toutes les informations détaillées
 - `app/yin-yoga/page.tsx` - Page dédiée au Yin Yoga de Canopée avec présentation complète : origine, pratique, bienfaits et informations pratiques
 - `app/mon-parcours/page.tsx` - Page "Carol Nelissen" présentant son parcours de formation (Viniyoga, Yin Yoga), sa philosophie et ses certifications. La première image est affichée en cercle parfait (rounded-full) et la deuxième image occupe toute la hauteur de sa colonne.
 - `app/faq/page.tsx` - Page FAQ présentant les informations sur les cours de Yin Yoga : types de cours (individuel ou collectif, max 3 personnes), horaires (individuel selon convenance, collectif vendredi 18h-19h), prix (individuel 15€, collectif 12€) et modalités (individuel adapté aux besoins, collectif thématiques annoncées)
-- `app/profile/page.tsx` - Page de profil utilisateur permettant de consulter et modifier les informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). La photo de profil peut être modifiée en uploadant un fichier image (max 5MB) ou en entrant une URL. Pour les utilisateurs admin uniquement : affichage de la section "Mes Réservations" et de la section "Actions rapides" (liens vers l'agenda et les actualités)
-- `app/admin/page.tsx` - Dashboard administrateur
+- `app/profile/page.tsx` - Page de profil : informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). Photo via upload (max 5MB) ou URL. **Plus de section réservations / appel à `/api/bookings` côté front** (mars 2026). Admins : section « Actions rapides » (agenda, actualités, panel admin)
+- `app/admin/page.tsx` - Dashboard administrateur (stats cours, actualités, utilisateurs — sans carte réservations depuis mars 2026)
 - `app/admin/classes/page.tsx` - Gestion des cours
 - `app/admin/news/page.tsx` - Gestion des actualités
 - `app/admin/users/page.tsx` - Gestion des utilisateurs
@@ -250,7 +250,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Composants
 
-- `components/Header.tsx` - Header sticky avec transition et adaptation automatique des couleurs de texte selon le background (blanc sur fond transparent, couleurs sombres sur fond blanc). Sur les pages `/profile`, `/mon-parcours`, `/yin-yoga` et `/faq`, le header a un fond blanc dès le départ (pas d'effet de transparence). Le menu contient un lien vers "Mon parcours" (`/mon-parcours`) accessible depuis le menu desktop et mobile
+- `components/Header.tsx` - Header sticky (couleurs selon le fond). Fond blanc dès le départ sur `/profile`, `/mon-parcours`, `/yin-yoga`, `/faq`, `/saisons-mtc`. Lien « Mon parcours ». Visiteurs non connectés : un seul bouton **Se connecter** (plus de « S&apos;inscrire » depuis mars 2026)
 - `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
 - `components/Agenda.tsx` - Section agenda interactive (semaine / mois), cours avec horaires et intervenant ; sans affichage des places ni boutons de réservation. Visible pour les membres connectés. **Administrateurs** : clic sur un jour ouvre la création de cours (`ClassFormModal`) avec la date du jour présélectionnée.
 - `components/NewsFeed.tsx` - Fil d'actualité (cours à venir + actualités datées). Visible uniquement pour les utilisateurs connectés ; si la timeline est vide après chargement, la section n'est pas affichée (pas de carte « vide »). Pas d'actualité factice quand il n'y a aucune news
@@ -720,6 +720,8 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ `app/admin/page.tsx` : sur mobile, la grille « Actions rapides » (liens Cours, Actualités, Utilisateurs) est affichée au-dessus des cartes de statistiques (`order-1` / `order-2` avec `md:order-*`).
 - ✅ Agenda d&apos;accueil : suppression du compteur participants et des actions Réserver / Annuler / Complet / Connectez-vous ; plus d&apos;appel à `/api/bookings` depuis `Agenda.tsx`. Même logique d&apos;affichage des participants retirée des cartes « cours » dans `NewsFeed.tsx`.
 - ✅ **Admin — création de cours depuis l&apos;agenda d&apos;accueil** : pour les utilisateurs `role === admin`, un clic sur une case jour (vue semaine ou mois) ouvre `ClassFormModal` avec le champ date prérempli (`initialDate` en `YYYY-MM-DD`). Réutilise le même formulaire que `/admin/classes`. Les cartes cours existantes utilisent `stopPropagation` pour ne pas ouvrir le formulaire en cliquant sur un cours.
+- ✅ **Réservations : retrait complet du front** (mars 2026) : plus d&apos;appel à `/api/bookings` ni `/api/admin/bookings` depuis les composants React ; suppression de « Mes Réservations » sur le profil, de la carte « Réservations » sur le dashboard admin et de la colonne « Statistiques » (nombre de réservations) dans la liste utilisateurs admin. Les routes API restent disponibles pour un traitement côté serveur / outils internes.
+- ✅ **Inscription compte : masquée côté front** (mars 2026) : suppression du bouton « S&apos;inscrire » dans le header (desktop et mobile) ; page `/auth/signin` limitée à la connexion (credentials + OAuth). Pas de champs prénom/nom ni d&apos;appel à `/api/auth/register` depuis l&apos;UI. Les nouveaux comptes se font en back (API register, scripts, ou première connexion OAuth selon config NextAuth).
 
 ### Correction de l'erreur 401 lors de la connexion (Décembre 2024)
 
