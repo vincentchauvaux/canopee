@@ -281,10 +281,7 @@ export default function Footer() {
                   href="/saisons-mtc"
                   className="text-text-light/80 hover:text-primary transition-colors"
                 >
-                  Saisons MTC{" "}
-                  <span className="text-xs text-text-light/60">
-                    - Médecine Traditionnelle Chinoise
-                  </span>
+                  Saisons en Médecine Traditionnelle Chinoise
                 </Link>
               </li>
             </ul>

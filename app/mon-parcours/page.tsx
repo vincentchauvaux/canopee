@@ -141,7 +141,7 @@ export default function MonParcoursPage() {
                     </p>
                     <div className="p-6 mt-6">
                       <p className="text-lg text-text-dark/80 leading-relaxed italic">
-                        Bref, j&apos;ai entre autres trouvé, dans le Yoga, une
+                        Bref, j&apos;ai entre autre trouvé, dans le Yoga, une
                         philosophie de vie qui me correspondait depuis toujours
                         :{" "}
                         <strong className="text-primary">

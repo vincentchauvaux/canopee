@@ -140,7 +140,7 @@ export default function Hero() {
       {/* Contenu */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-6 animate-fade-in">
-          Sudio Canopée
+          Studio Canopée
         </h1>
         <p className="text-xl md:text-2xl mb-8 font-light">Bienvenue</p>
 
