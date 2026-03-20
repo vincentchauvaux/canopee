@@ -25,7 +25,7 @@ export default function Hero() {
   const [currentQuote, setCurrentQuote] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
-    new Array(heroImages.length).fill(false)
+    new Array(heroImages.length).fill(false),
   );
   const [animatedImages, setAnimatedImages] = useState<Set<number>>(new Set());
   const [isMounted, setIsMounted] = useState(false);
@@ -110,8 +110,8 @@ export default function Hero() {
                   isActive
                     ? kenBurnsClass
                     : hasBeenAnimated
-                    ? kenBurnsFinalClass
-                    : ""
+                      ? kenBurnsFinalClass
+                      : ""
                 }`}
               >
                 <Image
@@ -140,11 +140,9 @@ export default function Hero() {
       {/* Contenu */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-6 animate-fade-in">
-          Bienvenue à Canopée
+          Sudio Canopée
         </h1>
-        <p className="text-xl md:text-2xl mb-8 font-light">
-          Trouvez votre équilibre, votre paix intérieure
-        </p>
+        <p className="text-xl md:text-2xl mb-8 font-light">Bienvenue</p>
 
         {/* Citation */}
         {isMounted && currentQuote && (

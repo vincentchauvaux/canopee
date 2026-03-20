@@ -39,15 +39,6 @@ export default function MonParcoursPage() {
                     de transmettre s&apos;est imposée.
                   </p>
                 </div>
-                <div className="relative w-full aspect-square max-w-md mx-auto md:max-w-none rounded-full overflow-hidden shadow-lg">
-                  <Image
-                    src="/images/Informations/Carol_Nelissen_Yoga.png"
-                    alt="Carol Nelissen"
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
               </div>
             </section>
 
@@ -76,7 +67,7 @@ export default function MonParcoursPage() {
                       <p className="text-text-dark/80 leading-relaxed mb-4">
                         J&apos;ai entamé une formation de{" "}
                         <strong>500 heures</strong>, suivie d&apos;une post
-                        formation à l&apos;école de{" "}
+                        formation, à l&apos;école de{" "}
                         <strong>Claude Maréchal (E.T.Y.)</strong> afin
                         d&apos;obtenir le certificat de professeur de yoga.
                       </p>
@@ -150,7 +141,7 @@ export default function MonParcoursPage() {
                     </p>
                     <div className="p-6 mt-6">
                       <p className="text-lg text-text-dark/80 leading-relaxed italic">
-                        Bref, j&apos;ai, entre autres, trouvé, dans le Yoga, une
+                        Bref, j&apos;ai entre autres trouvé, dans le Yoga, une
                         philosophie de vie qui me correspondait depuis toujours
                         :{" "}
                         <strong className="text-primary">

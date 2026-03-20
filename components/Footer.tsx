@@ -153,7 +153,7 @@ export default function Footer() {
     const today = new Date();
     const dayOfYear = Math.floor(
       (today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) /
-        86400000
+        86400000,
     );
     const quotes = [
       "La paix vient de l'intérieur. Ne la cherchez pas à l'extérieur.",
@@ -175,9 +175,12 @@ export default function Footer() {
     updateSpiritualInfo();
 
     // Mettre à jour toutes les heures pour la phase lunaire
-    const hourlyInterval = setInterval(() => {
-      updateSpiritualInfo();
-    }, 60 * 60 * 1000); // 1 heure
+    const hourlyInterval = setInterval(
+      () => {
+        updateSpiritualInfo();
+      },
+      60 * 60 * 1000,
+    ); // 1 heure
 
     // Mettre à jour chaque jour à minuit pour la saison MTC et la citation
     const scheduleDailyUpdate = () => {
@@ -190,9 +193,12 @@ export default function Footer() {
       const dailyTimeout = setTimeout(() => {
         updateSpiritualInfo();
         // Ensuite, mettre à jour toutes les 24 heures
-        dailyIntervalRef.current = setInterval(() => {
-          updateSpiritualInfo();
-        }, 24 * 60 * 60 * 1000);
+        dailyIntervalRef.current = setInterval(
+          () => {
+            updateSpiritualInfo();
+          },
+          24 * 60 * 60 * 1000,
+        );
       }, msUntilMidnight);
 
       return dailyTimeout;
@@ -275,7 +281,10 @@ export default function Footer() {
                   href="/saisons-mtc"
                   className="text-text-light/80 hover:text-primary transition-colors"
                 >
-                  Saisons MTC
+                  Saisons MTC{" "}
+                  <span className="text-xs text-text-light/60">
+                    - Médecine Traditionnelle Chinoise
+                  </span>
                 </Link>
               </li>
             </ul>
@@ -317,12 +326,6 @@ export default function Footer() {
                   <p className="text-xs text-text-light/60 italic mb-2">
                     {mtcSeason.description}
                   </p>
-                  <Link
-                    href="/saisons-mtc"
-                    className="text-xs text-text-light/60 hover:text-primary transition-colors underline"
-                  >
-                    En savoir plus sur les saisons MTC
-                  </Link>
                 </div>
               ) : (
                 <div>

@@ -151,7 +151,7 @@ export default function PracticalInfo() {
             <h3 className="text-xl font-serif font-semibold mb-3">Tarifs</h3>
             <ul className="text-text-dark/70 space-y-2">
               <li>
-                <strong>Cours individuel :</strong> 15 euros / séance
+                <strong>Cours individuel :</strong> 20 euros / séance
               </li>
               <li>
                 <strong>Cours collectif :</strong> 12 euros / séance

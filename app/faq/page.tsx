@@ -1,6 +1,6 @@
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import { HelpCircle, Users, Clock, Euro, BookOpen } from 'lucide-react'
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { HelpCircle, Users, Clock, Euro, BookOpen } from "lucide-react";
 
 export default function FAQPage() {
   return (
@@ -47,7 +47,9 @@ export default function FAQPage() {
                         Types de cours
                       </h3>
                       <p className="text-lg text-text-dark/80 leading-relaxed">
-                        Les cours de Yin Yoga sont proposés <strong>en individuel ou en collectif</strong> (maximum 3 personnes par séance).
+                        Les cours de Yin Yoga sont proposés{" "}
+                        <strong>en individuel ou en collectif</strong> (maximum
+                        3 personnes par séance).
                       </p>
                     </div>
                   </div>
@@ -63,10 +65,12 @@ export default function FAQPage() {
                       </h3>
                       <ul className="text-lg text-text-dark/80 leading-relaxed space-y-3">
                         <li>
-                          <strong>Cours individuel :</strong> selon convenance des deux parties
+                          <strong>Cours individuel :</strong> selon convenance
+                          des deux parties
                         </li>
                         <li>
-                          <strong>Cours collectif :</strong> vendredi de 18h à 19h
+                          <strong>Cours collectif :</strong> vendredi de 18h à
+                          19h
                         </li>
                       </ul>
                     </div>
@@ -83,7 +87,7 @@ export default function FAQPage() {
                       </h3>
                       <ul className="text-lg text-text-dark/80 leading-relaxed space-y-3">
                         <li>
-                          <strong>Cours individuel :</strong> 15 euros / séance
+                          <strong>Cours individuel :</strong> 20 euros / séance
                         </li>
                         <li>
                           <strong>Cours collectif :</strong> 12 euros / séance
@@ -103,10 +107,12 @@ export default function FAQPage() {
                       </h3>
                       <ul className="text-lg text-text-dark/80 leading-relaxed space-y-3">
                         <li>
-                          <strong>Cours individuel :</strong> séance adaptée aux besoins formulés
+                          <strong>Cours individuel :</strong> séance adaptée aux
+                          besoins formulés
                         </li>
                         <li>
-                          <strong>Cours collectif :</strong> séances thématiques annoncées sur le site
+                          <strong>Cours collectif :</strong> séances thématiques
+                          annoncées sur le site
                         </li>
                       </ul>
                     </div>
@@ -119,6 +125,5 @@ export default function FAQPage() {
       </div>
       <Footer />
     </main>
-  )
+  );
 }
-
