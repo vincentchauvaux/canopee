@@ -17,15 +17,15 @@ function AuthErrorContent() {
   const message = messages[error] || messages.Default;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-accent py-12 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-card shadow-lg text-center">
-        <h1 className="text-2xl font-serif font-bold text-text-dark mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-surface py-12 px-4">
+      <div className="max-w-md w-full bg-surface-container-lowest p-8 rounded-xl shadow-lg ring-1 ring-outline-variant/15 text-center">
+        <h1 className="text-2xl font-serif font-bold text-primary mb-4">
           Connexion impossible
         </h1>
-        <p className="text-text-dark/80 mb-6">{message}</p>
+        <p className="text-on-surface-variant font-sans mb-6">{message}</p>
         <Link
           href="/auth/signin"
-          className="inline-block w-full py-3 px-4 rounded-button bg-primary text-white hover:bg-primary-light transition-colors"
+          className="inline-block w-full py-3 px-4 rounded-full bg-primary text-on-primary font-sans font-semibold text-sm hover:opacity-90 transition-opacity"
         >
           Réessayer
         </Link>
@@ -37,9 +37,9 @@ function AuthErrorContent() {
 export default function AuthErrorPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-accent py-12 px-4">
-        <div className="max-w-md w-full bg-white p-8 rounded-card shadow-lg text-center">
-          <p className="text-text-dark/80">Chargement...</p>
+      <div className="min-h-screen flex items-center justify-center bg-surface py-12 px-4">
+        <div className="max-w-md w-full bg-surface-container-lowest p-8 rounded-xl ring-1 ring-outline-variant/15 text-center">
+          <p className="text-on-surface-variant font-sans">Chargement...</p>
         </div>
       </div>
     }>

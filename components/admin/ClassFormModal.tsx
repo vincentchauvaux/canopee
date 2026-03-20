@@ -163,21 +163,22 @@ export default function ClassFormModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] overflow-y-auto">
       <div
         className="fixed inset-0 bg-black/50 transition-opacity"
         onClick={onClose}
       />
 
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white rounded-card shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="sticky top-0 bg-white border-b border-gray p-6 flex items-center justify-between z-10">
-            <h2 className="text-2xl font-serif font-bold text-text-dark">
+        <div className="relative bg-surface-container-lowest rounded-xl shadow-lg ring-1 ring-outline-variant/15 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="sticky top-0 bg-surface-container-lowest/95 backdrop-blur-sm border-b border-outline-variant/30 p-6 flex items-center justify-between z-10">
+            <h2 className="text-2xl font-serif font-bold text-primary">
               {classItem ? "Modifier le cours" : "Nouveau cours"}
             </h2>
             <button
+              type="button"
               onClick={onClose}
-              className="p-2 hover:bg-accent rounded-button transition-colors"
+              className="p-2 rounded-full hover:bg-surface-container-low text-on-surface transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
@@ -185,13 +186,13 @@ export default function ClassFormModal({
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-button">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl font-sans text-sm">
                 {error}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-text-dark mb-2">
+              <label className="block text-sm font-medium text-on-surface mb-2">
                 Titre *
               </label>
               <input
@@ -201,14 +202,14 @@ export default function ClassFormModal({
                 onChange={(e) =>
                   setFormData({ ...formData, title: e.target.value })
                 }
-                className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-text-dark mb-2">
+              <label className="block text-sm font-medium text-on-surface mb-2">
                 Description
-                <span className="text-xs text-text-dark/60 ml-2 font-normal">
+                <span className="text-xs text-on-surface-variant ml-2 font-normal">
                   (Thème du cours, exercices, lien avec la MTC, etc. - Visible
                   dans le fil d&apos;actualité)
                 </span>
@@ -220,20 +221,20 @@ export default function ClassFormModal({
                 }
                 rows={6}
                 placeholder="Décrivez le thème du cours, les exercices prévus, le lien avec la médecine traditionnelle chinoise, ou toute autre information pertinente..."
-                className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary resize-y"
+                className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 resize-y"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-dark mb-2">
+                <label className="block text-sm font-medium text-on-surface mb-2">
                   Type de cours *
                 </label>
                 <select
                   required
                   value={formData.type}
                   onChange={(e) => handleTypeChange(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                  className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                 >
                   {CLASS_TYPES.map((type) => (
                     <option key={type} value={type}>
@@ -244,7 +245,7 @@ export default function ClassFormModal({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-dark mb-2">
+                <label className="block text-sm font-medium text-on-surface mb-2">
                   Couleur
                 </label>
                 <input
@@ -253,14 +254,14 @@ export default function ClassFormModal({
                   onChange={(e) =>
                     setFormData({ ...formData, color: e.target.value })
                   }
-                  className="w-full h-12 border border-gray rounded-button cursor-pointer"
+                  className="w-full h-12 border border-outline-variant/40 rounded-xl cursor-pointer bg-surface-container-lowest"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-dark mb-2">
+                <label className="block text-sm font-medium text-on-surface mb-2">
                   Date *
                 </label>
                 <input
@@ -270,12 +271,12 @@ export default function ClassFormModal({
                   onChange={(e) =>
                     setFormData({ ...formData, date: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                  className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-dark mb-2">
+                <label className="block text-sm font-medium text-on-surface mb-2">
                   Heure début *
                 </label>
                 <input
@@ -285,12 +286,12 @@ export default function ClassFormModal({
                   onChange={(e) =>
                     setFormData({ ...formData, startTime: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                  className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-dark mb-2">
+                <label className="block text-sm font-medium text-on-surface mb-2">
                   Heure fin *
                 </label>
                 <input
@@ -300,14 +301,14 @@ export default function ClassFormModal({
                   onChange={(e) =>
                     setFormData({ ...formData, endTime: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                  className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-dark mb-2">
+                <label className="block text-sm font-medium text-on-surface mb-2">
                   Professeur *
                 </label>
                 <input
@@ -317,12 +318,12 @@ export default function ClassFormModal({
                   onChange={(e) =>
                     setFormData({ ...formData, instructor: e.target.value })
                   }
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                  className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-dark mb-2">
+                <label className="block text-sm font-medium text-on-surface mb-2">
                   Places maximum *
                 </label>
                 <input
@@ -336,7 +337,7 @@ export default function ClassFormModal({
                       maxParticipants: parseInt(e.target.value),
                     })
                   }
-                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                  className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                 />
               </div>
             </div>
@@ -345,7 +346,7 @@ export default function ClassFormModal({
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors disabled:opacity-50"
+                className="flex-1 px-6 py-3 bg-primary text-on-primary rounded-full font-sans font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
               >
                 {submitting
                   ? "Enregistrement..."
@@ -356,7 +357,7 @@ export default function ClassFormModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-3 bg-gray text-text-dark rounded-button hover:bg-gray/80 transition-colors"
+                className="px-6 py-3 bg-surface-container-high text-on-surface rounded-full font-sans font-semibold text-sm hover:opacity-90 transition-opacity"
               >
                 Annuler
               </button>

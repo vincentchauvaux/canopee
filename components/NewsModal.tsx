@@ -77,7 +77,7 @@ export default function NewsModal({ news, isOpen, onClose }: NewsModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] overflow-y-auto">
       {/* Overlay */}
       <div
         className="fixed inset-0 bg-black/50 transition-opacity"
@@ -86,14 +86,14 @@ export default function NewsModal({ news, isOpen, onClose }: NewsModalProps) {
 
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white rounded-card shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="relative bg-surface-container-lowest rounded-xl shadow-lg ring-1 ring-outline-variant/15 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           {/* Header */}
-          <div className="sticky top-0 bg-white border-b border-gray p-6 flex items-start justify-between z-10">
+          <div className="sticky top-0 bg-surface-container-lowest/95 backdrop-blur-sm border-b border-outline-variant/30 p-6 flex items-start justify-between z-10">
             <div className="flex-1">
-              <h2 className="text-3xl font-serif font-bold text-text-dark mb-2">
+              <h2 className="text-3xl font-serif font-bold text-primary mb-2">
                 {displayNews.title}
               </h2>
-              <div className="flex items-center gap-4 text-sm text-text-dark/60">
+              <div className="flex items-center gap-4 text-sm text-on-surface-variant font-sans">
                 <div className="flex items-center">
                   {displayNews.author.profilePic ? (
                     <img
@@ -119,8 +119,9 @@ export default function NewsModal({ news, isOpen, onClose }: NewsModalProps) {
               </div>
             </div>
             <button
+              type="button"
               onClick={onClose}
-              className="p-2 hover:bg-accent rounded-button transition-colors"
+              className="p-2 rounded-full hover:bg-surface-container-low text-on-surface transition-colors shrink-0"
             >
               <X className="w-6 h-6" />
             </button>
@@ -134,10 +135,10 @@ export default function NewsModal({ news, isOpen, onClose }: NewsModalProps) {
           {/* Contenu */}
           <div className="p-6">
             {loading ? (
-              <p className="text-text-dark/60">Chargement...</p>
+              <p className="text-on-surface-variant font-sans">Chargement...</p>
             ) : (
               <div
-                className="prose max-w-none text-text-dark"
+                className="prose prose-stone max-w-none text-on-surface"
                 dangerouslySetInnerHTML={{ __html: displayNews.content }}
               />
             )}

@@ -210,46 +210,58 @@ export default function Footer() {
   }, [updateSpiritualInfo]);
 
   return (
-    <footer className="bg-text-dark text-text-light py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 ">
-          {/* Colonne 1: Logo + Tagline */}
+    <footer className="bg-primary text-on-primary py-14 md:py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-10">
           <div className="flex flex-col h-full">
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">🌿 Canopée</h3>
-              <p className="text-text-light/80 mb-4">
+              <h3 className="font-serif text-2xl font-semibold tracking-wide italic mb-3">
+                Canopée
+              </h3>
+              <p className="text-on-primary/75 text-sm leading-relaxed mb-4 font-sans">
                 Votre espace de bien-être et de sérénité
               </p>
             </div>
             <div className="mt-auto">
               {quoteOfDay && (
                 <div className="mb-4">
-                  <p className="text-sm italic text-text-light/80">
+                  <p className="text-sm italic text-on-primary/70 font-serif leading-relaxed">
                     &ldquo;{quoteOfDay}&rdquo;
                   </p>
                 </div>
               )}
-              <div className="flex space-x-4">
-                <a href="#" className="hover:text-primary transition-colors">
+              <div className="flex gap-4">
+                <a
+                  href="#"
+                  className="text-on-primary/70 hover:text-secondary-container transition-colors"
+                  aria-label="Facebook"
+                >
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  className="text-on-primary/70 hover:text-secondary-container transition-colors"
+                  aria-label="Instagram"
+                >
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a
+                  href="#"
+                  className="text-on-primary/70 hover:text-secondary-container transition-colors"
+                  aria-label="Twitter"
+                >
                   <Twitter className="w-5 h-5" />
                 </a>
               </div>
             </div>
           </div>
-          {/* Colonne 2: Navigation */}
           <div className="flex flex-col">
-            <h4 className="text-lg font-semibold mb-4">Navigation</h4>
-            <ul className="space-y-2">
+            <h4 className="font-serif text-lg font-semibold mb-4">Navigation</h4>
+            <ul className="space-y-2 font-sans text-sm">
               <li>
                 <Link
                   href="/"
-                  className="text-text-light/80 hover:text-primary transition-colors"
+                  className="text-on-primary/75 hover:text-secondary-container transition-colors"
                 >
                   Accueil
                 </Link>
@@ -257,7 +269,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/mon-parcours"
-                  className="text-text-light/80 hover:text-primary transition-colors"
+                  className="text-on-primary/75 hover:text-secondary-container transition-colors"
                 >
                   Mon parcours
                 </Link>
@@ -265,7 +277,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/yin-yoga"
-                  className="text-text-light/80 hover:text-primary transition-colors"
+                  className="text-on-primary/75 hover:text-secondary-container transition-colors"
                 >
                   Yin Yoga
                 </Link>
@@ -273,7 +285,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/saisons-mtc"
-                  className="text-text-light/80 hover:text-primary transition-colors"
+                  className="text-on-primary/75 hover:text-secondary-container transition-colors"
                 >
                   Saisons MTC
                 </Link>
@@ -285,48 +297,48 @@ export default function Footer() {
           <div className="flex flex-col"></div>
           {/* Colonne 4: Infos Spirituelles */}
           <div className="flex flex-col">
-            <h4 className="text-lg font-semibold mb-4">Infos Spirituelles</h4>
-            <div className="flex flex-col gap-4 flex-1">
-              {/* Phase lunaire - toujours afficher avec le composant MoonPhase */}
+            <h4 className="font-serif text-lg font-semibold mb-4">
+              Infos spirituelles
+            </h4>
+            <div className="flex flex-col gap-4 flex-1 font-sans text-sm">
               <div className="flex items-center gap-3">
                 <MoonPhase size={60} className="flex-shrink-0" />
                 <div className="flex flex-col">
                   {lunarPhase?.illumination !== null &&
                   lunarPhase?.illumination !== undefined ? (
-                    <p className="text-2xl font-bold text-text-light">
+                    <p className="text-2xl font-bold text-on-primary font-serif">
                       {Math.round(lunarPhase.illumination)}%
                     </p>
                   ) : null}
                   {lunarPhase?.phase ? (
-                    <p className="text-sm text-text-light/80 uppercase">
+                    <p className="text-xs text-on-primary/70 uppercase tracking-wide">
                       {lunarPhase.phase}
                     </p>
                   ) : (
-                    <p className="text-sm text-text-light/80 uppercase">
+                    <p className="text-xs text-on-primary/70 uppercase">
                       Chargement...
                     </p>
                   )}
                 </div>
               </div>
-              {/* Saison MTC - toujours afficher */}
               {mtcSeason ? (
                 <div>
-                  <p className="font-medium text-sm">
+                  <p className="font-medium text-on-primary/90">
                     {mtcSeason.season} ({mtcSeason.element})
                   </p>
-                  <p className="text-xs text-text-light/60 italic mb-2">
+                  <p className="text-xs text-on-primary/65 italic mb-2 leading-relaxed">
                     {mtcSeason.description}
                   </p>
                   <Link
                     href="/saisons-mtc"
-                    className="text-xs text-text-light/60 hover:text-primary transition-colors underline"
+                    className="text-xs text-on-primary/70 hover:text-secondary-container transition-colors underline underline-offset-2"
                   >
                     En savoir plus sur les saisons MTC
                   </Link>
                 </div>
               ) : (
                 <div>
-                  <p className="text-xs text-text-light/60">
+                  <p className="text-xs text-on-primary/65">
                     Chargement de la saison...
                   </p>
                 </div>
@@ -335,9 +347,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Footer bottom */}
-        <div className="border-t border-text-light/20 pt-8 mt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center text-sm text-text-light/60">
+        <div className="border-t border-on-primary/15 pt-8 mt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center text-sm text-on-primary/60 font-sans">
             <p suppressHydrationWarning>
               ©{" "}
               {isMounted && currentYear
@@ -345,11 +356,17 @@ export default function Footer() {
                 : new Date().getFullYear()}{" "}
               Canopée. Tous droits réservés.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="hover:text-text-light transition-colors">
+            <div className="flex gap-6 mt-4 md:mt-0">
+              <a
+                href="#"
+                className="hover:text-secondary-container transition-colors"
+              >
                 Mentions légales
               </a>
-              <a href="#" className="hover:text-text-light transition-colors">
+              <a
+                href="#"
+                className="hover:text-secondary-container transition-colors"
+              >
                 Politique de confidentialité
               </a>
             </div>

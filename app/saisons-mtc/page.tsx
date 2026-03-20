@@ -1,6 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-
 interface MTCSeasonInfo {
   season: string;
   element: string;
@@ -117,27 +114,26 @@ const seasonEmojis: Record<string, string> = {
 
 export default function SaisonsMTCPage() {
   return (
-    <main className="min-h-screen bg-white">
-      <Header />
-      <div className="pt-16 pb-16">
+    <main className="min-h-screen bg-surface">
+      <div className="pb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-serif font-bold text-text-dark mb-4">
+          <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-serif font-bold text-on-surface mb-4">
             Les saisons en Énergétique Chinoise
           </h1>
 
           <div className="prose prose-lg max-w-none mb-12">
-            <p className="text-text-dark/80 mb-4">
+            <p className="text-on-surface/90 mb-4">
               Le calendrier des saisons en Chine diffère sensiblement du nôtre.
               Contrairement à notre Nouvel An fixé au 1er janvier, le Nouvel An
               chinois varie chaque année 🎆
             </p>
-            <p className="text-text-dark/80 mb-4">
+            <p className="text-on-surface/90 mb-4">
               Le début du premier mois lunaire chinois se produit généralement
               entre la fin du mois de janvier et la mi-février, coïncidant avec
               l'équinoxe printanier 🍃
             </p>
-            <p className="text-text-dark/80 mb-4">
+            <p className="text-on-surface/90 mb-4">
               Cette différence provient de l'utilisation d'un système calendaire
               luni-solaire combinant les cycles solaires ☀️ et lunaires 🌕. Ce
               calendrier remonterait à l'an 2697 avant notre ère, élaboré grâce
@@ -145,26 +141,26 @@ export default function SaisonsMTCPage() {
               des cycles agricoles et de l'alternance jour-nuit par les anciens
               Chinois.
             </p>
-            <p className="text-text-dark/80 mb-4">
+            <p className="text-on-surface/90 mb-4">
               La structure temporelle chinoise intègre donc simultanément les
               rythmes solaires et lunaires, créant une harmonie entre ces deux
               cycles célestes pour organiser le temps.
             </p>
-            <p className="text-text-dark/80 mb-4">
+            <p className="text-on-surface/90 mb-4">
               Chaque mois lunaire compte alternativement 29 ou 30 jours, suivant
               fidèlement les phases de notre satellite naturel.
             </p>
 
-            <h2 className="text-2xl font-serif font-bold text-text-dark mt-8 mb-4">
+            <h2 className="text-2xl font-serif font-bold text-on-surface mt-8 mb-4">
               Le principe des 5 saisons en MTC
             </h2>
-            <p className="text-text-dark/80 mb-4">
+            <p className="text-on-surface/90 mb-4">
               Selon la médecine traditionnelle chinoise, le passage entre deux
               saisons ne peut s'effectuer de manière abrupte en une seule
               journée, contrairement à ce que suggèrent nos calendriers
               conventionnels.
             </p>
-            <p className="text-text-dark/80 mb-4">
+            <p className="text-on-surface/90 mb-4">
               Pour cette raison, la tradition chinoise a introduit une cinquième
               période appelée <strong>Intersaison</strong>. Cette phase
               représente un état de mutation et de réorganisation. Elle assure
@@ -174,7 +170,7 @@ export default function SaisonsMTCPage() {
               entrer dans l'été, et ainsi de suite pour chaque transition
               saisonnière.
             </p>
-            <p className="text-text-dark/80 mb-8">
+            <p className="text-on-surface/90 mb-8">
               La vision chinoise des saisons s'appuie sur la théorie des cinq
               éléments, également nommés cinq mouvements. Chaque élément (Bois,
               Feu, Terre, Métal et Eau) se rattache à une saison spécifique
@@ -189,7 +185,7 @@ export default function SaisonsMTCPage() {
             {seasons.map((season, index) => (
               <div
                 key={season.season}
-                className="bg-accent/30 rounded-lg p-8 border-l-4 border-primary"
+                className="bg-secondary-container/40 rounded-xl p-8 border-l-4 border-primary"
               >
                 <div className="flex items-start gap-4 mb-6">
                   <div className="text-5xl">
@@ -197,7 +193,7 @@ export default function SaisonsMTCPage() {
                     {elementEmojis[season.element]}
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-3xl font-serif font-bold text-text-dark mb-2">
+                    <h2 className="text-3xl font-serif font-bold text-on-surface mb-2">
                       {season.season === "Intersaison"
                         ? "L'INTERSAISON"
                         : season.season === "Printemps"
@@ -218,7 +214,7 @@ export default function SaisonsMTCPage() {
                               ? "de changement"
                               : "de repli"}
                     </h2>
-                    <p className="text-lg text-text-dark/70 mb-2">
+                    <p className="text-lg text-on-surface-variant mb-2">
                       {season.season === "Intersaison"
                         ? "Durant l'intersaison, l'élément"
                         : season.season === "Printemps"
@@ -230,18 +226,18 @@ export default function SaisonsMTCPage() {
                               : "Pendant l'hiver, l'élément"}{" "}
                       <strong>{season.element}</strong> prédomine
                     </p>
-                    <p className="text-sm text-text-dark/60 font-medium">
+                    <p className="text-sm text-on-surface-variant font-medium">
                       {season.dates}
                     </p>
                   </div>
                 </div>
 
-                <p className="text-text-dark/80 mb-6 leading-relaxed">
+                <p className="text-on-surface/90 mb-6 leading-relaxed">
                   {season.description}
                 </p>
 
                 <div className="bg-white rounded-lg p-6 mb-6">
-                  <h3 className="text-xl font-semibold text-text-dark mb-4">
+                  <h3 className="text-xl font-semibold text-on-surface mb-4">
                     Ce à quoi correspond{" "}
                     {season.season === "Intersaison"
                       ? "l&apos;intersaison"
@@ -250,75 +246,75 @@ export default function SaisonsMTCPage() {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">Élément</p>
-                      <p className="font-medium text-text-dark">
+                      <p className="text-sm text-on-surface-variant mb-1">Élément</p>
+                      <p className="font-medium text-on-surface">
                         {elementEmojis[season.element]} {season.element}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">Saison</p>
-                      <p className="font-medium text-text-dark">
+                      <p className="text-sm text-on-surface-variant mb-1">Saison</p>
+                      <p className="font-medium text-on-surface">
                         {season.season}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">Organe</p>
-                      <p className="font-medium text-text-dark">
+                      <p className="text-sm text-on-surface-variant mb-1">Organe</p>
+                      <p className="font-medium text-on-surface">
                         {season.organ}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">Viscère</p>
-                      <p className="font-medium text-text-dark">
+                      <p className="text-sm text-on-surface-variant mb-1">Viscère</p>
+                      <p className="font-medium text-on-surface">
                         {season.viscera}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">Couleur</p>
-                      <p className="font-medium text-text-dark">
+                      <p className="text-sm text-on-surface-variant mb-1">Couleur</p>
+                      <p className="font-medium text-on-surface">
                         {season.color}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">
+                      <p className="text-sm text-on-surface-variant mb-1">
                         Heures de régénération
                       </p>
-                      <p className="font-medium text-text-dark text-sm">
+                      <p className="font-medium text-on-surface text-sm">
                         {season.regenerationHours}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">Goût</p>
-                      <p className="font-medium text-text-dark">
+                      <p className="text-sm text-on-surface-variant mb-1">Goût</p>
+                      <p className="font-medium text-on-surface">
                         {season.taste}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">Émotion</p>
-                      <p className="font-medium text-text-dark">
+                      <p className="text-sm text-on-surface-variant mb-1">Émotion</p>
+                      <p className="font-medium text-on-surface">
                         {season.emotion}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">
+                      <p className="text-sm text-on-surface-variant mb-1">
                         Orientation
                       </p>
-                      <p className="font-medium text-text-dark">
+                      <p className="font-medium text-on-surface">
                         {season.orientation}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-text-dark/60 mb-1">
+                      <p className="text-sm text-on-surface-variant mb-1">
                         Énergie climatique
                       </p>
-                      <p className="font-medium text-text-dark">
+                      <p className="font-medium text-on-surface">
                         {season.climate}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-text-dark/80 italic leading-relaxed">
+                <p className="text-on-surface/90 italic leading-relaxed">
                   Dans la Médecine Traditionnelle Chinoise,{" "}
                   {season.season === "Intersaison"
                     ? "l'intersaison"
@@ -331,16 +327,16 @@ export default function SaisonsMTCPage() {
           </div>
 
           <div className="mt-12 bg-primary/10 rounded-lg p-8">
-            <p className="text-text-dark/80 leading-relaxed mb-4">
+            <p className="text-on-surface/90 leading-relaxed mb-4">
               L'existence se caractérise par un mouvement perpétuel, et l'être
               humain doit trouver son équilibre en s'accordant avec le monde qui
               l'entoure.
             </p>
-            <p className="text-text-dark/80 leading-relaxed mb-4">
+            <p className="text-on-surface/90 leading-relaxed mb-4">
               Vous pourriez vous interroger : « Pourquoi cette attention si
               particulière portée à ces cycles par la culture chinoise ? »
             </p>
-            <p className="text-text-dark/80 leading-relaxed">
+            <p className="text-on-surface/90 leading-relaxed">
               La réponse réside dans leur conception d'un ordre universel
               auquel nous participons tous. Chacun de nous forme une partie
               intégrante d'un ensemble plus vaste, tandis que l'univers entier
@@ -350,10 +346,9 @@ export default function SaisonsMTCPage() {
               de l'équilibre et de l'harmonie.
             </p>
           </div>
-        </div>
+          </div>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }

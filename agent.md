@@ -143,22 +143,32 @@ yoga/
 └── package.json
 ```
 
-## Charte Graphique - Canopée
+## Charte Graphique - Canopée (maquettes Google Stitch, mars 2026)
 
-### Couleurs
+Le design suit l’esprit **« Botanical Editorial »** décrit dans `stitch-reference/stitch/canop_e_ether/DESIGN.md` : surfaces crème en couches, peu de bordures dures, boutons en pilule, hiérarchie éditoriale.
 
-- Primaire: `#264E36` (Vert Canopée - Feuillage profond)
-- Primaire clair: `#4F7F5A` (Vert feuille tendre)
-- Secondaire: `#7DAA6A` (Mousse douce)
-- Secondaire clair: `#AFCFA1` (Lichen)
-- Accent: `#F2E8C9` (Lumière forestière)
-- Texte: `#2A2D23` (Écorce foncée), `#FFFFFF` (Blanc)
-- Neutre: `#DAD7CD` (Écorce claire)
+### Couleurs (système Stitch / Material)
+
+- Fond & surfaces: `#fafaee` (surface), `#f4f4e8` (surface-container-low), `#ffffff` (surface-container-lowest), `#eeefe3` (surface-container)
+- Primaire: `#334537` (+ `primary-container` `#4a5d4e` pour dégradés / variantes)
+- Secondaire: `#516256`, `secondary-container` `#cfe2d2`
+- Texte: `#1a1c15` (on-surface), variantes `#434843` / `#546558`
+- Contours « fantômes »: `outline-variant` `#c3c8c1` (souvent en faible opacité)
+- Palette historique `canopee.*` et alias `accent` / `gray` conservés dans Tailwind pour compatibilité
 
 ### Typographie
 
-- Titres: Cormorant Garamond (serif)
-- Corps: Inter / Montserrat (sans-serif)
+- Titres & éditorial: **Noto Serif** (`next/font` — variable `--font-noto-serif`)
+- Corps & UI: **Manrope** (`--font-manrope`)
+
+### Fichiers de référence design (local)
+
+- Dossier extrait du zip Stitch : `stitch-reference/` (ignoré par Git — voir `.gitignore`)
+- HTML exportés : `accueil_news`, `yin_yoga_carol`, `agenda_r_servation`, `espace_professeur`
+
+### Couleurs historiques (documentation)
+
+- Ancienne primaire projet: `#264E36` — toujours documentée sous `canopee.primary` dans Tailwind
 
 ## Prochaines Étapes
 
@@ -226,20 +236,20 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Application
 
-- `app/layout.tsx` - Layout principal avec providers
-- `app/page.tsx` - Page d'accueil one-page
+- `app/layout.tsx` - Layout avec providers, **coquille Stitch** (top bar, zone contenu, footer léger, bottom nav)
+- `app/page.tsx` - Accueil éditorial (`HomeStitch`) sans hero plein écran
 - `app/globals.css` - Styles globaux et polices
 - `app/providers.tsx` - Providers React (NextAuth)
-- `app/auth/signin/page.tsx` - Page de connexion/inscription
+- `app/auth/signin/page.tsx` - Page de connexion/inscription (carte `surface-container-lowest`, champs `outline-variant`, CTA `rounded-full`, fond `bg-surface`)
 - `app/saisons-mtc/page.tsx` - Page dédiée aux saisons en Médecine Traditionnelle Chinoise avec toutes les informations détaillées
 - `app/yin-yoga/page.tsx` - Page dédiée au Yin Yoga de Canopée avec présentation complète : origine, pratique, bienfaits et informations pratiques
 - `app/mon-parcours/page.tsx` - Page "Carol Nelissen" présentant son parcours de formation (Viniyoga, Yin Yoga), sa philosophie et ses certifications. La première image est affichée en cercle parfait (rounded-full) et la deuxième image occupe toute la hauteur de sa colonne.
 - `app/faq/page.tsx` - Page FAQ présentant les informations sur les cours de Yin Yoga : types de cours (individuel ou collectif, max 3 personnes), horaires (individuel selon convenance, collectif vendredi 18h-19h), prix (individuel 15€, collectif 12€) et modalités (individuel adapté aux besoins, collectif thématiques annoncées)
-- `app/profile/page.tsx` - Page de profil utilisateur permettant de consulter et modifier les informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). La photo de profil peut être modifiée en uploadant un fichier image (max 5MB) ou en entrant une URL. Pour les utilisateurs admin uniquement : affichage de la section "Mes Réservations" et de la section "Actions rapides" (liens vers l'agenda et les actualités)
-- `app/admin/page.tsx` - Dashboard administrateur
-- `app/admin/classes/page.tsx` - Gestion des cours
-- `app/admin/news/page.tsx` - Gestion des actualités
-- `app/admin/users/page.tsx` - Gestion des utilisateurs
+- `app/profile/page.tsx` - Page de profil (surfaces `surface-container-low`, bordures `outline-variant`, boutons pilule, titres `text-primary`) : édition prénom, nom, téléphone, date de naissance, photo (fichier max 5MB ou URL). **Admin** : « Mes réservations » + « Actions rapides » (agenda, actus, panel admin)
+- `app/admin/page.tsx` - Dashboard **espace enseignant** Stitch : bento (ajouter cours, news, stats membres), section **« Mes cours »** (liste à venir avec vignette dégradée `color`, badge type, horaire, inscrits, édition / suppression via `ClassFormModal`, lien « Voir tout » vers `/admin/classes`), puis tuiles statistiques et lien utilisateurs
+- `app/admin/classes/page.tsx` - Liste **harmonisée** avec le dashboard : cartes Stitch (vignette dégradée, badge type, description, date/heure, intervenant, places), sections **À venir** / **Passés**, boutons Material **edit** / **delete**, lien retour `/admin`, `ClassFormModal` comme sur `/admin`
+- `app/admin/news/page.tsx` - Gestion des actualités (liste en **cartes** Stitch comme le dashboard : vignette, métadonnées, actions edit/delete, `NewsFormModal`)
+- `app/admin/users/page.tsx` - Gestion des utilisateurs (liste en **cartes** : avatar, email, stats, rôle)
 
 ### API Routes
 
@@ -257,13 +267,20 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Composants
 
-- `components/Header.tsx` - Header sticky avec transition et adaptation automatique des couleurs de texte selon le background (blanc sur fond transparent, couleurs sombres sur fond blanc). Sur les pages `/profile`, `/mon-parcours`, `/yin-yoga` et `/faq`, le header a un fond blanc dès le départ (pas d'effet de transparence). Le menu contient un lien vers "Mon parcours" (`/mon-parcours`) accessible depuis le menu desktop et mobile
-- `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
-- `components/Agenda.tsx` - Section agenda interactive avec calendrier hebdomadaire, réservations. Accessible uniquement aux utilisateurs admin
-- `components/NewsFeed.tsx` - Fil d'actualité affichant les descriptions des prochains cours (3 par défaut, bouton "Voir plus" pour afficher plus). Accessible uniquement aux utilisateurs admin
+- `components/stitch/StitchTopBar.tsx` — App bar Stitch + ouverture du menu
+- `components/stitch/StitchMenuDrawer.tsx` — Navigation secondaire (parcours, yin, MTC, FAQ, infos, admin cours, profil, connexion / déconnexion)
+- `components/stitch/StitchBottomNav.tsx` — Tab bar 3 items (Accueil, Agenda, Admin) ; **pilule verte** = un seul `motion.div` dont la position / taille sont **mesurées** (`getBoundingClientRect` + `ResizeObserver`) puis animées en **ressort** (Framer Motion) pour un glissement fluide entre onglets
+- `components/stitch/StitchAuxFooter.tsx` — Liens légers au-dessus du tab bar
+- `components/HomeHeroDesktop.tsx` — **Héros (lg+)** : masque fixe avec **`clip-path: inset(0 round 0 0 1.5rem 1.5rem)`** (+ `WebkitClipPath`) en plus de `overflow-hidden` / `rounded-b-3xl`, double wrapper interne, **`contain: paint`** — le rail horizontal en **`x`** ne fait plus « sauter » le rognage pendant la transition. Auto 6,5 s, flèches + pastilles ; CTA inscriptions / agenda.
+- `components/HomeStitch.tsx` — Page d’accueil alignée maquette `accueil_news` + héros desktop au-dessus du contenu étroit
+- `components/PublicNewsBento.tsx` — Bento actualités **lecture publique** + `NewsModal`
+- `components/ScheduleBooking.tsx` — Semaine horizontale + liste du jour + réservation
+- `app/agenda/page.tsx` — Route réservation
+- `app/infos/page.tsx` — Infos pratiques (`PracticalInfo`)
+- `components/NewsFeed.tsx` — (Conservé) Fil admin cours + actus ; non utilisé sur l’accueil public actuel
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
-- `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). La colonne de gauche (bienfaits) est centrée verticalement avec `items-center` sur la grille. La colonne de droite (infos pratiques) a une bordure verte (`border-2 border-primary`).
-- `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
+- `components/PracticalInfo.tsx` - Infos pratiques : **bloc vert flagship** « L’art du Yin Yoga » (Stitch), puis bienfaits / indications, encart infos (horaires, Rue Jean Theys 10 Wauthier-Braine, Carol Nelissen), grille tarifs / matériel / débutants sur surfaces claires
+- `components/Footer.tsx` - Footer fond **primary** (Stitch), texte clair ; phase lunaire (lunopia / API), saison MTC, citation, navigation ; hovers discrets vers `secondary-container`
 - `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
 
@@ -1020,11 +1037,73 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 📖 **Guide complet** : Voir [FIX_USESESSION_NOT_DETECTING.md](./FIX_USESESSION_NOT_DETECTING.md)
 
+### Structure « app mobile » Google Stitch (Mars 2026)
+
+Référence projet : [aperçu Stitch](https://stitch.withgoogle.com/preview/17038211574734318459?node-id=c5071cccd79a468fafdeee8d1a742d34&raw=1) et exports HTML dans `stitch-reference/stitch/`.
+
+**Coquille globale** (`app/layout.tsx`) :
+
+- **StitchTopBar** : barre fixe — icône `spa` (ouvre le menu tiroir), titre « Canopée » centré (serif italique), avatar / profil à droite si connecté.
+- **StitchBottomNav** : 3 onglets fixes — **Accueil** `/`, **Agenda** `/agenda`, **Admin** `/admin` (non-admin → `/auth/signin?callbackUrl=/admin`) ; le fond arrondi actif **glisse** d’un lien à l’autre (mesure DOM + ressort Framer Motion / [Motion](https://motion.dev/)).
+- **StitchAuxFooter** : liens secondaires (Parcours, Yin, Infos, MTC) au-dessus de la barre du bas.
+- Zone contenu : `pt-[4.75rem] pb-32 min-h-dvh bg-surface`. Routes `/auth/*` : pas de top/bottom bar (chrome masqué).
+
+**Nouvelles routes**
+
+- `/agenda` — réservation style maquette : bandeau semaine horizontal (pilules), liste des cours du jour, badges places / complet, réservation si connecté (`ScheduleBooking.tsx`).
+- `/infos` — page dédiée « Infos pratiques & tarifs » (`PracticalInfo.tsx`).
+
+**Accueil** (`components/HomeStitch.tsx` + `PublicNewsBento.tsx`)
+
+- Plus de hero plein écran ni carrousel : flux type `accueil_news` (accroche, **actualités publiques** via `GET /api/news`, bloc vert Yin, citation).
+- **NewsFeed.tsx** conservé dans le repo pour un éventuel fil admin avancé (cours + news) mais **retiré de l’accueil**.
+
+**Fichiers supprimés**
+
+- `components/Header.tsx`, `components/Hero.tsx`, `components/Agenda.tsx` (remplacés par la coquille Stitch + `/agenda`).
+
+**Autres pages**
+
+- `yin-yoga`, `mon-parcours`, `faq`, `saisons-mtc` : sans Header/Footer locaux ; fond `bg-surface`, même chrome global.
+- Icônes : **Material Symbols Outlined** (lien Google Fonts + classes dans `globals.css`).
+- `next.config.js` : domaine images `lh3.googleusercontent.com` pour les visuels d’actus.
+
+- ⚠️ Après modification Prisma : `npx prisma generate`.
+
+### Mise en page accueil & pied de page (Mars 2026)
+
+- **Carte « L’art du Yin Yoga »** (`HomeStitch.tsx`) : le bloc timer / rythme n’est plus en `absolute` — disposition **flex** (`md:flex-row`, `items-end`) pour que le texte ne soit jamais recouvert.
+- **Pied léger + barre du bas** : `StitchAuxFooter` a un **`padding-bottom`** suffisant (`calc(6.75rem + safe-area)`) pour que la mention *Canopée — Yin Yoga…* et les liens ne passent pas sous **`StitchBottomNav`**. Le `<html>` inclut **`scroll-padding-bottom`** pour le défilement.
+
+### Développement : chunks / CSS en 500 (ERR_ABORTED)
+
+Si `/agenda` ou `/admin` renvoient **500** sur `/_next/static/...`, causes fréquentes : cache `.next` corrompu → `rm -rf .next && npm run dev` ; **deux instances** de `next dev` (ports 3000 et 3001) — n’en garder qu’une ; sous macOS, **`EMFILE: too many open files`** (Watchpack) peut empêcher la compilation fiable → augmenter la limite (`ulimit -n`) ou fermer des apps.
+
+### Animations (Framer Motion, Mars 2026)
+
+- **Transition de route** : `app/template.tsx` (client) — à chaque navigation App Router, le contenu entre en fondu + léger décalage vertical ; `/auth/*` plus courte et discrète. Respect de **`prefers-reduced-motion`** (`useReducedMotion`).
+- **Composants** : `components/motion/Reveal.tsx` (apparition au scroll : `fade-up`, `fade`, `soft-zoom`, `slide-right`), `components/motion/Stagger.tsx` (`StaggerChildren` + `StaggerItem` pour échelonner les blocs), `components/motion/easings.ts` (courbe `easeCanopy`).
+- **Utilisation** : accueil (`HomeStitch`, `PublicNewsBento`), agenda (`ScheduleBooking` — cartes séances en cascade au changement de jour), infos (`PracticalInfo`).
+- **Dépendance** : `framer-motion` (^11).
+
+### Harmonisation résiduelle Stitch (Mars 2026)
+
+Pages et composants alignés sur les mêmes **tokens** que `/admin` et `/admin/classes` : `bg-surface`, `surface-container-low` / `lowest`, `text-primary` / `on-surface` / `on-surface-variant`, `outline-variant`, boutons **pilule** (`rounded-full`), champs **rounded-xl**.
+
+- **Admin** : `/admin/news`, `/admin/users` ; `NewsFormModal`, `ClassFormModal` (en-têtes, champs, `z-[100]`).
+- **Auth** : `/auth/signin`, `/auth/error`.
+- **Public / compte** : `NewsModal`, `/profile`, FAQ, Mon parcours, Saisons MTC (textes et encarts).
+
+### Évolution design Google Stitch — charte (Mars 2026)
+
+- Palette surfaces / primary, Noto Serif + Manrope, ombres « ambient » — voir section **Charte Graphique** ci-dessous.
+- **Footer** lourd (lune, MTC long) : fichier `components/Footer.tsx` **non branché** dans le layout actuel (menu + `/saisons-mtc` pour le contenu MTC). Réutilisable si besoin.
+
 ### Amélioration du bouton de déconnexion dans le Header (Mars 2026)
 
-- ✅ Le bouton **« Déconnexion »** (desktop et mobile) dans `components/Header.tsx` appelle désormais `signOut({ callbackUrl: "/" })` au lieu de `signOut()` sans argument.
-- ✅ Après la déconnexion, l’utilisateur est systématiquement redirigé vers la page d’accueil `/`, ce qui évite les cas où la session semble encore active si la page courante ne se recharge pas correctement.
-- ✅ Sur mobile, le menu est toujours refermé juste après l’appel à `signOut`, pour garder un comportement cohérent.
+- ✅ Le bouton **« Déconnexion »** (desktop et mobile) dans `components/Header.tsx` appelle `signOut({ callbackUrl: "/" })`.
+- ✅ Après la déconnexion, redirection vers `/`.
+- ✅ Sur mobile, le menu se referme au clic sur Déconnexion.
 
 ### Amélioration de la page profil en cas d’erreur 500 (Mars 2026)
 

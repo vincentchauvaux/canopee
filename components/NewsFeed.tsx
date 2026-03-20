@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Calendar, Clock, User, Users, ChevronDown } from 'lucide-react'
+import {
+  Calendar,
+  Clock,
+  User,
+  Users,
+  ChevronDown,
+  ArrowRight,
+} from 'lucide-react'
 import { format, parseISO, startOfToday } from 'date-fns'
 import { fr } from 'date-fns/locale/fr'
 
@@ -43,7 +50,6 @@ export default function NewsFeed() {
   const [isMounted, setIsMounted] = useState(false)
   const initialDisplayCount = 3
 
-  // Vérifier si l'utilisateur est admin
   const isAdmin = (session?.user as any)?.role === 'admin'
 
   useEffect(() => {
@@ -61,17 +67,24 @@ export default function NewsFeed() {
           credentials: 'include',
         }
       )
-      
+
       if (!response.ok) throw new Error('Erreur lors du chargement des cours')
 
       const data = await response.json()
 
-      // Filtrer uniquement les cours futurs (y compris aujourd'hui) et trier par date
       const upcomingClasses = data
         .filter((cls: UpcomingClass) => {
           const classDate = parseISO(cls.date)
-          const classDateOnly = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate())
-          const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+          const classDateOnly = new Date(
+            classDate.getFullYear(),
+            classDate.getMonth(),
+            classDate.getDate()
+          )
+          const todayOnly = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+          )
           return classDateOnly >= todayOnly
         })
         .sort((a: UpcomingClass, b: UpcomingClass) => {
@@ -101,7 +114,6 @@ export default function NewsFeed() {
 
       const items = (data.news || []) as NewsItem[]
 
-      // Utiliser eventDate si présente, sinon createdAt
       const upcomingNews = items
         .map((n) => {
           const rawDate = n.eventDate || n.createdAt
@@ -110,21 +122,29 @@ export default function NewsFeed() {
         })
         .filter((n) => {
           const d = n._dateObj
-          const newsDateOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-          const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+          const newsDateOnly = new Date(
+            d.getFullYear(),
+            d.getMonth(),
+            d.getDate()
+          )
+          const todayOnly = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+          )
           return newsDateOnly >= todayOnly
         })
         .sort((a, b) => a._dateObj.getTime() - b._dateObj.getTime())
         .map(({ _dateObj, ...rest }) => rest)
 
-      // Si aucune actualité future, créer une actualité "par défaut"
       if (upcomingNews.length === 0) {
         const todayIso = today.toISOString()
         setNews([
           {
             id: 'default-news',
             title: 'Actualités Canopée',
-            content: "Aucune actualité spécifique pour le moment. Revenez bientôt pour découvrir les prochaines informations importantes concernant les cours et les événements.",
+            content:
+              "Aucune actualité spécifique pour le moment. Revenez bientôt pour découvrir les prochaines informations importantes concernant les cours et les événements.",
             coverImage: null,
             eventDate: todayIso,
             createdAt: todayIso,
@@ -155,14 +175,16 @@ export default function NewsFeed() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted, isAdmin])
 
-  // Ne rien afficher si l'utilisateur n'est pas admin
   if (!isAdmin) {
     return null
   }
 
-  // Construire une timeline fusionnée cours + actualités
   const timeline: TimelineItem[] = [
-    ...classes.map((cls) => ({ kind: 'class' as const, date: cls.date, item: cls })),
+    ...classes.map((cls) => ({
+      kind: 'class' as const,
+      date: cls.date,
+      item: cls,
+    })),
     ...news.map((n) => ({
       kind: 'news' as const,
       date: n.eventDate || n.createdAt,
@@ -170,167 +192,221 @@ export default function NewsFeed() {
     })),
   ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
-  const displayedItems = showAll ? timeline : timeline.slice(0, initialDisplayCount)
+  const displayedItems = showAll
+    ? timeline
+    : timeline.slice(0, initialDisplayCount)
   const hasMoreItems = timeline.length > initialDisplayCount
 
+  const renderEntry = (entry: TimelineItem, featured: boolean) => {
+    const entryDate = parseISO(entry.date)
+
+    if (entry.kind === 'class') {
+      const classItem = entry.item
+      const startTime = parseISO(classItem.startTime)
+      const endTime = parseISO(classItem.endTime)
+      const tint = `${classItem.color}18`
+
+      return (
+        <article
+          key={`class-${classItem.id}`}
+          className={`group flex flex-col overflow-hidden rounded-xl bg-surface-container-lowest shadow-canopee-soft transition-transform duration-300 hover:-translate-y-0.5 ${
+            featured ? 'min-h-[320px] md:min-h-[380px]' : ''
+          }`}
+        >
+          <div
+            className="h-2 w-full shrink-0"
+            style={{ backgroundColor: classItem.color }}
+          />
+          <div
+            className="flex flex-1 flex-col p-6 md:p-8"
+            style={{ backgroundColor: featured ? undefined : tint }}
+          >
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <span
+                className="rounded-full px-3 py-1 text-xs font-semibold text-on-primary"
+                style={{ backgroundColor: classItem.color }}
+              >
+                {classItem.type}
+              </span>
+              <div className="flex items-center text-xs text-on-surface-variant">
+                <Calendar className="mr-1 h-3.5 w-3.5" />
+                {format(entryDate, 'd MMM yyyy', { locale: fr })}
+              </div>
+            </div>
+            <h3
+              className={`font-serif font-semibold text-primary mb-3 ${
+                featured ? 'text-2xl md:text-3xl' : 'text-xl'
+              }`}
+            >
+              {classItem.title}
+            </h3>
+            <div className="space-y-2 mb-4 text-sm text-on-surface-variant">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-primary/80" />
+                {format(startTime, 'HH:mm', { locale: fr })} —{' '}
+                {format(endTime, 'HH:mm', { locale: fr })}
+              </div>
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4 text-primary/80" />
+                {classItem.instructor}
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-primary/80" />
+                {classItem.currentParticipants}/{classItem.maxParticipants}{' '}
+                participants
+              </div>
+            </div>
+            {classItem.description ? (
+              <p className="text-on-surface-variant leading-relaxed text-sm border-t border-outline-variant/10 pt-4 mt-auto line-clamp-4">
+                {classItem.description}
+              </p>
+            ) : null}
+          </div>
+        </article>
+      )
+    }
+
+    const newsItem = entry.item
+
+    return (
+      <article
+        key={`news-${newsItem.id}`}
+        className={`group flex flex-col overflow-hidden rounded-xl bg-surface-container-lowest shadow-canopee-soft transition-transform duration-300 hover:-translate-y-0.5 ${
+          featured ? 'min-h-[280px]' : ''
+        }`}
+      >
+        {newsItem.coverImage ? (
+          <div
+            className={`relative w-full overflow-hidden bg-surface-container ${
+              featured ? 'h-52 md:h-64' : 'h-40'
+            }`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={newsItem.coverImage}
+              alt=""
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
+        ) : (
+          <div className="h-2 w-full bg-primary" />
+        )}
+        <div className="flex flex-1 flex-col p-6 md:p-8">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-on-primary">
+              Actualité
+            </span>
+            <div className="flex items-center text-xs text-on-surface-variant">
+              <Calendar className="mr-1 h-3.5 w-3.5" />
+              {format(entryDate, 'd MMM yyyy', { locale: fr })}
+            </div>
+          </div>
+          <h3
+            className={`font-serif font-semibold text-primary mb-3 ${
+              featured ? 'text-2xl md:text-3xl' : 'text-xl'
+            }`}
+          >
+            {newsItem.title}
+          </h3>
+          <div
+            className="prose prose-sm max-w-none text-sm leading-relaxed text-on-surface-variant line-clamp-4"
+            dangerouslySetInnerHTML={{ __html: newsItem.content }}
+          />
+        </div>
+      </article>
+    )
+  }
+
+  const featured = displayedItems[0]
+  const rest = displayedItems.slice(1)
+
   return (
-    <section id="actualites" className="py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-serif font-bold text-text-dark mb-4">
-            Fil d&apos;Actualité
-          </h2>
-          <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-            Découvrez les thèmes et descriptions des prochains cours
-          </p>
+    <section id="actualites" className="py-20 md:py-24 bg-surface">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+        <div className="mb-12 md:mb-16">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-secondary-container">
+            Espace membres
+          </span>
+          <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
+            <h2 className="font-serif text-3xl md:text-4xl text-primary leading-tight">
+              Dernières nouvelles
+            </h2>
+            <span className="text-sm text-primary/50 border-b border-primary/15 pb-1 font-sans">
+              Cours &amp; annonces à venir
+            </span>
+          </div>
         </div>
 
         {loading ? (
-          <div className="text-center py-12">
-            <p className="text-text-dark/60">Chargement des cours...</p>
+          <div className="rounded-xl bg-surface-container-low py-16 text-center text-on-surface-variant">
+            Chargement…
           </div>
         ) : error ? (
-          <div className="text-center py-12">
-            <p className="text-red-600">{error}</p>
+          <div className="rounded-xl bg-error-container/40 py-12 text-center text-on-error-container">
+            {error}
           </div>
         ) : timeline.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-text-dark/60">Aucun cours à venir avec description pour le moment</p>
+          <div className="rounded-xl bg-surface-container-low py-12 text-center text-on-surface-variant">
+            Aucun élément à afficher pour le moment.
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedItems.map((entry) => {
-                const entryDate = parseISO(entry.date)
-
-                if (entry.kind === 'class') {
-                  const classItem = entry.item
-                  const startTime = parseISO(classItem.startTime)
-                  const endTime = parseISO(classItem.endTime)
-
-                  return (
-                    <article
-                      key={`class-${classItem.id}`}
-                      className="bg-white border border-gray rounded-card overflow-hidden hover:shadow-lg transition-all"
+            {featured && displayedItems.length === 1 ? (
+              <div className="mb-8">{renderEntry(featured, true)}</div>
+            ) : featured ? (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 mb-8">
+                <div className="md:row-span-2">{renderEntry(featured, true)}</div>
+                <div className="flex flex-col gap-6">
+                  {rest.slice(0, 2).map((e) => (
+                    <div
+                      key={`${e.kind}-${
+                        e.kind === 'class' ? e.item.id : e.item.id
+                      }`}
                     >
-                      {/* En-tête avec couleur du type */}
-                      <div
-                        className="h-2"
-                        style={{ backgroundColor: classItem.color }}
-                      />
-
-                      <div className="p-6">
-                        {/* Type et date */}
-                        <div className="flex items-center justify-between mb-3">
-                          <span
-                            className="px-3 py-1 rounded-full text-xs font-semibold text-white"
-                            style={{ backgroundColor: classItem.color }}
-                          >
-                            {classItem.type}
-                          </span>
-                          <div className="flex items-center text-xs text-text-dark/60">
-                            <Calendar className="w-4 h-4 mr-1" />
-                            {format(entryDate, 'd MMM yyyy', { locale: fr })}
-                          </div>
-                        </div>
-
-                        {/* Titre */}
-                        <h3 className="text-xl font-serif font-semibold mb-3 text-text-dark">
-                          {classItem.title}
-                        </h3>
-
-                        {/* Horaires et instructeur */}
-                        <div className="space-y-2 mb-4 text-sm text-text-dark/70">
-                          <div className="flex items-center">
-                            <Clock className="w-4 h-4 mr-2 text-primary" />
-                            {format(startTime, 'HH:mm', { locale: fr })} - {format(endTime, 'HH:mm', { locale: fr })}
-                          </div>
-                          <div className="flex items-center">
-                            <User className="w-4 h-4 mr-2 text-primary" />
-                            {classItem.instructor}
-                          </div>
-                          <div className="flex items-center">
-                            <Users className="w-4 h-4 mr-2 text-primary" />
-                            {classItem.currentParticipants}/{classItem.maxParticipants} participants
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        {classItem.description && (
-                          <div className="pt-4 border-t border-gray">
-                            <p className="text-text-dark/80 leading-relaxed whitespace-pre-line">
-                              {classItem.description}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </article>
-                  )
-                }
-
-                const newsItem = entry.item
-
-                return (
-                  <article
-                    key={`news-${newsItem.id}`}
-                    className="bg-white border border-gray rounded-card overflow-hidden hover:shadow-lg transition-all"
-                  >
-                    <div className="h-2 bg-primary" />
-
-                    <div className="p-6">
-                      {/* Type et date */}
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold text-white bg-primary">
-                          Actualité
-                        </span>
-                        <div className="flex items-center text-xs text-text-dark/60">
-                          <Calendar className="w-4 h-4 mr-1" />
-                          {format(entryDate, 'd MMM yyyy', { locale: fr })}
-                        </div>
-                      </div>
-
-                      {/* Titre */}
-                      <h3 className="text-xl font-serif font-semibold mb-3 text-text-dark">
-                        {newsItem.title}
-                      </h3>
-
-                      {/* Contenu */}
-                      <div className="pt-4 border-t border-gray text-sm text-text-dark/80 leading-relaxed">
-                        <div
-                          className="prose prose-sm max-w-none"
-                          dangerouslySetInnerHTML={{ __html: newsItem.content }}
-                        />
-                      </div>
+                      {renderEntry(e, false)}
                     </div>
-                  </article>
-                )
-              })}
-            </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
 
-            {/* Bouton "Voir plus" */}
+            {rest.length > 2 && (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {rest.slice(2).map((e) => (
+                  <div key={`${e.kind}-${e.kind === 'class' ? e.item.id : e.item.id}`}>
+                    {renderEntry(e, false)}
+                  </div>
+                ))}
+              </div>
+            )}
+
             {hasMoreItems && !showAll && (
-              <div className="text-center mt-8">
+              <div className="text-center mt-12">
                 <button
+                  type="button"
                   onClick={() => setShowAll(true)}
-                  className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors font-medium"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-on-primary hover:opacity-90 transition-opacity"
                 >
-                  Voir plus de cours
-                  <ChevronDown className="w-5 h-5 ml-2" />
+                  Voir plus
+                  <ChevronDown className="h-4 w-4" />
                 </button>
               </div>
             )}
 
-            {/* Bouton "Voir moins" */}
             {showAll && hasMoreItems && (
-              <div className="text-center mt-8">
+              <div className="text-center mt-10">
                 <button
+                  type="button"
                   onClick={() => {
                     setShowAll(false)
-                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                    document
+                      .getElementById('actualites')
+                      ?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="inline-flex items-center px-6 py-3 bg-gray text-text-dark rounded-button hover:bg-gray/80 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 rounded-full border border-outline-variant/40 px-6 py-3 text-sm font-semibold text-primary hover:bg-surface-container-low transition-colors"
                 >
                   Voir moins
+                  <ArrowRight className="h-4 w-4 rotate-[-90deg]" />
                 </button>
               </div>
             )}

@@ -2,40 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+/* Icônes Material Symbols (maquettes Google Stitch) */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.material-symbols-outlined.filled-icon {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
 
 :root {
-  /* Primary - Feuillage profond */
-  --c-canopee-primary: #264E36;
-  --c-canopee-primary-light: #4F7F5A;
-  
-  /* Secondary - Sous-bois & nature humide */
-  --c-canopee-secondary: #7DAA6A;
-  --c-canopee-secondary-light: #AFCFA1;
-  
-  /* Accent - Lumière filtrée */
-  --c-canopee-accent: #F2E8C9;
-  
-  /* Neutres - Terre & tronc */
-  --c-canopee-dark: #2A2D23;
-  --c-canopee-light: #DAD7CD;
-  --c-canopee-white: #FFFFFF;
-  
-  /* États */
-  --c-canopee-hover: #3A644B;
-  --c-canopee-press: #1E3D2B;
-  --c-canopee-focus: #AFCFA1;
-  
-  /* Surfaces */
-  --c-surface-default: #FFFFFF;
-  --c-surface-muted: #DAD7CD;
-  --c-surface-forest: #F2E8C9;
-  
-  /* Shadows */
-  --shadow-canopee-soft: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-canopee-deep: 0 8px 20px rgba(0,0,0,0.15);
-  
-  /* Alias pour compatibilité */
+  --c-canopee-primary: #334537;
+  --c-canopee-primary-light: #4a5d4e;
+  --c-canopee-secondary: #516256;
+  --c-canopee-secondary-light: #cfe2d2;
+  --c-canopee-accent: #e3e5bf;
+  --c-canopee-dark: #1a1c15;
+  --c-canopee-light: #e3e3d7;
+  --c-canopee-white: #ffffff;
+  --c-canopee-hover: #4a5d4e;
+  --c-canopee-press: #1e2a22;
+  --c-canopee-focus: #cfe2d2;
+  --c-surface-default: #fafaee;
+  --c-surface-muted: #f4f4e8;
+  --c-surface-forest: #eeefe3;
+  --shadow-canopee-soft: 0 4px 24px rgba(26, 28, 21, 0.06);
+  --shadow-canopee-deep: 0 8px 32px rgba(26, 28, 21, 0.1);
   --primary: var(--c-canopee-primary);
   --primary-light: var(--c-canopee-primary-light);
   --secondary: var(--c-canopee-secondary);
@@ -57,14 +70,14 @@ html {
 }
 
 body {
-  font-family: 'Inter', 'Montserrat', sans-serif;
+  font-family: var(--font-manrope), 'Manrope', system-ui, sans-serif;
   color: var(--text-dark);
-  background-color: #FFFFFF;
+  background-color: var(--c-surface-default);
   line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-noto-serif), 'Noto Serif', Georgia, serif;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -81,30 +94,28 @@ h3 {
   font-size: clamp(1.75rem, 3vw, 2rem);
 }
 
-/* Transitions globales */
 * {
-  transition: all 0.3s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* Scrollbar personnalisée */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--accent);
+  background: var(--c-surface-muted);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
+  background: var(--c-canopee-primary);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-light);
+  background: var(--c-canopee-primary-light);
 }
 
-/* Animations Ken Burns pour le carrousel Hero - Version subtile */
 @keyframes kenBurns1 {
   0% {
     transform: scale(1) translate(0, 0);
@@ -157,7 +168,6 @@ h3 {
   animation: kenBurns4 10s ease-out forwards;
 }
 
-/* Transformations finales pour maintenir l'effet Ken Burns après l'animation - Version subtile */
 .ken-burns-final-1 {
   transform: scale(1.06) translate(-2%, -1.5%);
 }
@@ -173,4 +183,3 @@ h3 {
 .ken-burns-final-4 {
   transform: scale(1.05) translate(2%, -1.5%);
 }
-

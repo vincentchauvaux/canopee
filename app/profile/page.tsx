@@ -247,8 +247,8 @@ export default function ProfilePage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-accent">
-        <p className="text-text-dark/60">Chargement...</p>
+      <div className="min-h-screen flex items-center justify-center bg-surface">
+        <p className="text-on-surface-variant">Chargement...</p>
       </div>
     );
   }
@@ -256,8 +256,8 @@ export default function ProfilePage() {
   // Pas de session ou profil non chargé : afficher un état de redirection au lieu d'une page blanche
   if (!session || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-accent">
-        <p className="text-text-dark/60">Redirection vers la connexion...</p>
+      <div className="min-h-screen flex items-center justify-center bg-surface">
+        <p className="text-on-surface-variant">Redirection vers la connexion...</p>
       </div>
     );
   }
@@ -269,14 +269,14 @@ export default function ProfilePage() {
       : user.firstName || user.email.split("@")[0];
 
   return (
-    <div className="min-h-screen bg-accent py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-surface pt-2 pb-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-serif font-bold text-text-dark mb-2">
+          <h1 className="text-4xl font-serif font-bold text-primary mb-2">
             Mon Profil
           </h1>
-          <p className="text-text-dark/60">
+          <p className="text-on-surface-variant font-sans text-sm">
             Gérez vos informations personnelles
           </p>
         </div>
@@ -285,31 +285,31 @@ export default function ProfilePage() {
           {/* Colonne principale - Informations */}
           <div className="lg:col-span-2 space-y-6">
             {/* Carte Profil */}
-            <div className="bg-white rounded-card shadow-lg p-6">
+            <div className="bg-surface-container-low rounded-xl border border-outline-variant/10 p-6 shadow-sm">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-4">
                   {isEditing && profilePicPreview ? (
                     <img
                       src={profilePicPreview}
                       alt={displayName}
-                      className="w-20 h-20 rounded-full object-cover border-4 border-accent"
+                      className="w-20 h-20 rounded-full object-cover border-4 border-outline-variant/30"
                     />
                   ) : user.profilePic ? (
                     <img
                       src={user.profilePic}
                       alt={displayName}
-                      className="w-20 h-20 rounded-full object-cover border-4 border-accent"
+                      className="w-20 h-20 rounded-full object-cover border-4 border-outline-variant/30"
                     />
                   ) : (
-                    <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white text-2xl font-bold border-4 border-accent">
+                    <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-on-primary text-2xl font-bold border-4 border-outline-variant/30">
                       {displayName.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div>
-                    <h2 className="text-2xl font-serif font-bold text-text-dark">
+                    <h2 className="text-2xl font-serif font-bold text-on-surface">
                       {displayName}
                     </h2>
-                    <p className="text-text-dark/60">{user.email}</p>
+                    <p className="text-on-surface-variant">{user.email}</p>
                     {isAdmin && (
                       <span className="inline-block mt-2 px-3 py-1 bg-primary text-white rounded-full text-sm font-medium">
                         <Shield className="w-4 h-4 inline mr-1" />
@@ -321,7 +321,7 @@ export default function ProfilePage() {
                 {!isEditing && (
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors flex items-center gap-2"
+                    className="px-5 py-2.5 bg-primary text-on-primary rounded-full font-sans font-semibold text-sm hover:opacity-90 transition-opacity flex items-center gap-2"
                   >
                     <Settings className="w-4 h-4" />
                     Modifier
@@ -330,20 +330,20 @@ export default function ProfilePage() {
               </div>
 
               {error && (
-                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-button">
+                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl font-sans text-sm">
                   {error}
                 </div>
               )}
 
               {success && (
-                <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-button">
+                <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl font-sans text-sm">
                   {success}
                 </div>
               )}
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-text-dark mb-2">
+                  <label className="block text-sm font-medium text-on-surface mb-2">
                     <Mail className="w-4 h-4 inline mr-2" />
                     Email
                   </label>
@@ -351,36 +351,36 @@ export default function ProfilePage() {
                     type="email"
                     value={user.email}
                     disabled
-                    className="w-full px-4 py-3 border border-gray rounded-button bg-gray/50 text-text-dark/60 cursor-not-allowed"
+                    className="w-full px-4 py-3 border border-outline-variant/40 rounded-xl bg-surface-container-high/50 text-on-surface-variant cursor-not-allowed font-sans text-sm"
                   />
-                  <p className="text-xs text-text-dark/60 mt-1">
+                  <p className="text-xs text-on-surface-variant mt-1">
                     L&apos;email ne peut pas être modifié
                   </p>
                 </div>
 
                 {isEditing && (
                   <div>
-                    <label className="block text-sm font-medium text-text-dark mb-2">
+                    <label className="block text-sm font-medium text-on-surface mb-2">
                       <Camera className="w-4 h-4 inline mr-2" />
                       Photo de profil
                     </label>
                     <div className="space-y-3">
                       <div>
-                        <label className="block text-xs text-text-dark/60 mb-1">
+                        <label className="block text-xs text-on-surface-variant mb-1">
                           Uploader une image (max 5MB)
                         </label>
                         <input
                           type="file"
                           accept="image/*"
                           onChange={handleFileChange}
-                          className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary text-sm"
+                          className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-on-surface font-sans text-sm text-sm"
                         />
                       </div>
-                      <div className="text-center text-text-dark/60 text-sm">
+                      <div className="text-center text-on-surface-variant text-sm">
                         ou
                       </div>
                       <div>
-                        <label className="block text-xs text-text-dark/60 mb-1">
+                        <label className="block text-xs text-on-surface-variant mb-1">
                           Entrer une URL d&apos;image
                         </label>
                         <input
@@ -388,18 +388,18 @@ export default function ProfilePage() {
                           value={formData.profilePic}
                           onChange={handleUrlChange}
                           placeholder="https://exemple.com/image.jpg"
-                          className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                          className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-on-surface font-sans text-sm"
                         />
                       </div>
                       {profilePicPreview && (
                         <div className="mt-3">
-                          <p className="text-xs text-text-dark/60 mb-2">
+                          <p className="text-xs text-on-surface-variant mb-2">
                             Aperçu :
                           </p>
                           <img
                             src={profilePicPreview}
                             alt="Aperçu"
-                            className="w-24 h-24 rounded-full object-cover border-2 border-gray"
+                            className="w-24 h-24 rounded-full object-cover border-2 border-outline-variant/40"
                           />
                         </div>
                       )}
@@ -409,7 +409,7 @@ export default function ProfilePage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-text-dark mb-2">
+                    <label className="block text-sm font-medium text-on-surface mb-2">
                       Prénom
                     </label>
                     {isEditing ? (
@@ -422,17 +422,17 @@ export default function ProfilePage() {
                             firstName: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                        className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-on-surface font-sans text-sm"
                       />
                     ) : (
-                      <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
+                      <p className="px-4 py-3 bg-surface-container-high rounded-xl text-on-surface font-sans text-sm">
                         {user.firstName || "Non renseigné"}
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-text-dark mb-2">
+                    <label className="block text-sm font-medium text-on-surface mb-2">
                       Nom
                     </label>
                     {isEditing ? (
@@ -442,10 +442,10 @@ export default function ProfilePage() {
                         onChange={(e) =>
                           setFormData({ ...formData, lastName: e.target.value })
                         }
-                        className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                        className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-on-surface font-sans text-sm"
                       />
                     ) : (
-                      <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
+                      <p className="px-4 py-3 bg-surface-container-high rounded-xl text-on-surface font-sans text-sm">
                         {user.lastName || "Non renseigné"}
                       </p>
                     )}
@@ -453,7 +453,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-text-dark mb-2">
+                  <label className="block text-sm font-medium text-on-surface mb-2">
                     Téléphone
                   </label>
                   {isEditing ? (
@@ -464,17 +464,17 @@ export default function ProfilePage() {
                         setFormData({ ...formData, phone: e.target.value })
                       }
                       placeholder="+33 6 12 34 56 78"
-                      className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                      className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-on-surface font-sans text-sm"
                     />
                   ) : (
-                    <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
+                    <p className="px-4 py-3 bg-surface-container-high rounded-xl text-on-surface font-sans text-sm">
                       {user.phone || "Non renseigné"}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-text-dark mb-2">
+                  <label className="block text-sm font-medium text-on-surface mb-2">
                     Date de naissance
                   </label>
                   {isEditing ? (
@@ -487,10 +487,10 @@ export default function ProfilePage() {
                           dateOfBirth: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
+                      className="w-full px-4 py-3 border border-outline-variant/40 bg-surface-container-lowest rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-on-surface font-sans text-sm"
                     />
                   ) : (
-                    <p className="px-4 py-3 bg-accent rounded-button text-text-dark">
+                    <p className="px-4 py-3 bg-surface-container-high rounded-xl text-on-surface font-sans text-sm">
                       {user.dateOfBirth
                         ? format(new Date(user.dateOfBirth), "d MMMM yyyy", {
                             locale: fr,
@@ -505,14 +505,14 @@ export default function ProfilePage() {
                     <button
                       onClick={handleSave}
                       disabled={saving}
-                      className="flex-1 px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="flex-1 px-6 py-3 bg-primary text-on-primary rounded-full font-sans font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       <Save className="w-4 h-4" />
                       {saving ? "Enregistrement..." : "Enregistrer"}
                     </button>
                     <button
                       onClick={handleCancel}
-                      className="px-6 py-3 bg-gray text-text-dark rounded-button hover:bg-gray/80 transition-colors flex items-center gap-2"
+                      className="px-6 py-3 bg-surface-container-high text-on-surface rounded-full font-sans font-semibold text-sm hover:opacity-90 transition-opacity flex items-center gap-2"
                     >
                       <X className="w-4 h-4" />
                       Annuler
@@ -524,13 +524,13 @@ export default function ProfilePage() {
 
             {/* Historique des réservations - Admin uniquement */}
             {isAdmin && (
-              <div className="bg-white rounded-card shadow-lg p-6">
+              <div className="bg-surface-container-low rounded-xl border border-outline-variant/10 p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-serif font-bold text-text-dark flex items-center gap-2">
+                  <h3 className="text-2xl font-serif font-bold text-on-surface flex items-center gap-2">
                     <Calendar className="w-6 h-6 text-primary" />
                     Mes Réservations
                   </h3>
-                  <span className="text-text-dark/60">
+                  <span className="text-on-surface-variant">
                     {bookings.length} réservation
                     {bookings.length > 1 ? "s" : ""}
                   </span>
@@ -538,13 +538,13 @@ export default function ProfilePage() {
 
                 {bookings.length === 0 ? (
                   <div className="text-center py-12">
-                    <Calendar className="w-16 h-16 text-text-dark/20 mx-auto mb-4" />
-                    <p className="text-text-dark/60 mb-4">
+                    <Calendar className="w-16 h-16 text-on-surface/20 mx-auto mb-4" />
+                    <p className="text-on-surface-variant mb-4">
                       Aucune réservation pour le moment
                     </p>
                     <Link
                       href="/#agenda"
-                      className="inline-block px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors"
+                      className="inline-block px-6 py-3 bg-primary text-on-primary rounded-full font-sans font-semibold text-sm hover:opacity-90 transition-opacity"
                     >
                       Voir l&apos;agenda
                     </Link>
@@ -554,14 +554,14 @@ export default function ProfilePage() {
                     {bookings.map((booking) => (
                       <div
                         key={booking.id}
-                        className="border border-gray rounded-card p-4 hover:shadow-md transition-shadow"
+                        className="border border-outline-variant/15 rounded-xl p-4 bg-surface-container-lowest/50 hover:bg-surface-container-low transition-colors"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h4 className="font-semibold text-lg text-text-dark mb-2">
+                            <h4 className="font-semibold text-lg text-on-surface mb-2">
                               {booking.class.title}
                             </h4>
-                            <div className="space-y-1 text-sm text-text-dark/60">
+                            <div className="space-y-1 text-sm text-on-surface-variant">
                               <p>
                                 <Calendar className="w-4 h-4 inline mr-1" />
                                 {format(
@@ -582,7 +582,7 @@ export default function ProfilePage() {
                                 )}
                               </p>
                               <p>Professeur: {booking.class.instructor}</p>
-                              <p className="text-xs text-text-dark/40">
+                              <p className="text-xs text-outline">
                                 Réservé le{" "}
                                 {format(
                                   new Date(booking.bookedAt),
@@ -612,14 +612,14 @@ export default function ProfilePage() {
           {/* Colonne latérale */}
           <div className="space-y-6">
             {/* Informations de compte */}
-            <div className="bg-white rounded-card shadow-lg p-6">
-              <h3 className="text-xl font-serif font-bold text-text-dark mb-4">
+            <div className="bg-surface-container-low rounded-xl border border-outline-variant/10 p-6 shadow-sm">
+              <h3 className="text-xl font-serif font-bold text-on-surface mb-4">
                 Informations de compte
               </h3>
               <div className="space-y-3 text-sm">
                 <div>
-                  <p className="text-text-dark/60">Membre depuis</p>
-                  <p className="font-semibold text-text-dark">
+                  <p className="text-on-surface-variant">Membre depuis</p>
+                  <p className="font-semibold text-on-surface">
                     {format(new Date(user.createdAt), "MMMM yyyy", {
                       locale: fr,
                     })}
@@ -627,8 +627,8 @@ export default function ProfilePage() {
                 </div>
                 {user.lastLogin && (
                   <div>
-                    <p className="text-text-dark/60">Dernière connexion</p>
-                    <p className="font-semibold text-text-dark">
+                    <p className="text-on-surface-variant">Dernière connexion</p>
+                    <p className="font-semibold text-on-surface">
                       {format(new Date(user.lastLogin), "d MMM yyyy à HH:mm", {
                         locale: fr,
                       })}
@@ -636,10 +636,10 @@ export default function ProfilePage() {
                   </div>
                 )}
                 <div>
-                  <p className="text-text-dark/60">
+                  <p className="text-on-surface-variant">
                     Méthode d&apos;authentification
                   </p>
-                  <p className="font-semibold text-text-dark capitalize">
+                  <p className="font-semibold text-on-surface capitalize">
                     {user.role === "admin" ? "Admin" : "Utilisateur"}
                   </p>
                 </div>
@@ -648,26 +648,26 @@ export default function ProfilePage() {
 
             {/* Actions rapides - Admin uniquement */}
             {isAdmin && (
-              <div className="bg-white rounded-card shadow-lg p-6">
-                <h3 className="text-xl font-serif font-bold text-text-dark mb-4">
+              <div className="bg-surface-container-low rounded-xl border border-outline-variant/10 p-6 shadow-sm">
+                <h3 className="text-xl font-serif font-bold text-on-surface mb-4">
                   Actions rapides
                 </h3>
                 <div className="space-y-2">
                   <Link
                     href="/#agenda"
-                    className="block w-full px-4 py-3 bg-accent hover:bg-accent/80 rounded-button text-text-dark transition-colors text-center"
+                    className="block w-full px-4 py-3 bg-surface-container-high hover:opacity-90 rounded-full font-sans font-semibold text-sm text-on-surface transition-opacity text-center"
                   >
                     Voir l&apos;agenda
                   </Link>
                   <Link
                     href="/#actualites"
-                    className="block w-full px-4 py-3 bg-accent hover:bg-accent/80 rounded-button text-text-dark transition-colors text-center"
+                    className="block w-full px-4 py-3 bg-surface-container-high hover:opacity-90 rounded-full font-sans font-semibold text-sm text-on-surface transition-opacity text-center"
                   >
                     Voir les actualités
                   </Link>
                   <Link
                     href="/admin"
-                    className="block w-full px-4 py-3 bg-primary text-white hover:bg-primary-light rounded-button transition-colors text-center"
+                    className="block w-full px-4 py-3 bg-primary text-on-primary hover:opacity-90 rounded-full font-sans font-semibold text-sm transition-opacity text-center"
                   >
                     <Shield className="w-4 h-4 inline mr-2" />
                     Panel Admin
