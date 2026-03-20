@@ -1,21 +1,26 @@
 import type { Metadata } from 'next'
-import { Manrope, Noto_Serif } from 'next/font/google'
+import { Inter, Montserrat, Cormorant_Garamond } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import Script from 'next/script'
-import StitchTopBar from '@/components/stitch/StitchTopBar'
-import StitchBottomNav from '@/components/stitch/StitchBottomNav'
-import StitchAuxFooter from '@/components/stitch/StitchAuxFooter'
+import Header from '@/components/Header'
 
-const manrope = Manrope({
+const inter = Inter({ 
   subsets: ['latin'],
-  variable: '--font-manrope',
+  variable: '--font-inter',
   display: 'swap',
 })
 
-const notoSerif = Noto_Serif({
+const montserrat = Montserrat({ 
   subsets: ['latin'],
-  variable: '--font-noto-serif',
+  variable: '--font-montserrat',
+  display: 'swap',
+})
+
+const cormorant = Cormorant_Garamond({ 
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-cormorant',
   display: 'swap',
 })
 
@@ -31,20 +36,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html
-      lang="fr"
-      className={`${manrope.variable} ${notoSerif.variable} scroll-smooth [scroll-padding-bottom:7.5rem]`}
-      suppressHydrationWarning
-    >
+    <html lang="fr" className={`${inter.variable} ${montserrat.variable} ${cormorant.variable}`} suppressHydrationWarning>
       <head>
+        {/* Favicon : évite le 404 sur /favicon.ico (icône feuille pour Canopée) */}
         <link
           rel="icon"
           href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-          rel="stylesheet"
-        />
+        {/* Script pour supprimer les attributs ajoutés par les extensions */}
         <Script
           id="remove-extension-attributes"
           strategy="afterInteractive"
@@ -52,9 +51,11 @@ export default function RootLayout({
             __html: `
               (function() {
                 if (typeof window !== 'undefined') {
+                  // Supprimer les attributs ajoutés par les extensions de navigateur
                   const removeExtensionAttributes = () => {
                     const body = document.body;
                     if (body) {
+                      // Supprimer cz-shortcut-listen et autres attributs d'extensions
                       const extensionAttributes = ['cz-shortcut-listen', 'data-new-gr-c-s-check-loaded', 'data-gr-ext-installed'];
                       extensionAttributes.forEach(attr => {
                         if (body.hasAttribute(attr)) {
@@ -63,12 +64,16 @@ export default function RootLayout({
                       });
                     }
                   };
+                  
+                  // Exécuter immédiatement et après le chargement
                   removeExtensionAttributes();
                   if (document.readyState === 'loading') {
                     document.addEventListener('DOMContentLoaded', removeExtensionAttributes);
                   } else {
                     removeExtensionAttributes();
                   }
+                  
+                  // Observer les changements pour supprimer ces attributs si ajoutés plus tard
                   const observer = new MutationObserver((mutations) => {
                     mutations.forEach((mutation) => {
                       if (mutation.type === 'attributes') {
@@ -84,6 +89,7 @@ export default function RootLayout({
                       }
                     });
                   });
+                  
                   observer.observe(document.body, {
                     attributes: true,
                     attributeFilter: ['cz-shortcut-listen', 'data-new-gr-c-s-check-loaded', 'data-gr-ext-installed']
@@ -94,15 +100,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className="font-sans antialiased overflow-x-hidden"
-        suppressHydrationWarning
-      >
+      <body className="font-sans" suppressHydrationWarning>
         <Providers>
-          <StitchTopBar />
-          <div className="pt-[4.75rem] pb-28 md:pb-32 min-h-dvh bg-surface">{children}</div>
-          <StitchAuxFooter />
-          <StitchBottomNav />
+          <Header />
+          {children}
         </Providers>
       </body>
     </html>

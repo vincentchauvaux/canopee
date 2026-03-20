@@ -2,13 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "localhost",
-      "www.lunopia.com",
-      "canopee.be",
-      "canopée.be",
-      "lh3.googleusercontent.com",
-    ],
+    domains: ["localhost", "www.lunopia.com", "canopee.be", "canopée.be"],
     // Pour l'export statique, désactiver l'optimisation
     unoptimized: process.env.NEXT_PUBLIC_STATIC_EXPORT === "true",
   },

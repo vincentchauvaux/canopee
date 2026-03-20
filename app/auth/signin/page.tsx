@@ -83,17 +83,14 @@ export default function SignIn() {
     signIn(provider, { callbackUrl: "/" });
   };
 
-  const inputClass =
-    "w-full px-4 py-3 rounded-xl border border-outline-variant/40 bg-surface-container-lowest text-on-surface font-sans text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50";
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-surface-container-lowest p-8 rounded-xl shadow-lg ring-1 ring-outline-variant/15">
+    <div className="min-h-screen flex items-center justify-center bg-accent py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-card shadow-lg">
         <div>
-          <h2 className="text-center text-3xl font-serif font-bold text-primary">
+          <h2 className="text-center text-3xl font-serif font-bold text-text-dark">
             {isLogin ? "Connexion" : "Inscription"}
           </h2>
-          <p className="mt-2 text-center text-sm text-on-surface-variant font-sans">
+          <p className="mt-2 text-center text-sm text-text-dark/60">
             {isLogin
               ? "Connectez-vous à votre compte"
               : "Créez votre compte pour commencer"}
@@ -101,7 +98,7 @@ export default function SignIn() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl font-sans text-sm">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-button">
             {error}
           </div>
         )}
@@ -112,7 +109,7 @@ export default function SignIn() {
               <div>
                 <label
                   htmlFor="firstName"
-                  className="block text-sm font-medium text-on-surface mb-2 font-sans"
+                  className="block text-sm font-medium text-text-dark mb-2"
                 >
                   Prénom
                 </label>
@@ -125,13 +122,13 @@ export default function SignIn() {
                   onChange={(e) =>
                     setFormData({ ...formData, firstName: e.target.value })
                   }
-                  className={inputClass}
+                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
                 />
               </div>
               <div>
                 <label
                   htmlFor="lastName"
-                  className="block text-sm font-medium text-on-surface mb-2 font-sans"
+                  className="block text-sm font-medium text-text-dark mb-2"
                 >
                   Nom
                 </label>
@@ -144,7 +141,7 @@ export default function SignIn() {
                   onChange={(e) =>
                     setFormData({ ...formData, lastName: e.target.value })
                   }
-                  className={inputClass}
+                  className="w-full px-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
                 />
               </div>
             </>
@@ -153,12 +150,12 @@ export default function SignIn() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-on-surface mb-2 font-sans"
+              className="block text-sm font-medium text-text-dark mb-2"
             >
               Email
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant w-5 h-5" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-dark/40 w-5 h-5" />
               <input
                 id="email"
                 type="email"
@@ -168,7 +165,7 @@ export default function SignIn() {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className={`${inputClass} pl-10`}
+                className="w-full pl-10 pr-4 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
               />
             </div>
           </div>
@@ -176,12 +173,12 @@ export default function SignIn() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-on-surface mb-2 font-sans"
+              className="block text-sm font-medium text-text-dark mb-2"
             >
               Mot de passe
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant w-5 h-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-dark/40 w-5 h-5" />
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -191,12 +188,12 @@ export default function SignIn() {
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
-                className={`${inputClass} pl-10 pr-12`}
+                className="w-full pl-10 pr-12 py-3 border border-gray rounded-button focus:outline-none focus:border-primary"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant hover:text-on-surface"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-dark/40 hover:text-text-dark"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -210,7 +207,7 @@ export default function SignIn() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-3 px-4 rounded-full text-on-primary bg-primary font-sans font-semibold text-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-button text-white bg-primary hover:bg-primary-light focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading
               ? "Chargement..."
@@ -223,10 +220,10 @@ export default function SignIn() {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-outline-variant/40" />
+              <div className="w-full border-t border-gray" />
             </div>
-            <div className="relative flex justify-center text-sm font-sans">
-              <span className="px-2 bg-surface-container-lowest text-on-surface-variant">
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-text-dark/60">
                 Ou continuer avec
               </span>
             </div>
@@ -234,9 +231,8 @@ export default function SignIn() {
 
           <div className="mt-6 grid grid-cols-2 gap-3">
             <button
-              type="button"
               onClick={() => handleOAuth("google")}
-              className="w-full inline-flex justify-center items-center py-3 px-4 border border-outline-variant/40 rounded-xl bg-surface-container-lowest text-sm font-medium text-on-surface font-sans hover:bg-surface-container-low transition-colors"
+              className="w-full inline-flex justify-center py-3 px-4 border border-gray rounded-button bg-white text-sm font-medium text-text-dark hover:bg-accent"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path
@@ -259,9 +255,8 @@ export default function SignIn() {
               Google
             </button>
             <button
-              type="button"
               onClick={() => handleOAuth("facebook")}
-              className="w-full inline-flex justify-center items-center py-3 px-4 border border-outline-variant/40 rounded-xl bg-surface-container-lowest text-sm font-medium text-on-surface font-sans hover:bg-surface-container-low transition-colors"
+              className="w-full inline-flex justify-center py-3 px-4 border border-gray rounded-button bg-white text-sm font-medium text-text-dark hover:bg-accent"
             >
               <svg className="w-5 h-5 mr-2" fill="#1877F2" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -273,12 +268,11 @@ export default function SignIn() {
 
         <div className="mt-6 text-center">
           <button
-            type="button"
             onClick={() => {
               setIsLogin(!isLogin);
               setError("");
             }}
-            className="text-primary hover:opacity-80 font-semibold text-sm font-sans"
+            className="text-primary hover:text-primary-light font-medium"
           >
             {isLogin
               ? "Pas encore de compte ? S'inscrire"

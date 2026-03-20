@@ -24,9 +24,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Référence maquettes Google Stitch (extrait localement, non versionné)
-stitch-reference/
-
 # local env files
 .env*.local
 .env
