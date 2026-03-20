@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
 import { format, parseISO, startOfToday } from 'date-fns'
 import { fr } from 'date-fns/locale/fr'
@@ -32,7 +31,6 @@ type TimelineItem =
   | { kind: 'news'; date: string; item: NewsItem }
 
 export default function NewsFeed() {
-  const { data: session, status } = useSession()
   const [classes, setClasses] = useState<UpcomingClass[]>([])
   const [news, setNews] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -41,15 +39,11 @@ export default function NewsFeed() {
   const [isMounted, setIsMounted] = useState(false)
   const initialDisplayCount = 3
 
-  const isMember = status === 'authenticated' && !!session?.user
-
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
   const fetchUpcomingClasses = async () => {
-    if (!isMember) return
-
     try {
       const today = startOfToday()
       const response = await fetch(
@@ -82,8 +76,6 @@ export default function NewsFeed() {
   }
 
   const fetchNews = async () => {
-    if (!isMember) return
-
     try {
       const today = startOfToday()
       const response = await fetch('/api/news?limit=100', {
@@ -122,7 +114,7 @@ export default function NewsFeed() {
 
   useEffect(() => {
     const load = async () => {
-      if (!isMember || !isMounted) return
+      if (!isMounted) return
       setLoading(true)
       setError('')
       try {
@@ -135,15 +127,7 @@ export default function NewsFeed() {
     }
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted, isMember])
-
-  if (status === 'loading') {
-    return null
-  }
-
-  if (!isMember) {
-    return null
-  }
+  }, [isMounted])
 
   // Construire une timeline fusionnée cours + actualités
   const timeline: TimelineItem[] = [

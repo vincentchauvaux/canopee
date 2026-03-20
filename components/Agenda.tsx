@@ -31,7 +31,7 @@ interface Class {
 }
 
 export default function Agenda() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [classes, setClasses] = useState<Class[]>([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [view, setView] = useState<"week" | "month">("week");
@@ -43,7 +43,6 @@ export default function Agenda() {
     string | null
   >(null);
 
-  const isMember = status === "authenticated" && !!session?.user;
   const isAdmin = (session?.user as { role?: string })?.role === "admin";
 
   useEffect(() => {
@@ -65,23 +64,7 @@ export default function Agenda() {
     end: monthEndWeek,
   });
 
-  useEffect(() => {
-    if (isMember) {
-      fetchClasses();
-    }
-  }, [selectedDate, view, isMember]);
-
-  if (status === "loading") {
-    return null;
-  }
-
-  if (!isMember) {
-    return null;
-  }
-
   const fetchClasses = async () => {
-    if (!isMember) return;
-
     try {
       setLoading(true);
       const start = view === "week" ? weekStart : monthStartWeek;
@@ -107,6 +90,11 @@ export default function Agenda() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    void fetchClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate, view]);
 
   const handleClassFormClose = () => {
     setClassFormOpen(false);
