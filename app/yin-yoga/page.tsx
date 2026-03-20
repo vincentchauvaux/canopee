@@ -187,10 +187,10 @@ export default function YinYogaPage() {
       <footer className="text-center py-8 space-y-5">
         <p className="font-serif italic text-primary/55">Rejoignez la Canopée</p>
         <Link
-          href="/agenda"
+          href="/#agenda"
           className="inline-flex items-center justify-center rounded-full bg-primary text-on-primary px-8 py-3.5 text-sm font-semibold font-sans hover:opacity-90 transition-opacity"
         >
-          Réserver un cours
+          Voir le planning
         </Link>
         <div className="flex justify-center gap-3 pt-2">
           <span className="w-2 h-2 rounded-full bg-primary/25" />

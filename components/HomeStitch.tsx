@@ -74,10 +74,10 @@ export default function HomeStitch() {
             </p>
             <div className="flex flex-row flex-nowrap items-center gap-3 sm:gap-4 pt-2 overflow-x-auto min-h-[3rem] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <Link
-                href="/agenda"
+                href="/#agenda"
                 className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap bg-surface-container-lowest text-primary px-5 sm:px-8 py-3 rounded-full font-sans text-xs sm:text-sm font-semibold hover:bg-white transition-colors"
               >
-                Réserver un cours
+                Voir l&apos;agenda
                 <span className="material-symbols-outlined text-lg shrink-0">arrow_forward</span>
               </Link>
               <Link

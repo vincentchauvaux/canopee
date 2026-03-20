@@ -16,16 +16,16 @@ const SLIDES = [
     title: "Votre studio de Yin Yoga",
     subtitle:
       "Un tempo lent, une écoute bienveillante, une communauté au cœur de Wauthier-Braine.",
-    cta: { href: "/auth/signin", label: "S'inscrire" },
+    cta: { href: "/auth/signin", label: "Connexion" },
   },
   {
     src: "/images/background/bg_02.jpeg",
     alt: "Salle de cours, planchers bois et atmosphère zen",
     kicker: "Planning",
-    title: "Réservez votre séance",
+    title: "Consultez le calendrier",
     subtitle:
-      "Cours individuels ou petits groupes : consultez les créneaux et choisissez votre moment.",
-    cta: { href: "/agenda", label: "Voir l'agenda" },
+      "Les créneaux sont visibles sur l'accueil une fois connecté. L'inscription aux cours se fait en dehors du site.",
+    cta: { href: "/agenda", label: "Infos agenda" },
   },
 ];
 

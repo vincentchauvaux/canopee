@@ -7,7 +7,6 @@ import {
   Calendar,
   Newspaper,
   Users,
-  BarChart3,
   PlusCircle,
   Megaphone,
   ArrowRight,
@@ -38,7 +37,6 @@ export default function AdminDashboard() {
     classes: 0,
     news: 0,
     users: 0,
-    bookings: 0,
   })
   const [upcomingClasses, setUpcomingClasses] = useState<DashboardClass[]>([])
   const [loading, setLoading] = useState(true)
@@ -47,24 +45,19 @@ export default function AdminDashboard() {
 
   const loadDashboard = useCallback(async () => {
     try {
-      const [classesRes, newsRes, usersRes, bookingsRes] = await Promise.all([
+      const [classesRes, newsRes, usersRes] = await Promise.all([
         fetch('/api/classes', { credentials: 'include' }),
         fetch('/api/news', { credentials: 'include' }),
         fetch('/api/admin/users', { credentials: 'include' }),
-        fetch('/api/admin/bookings', { credentials: 'include' }),
       ])
 
       const classesRaw = await classesRes.json()
       const news = await newsRes.json()
 
       let users = { users: [] as unknown[] }
-      let bookings = { bookings: [] as unknown[] }
 
       if (usersRes.ok) {
         users = await usersRes.json()
-      }
-      if (bookingsRes.ok) {
-        bookings = await bookingsRes.json()
       }
 
       const classes: DashboardClass[] = Array.isArray(classesRaw)
@@ -88,7 +81,6 @@ export default function AdminDashboard() {
         classes: classes.length,
         news: news.news ? news.news.length : 0,
         users: users.users ? users.users.length : 0,
-        bookings: bookings.bookings ? bookings.bookings.length : 0,
       })
     } catch (error) {
       console.error('Error fetching dashboard:', error)
@@ -224,11 +216,7 @@ export default function AdminDashboard() {
               <p className="font-serif text-4xl font-bold text-primary mb-1">
                 {stats.users}
               </p>
-              <p className="text-sm font-semibold font-sans">Membres inscrits</p>
-              <p className="text-xs text-on-secondary-container/80 mt-2">
-                {stats.bookings} réservation
-                {stats.bookings !== 1 ? 's' : ''} en base
-              </p>
+              <p className="text-sm font-semibold font-sans">Comptes membres</p>
             </div>
           </div>
         </div>
@@ -298,15 +286,7 @@ export default function AdminDashboard() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between md:justify-end gap-8 md:gap-10 shrink-0">
-                    <div className="text-center">
-                      <p className="text-xl font-serif font-bold text-primary">
-                        {c.currentParticipants}
-                      </p>
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-sans">
-                        Inscrits
-                      </p>
-                    </div>
+                  <div className="flex items-center justify-end gap-1 shrink-0">
                     <div className="flex gap-1">
                       <button
                         type="button"
@@ -333,7 +313,7 @@ export default function AdminDashboard() {
         </section>
 
         <h2 className="font-serif text-2xl text-primary mb-6">Vue d&apos;ensemble</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           <div className="rounded-xl bg-surface-container-lowest p-6 shadow-canopee-soft">
             <div className="flex items-center justify-between">
               <div>
@@ -376,19 +356,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="rounded-xl bg-surface-container-lowest p-6 shadow-canopee-soft">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-on-surface-variant text-xs font-semibold uppercase tracking-wide mb-1">
-                  Réservations
-                </p>
-                <p className="text-3xl font-serif font-bold text-primary">
-                  {stats.bookings}
-                </p>
-              </div>
-              <BarChart3 className="w-11 h-11 text-secondary opacity-90" />
-            </div>
-          </div>
         </div>
 
         <div className="mt-10 text-center md:text-left">

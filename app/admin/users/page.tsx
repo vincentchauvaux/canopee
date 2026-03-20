@@ -19,8 +19,8 @@ interface User {
   role: string;
   createdAt: string;
   lastLogin?: string | null;
-  _count: {
-    bookings: number;
+  _count?: {
+    bookings?: number;
   };
 }
 
@@ -96,7 +96,7 @@ export default function AdminUsers() {
             Membres
           </h1>
           <p className="text-on-surface-variant font-sans text-sm md:text-base max-w-xl">
-            Liste des comptes, réservations et rôles.
+            Liste des comptes et des rôles.
           </p>
         </div>
 
@@ -143,14 +143,6 @@ export default function AdminUsers() {
 
                 <div className="flex flex-wrap gap-4 sm:gap-8 items-center justify-between sm:justify-end font-sans text-sm">
                   <div className="flex gap-6">
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-                        Réservations
-                      </p>
-                      <p className="font-serif text-lg font-bold text-primary tabular-nums">
-                        {user._count.bookings}
-                      </p>
-                    </div>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                         Inscrit

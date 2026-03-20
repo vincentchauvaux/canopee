@@ -1111,6 +1111,15 @@ Pages et composants alignés sur les mêmes **tokens** que `/admin` et `/admin/c
 - ✅ Lorsque l’appel à `/api/profile` renvoie une erreur serveur (statut ≥ 500), la page déclenche automatiquement `signOut({ callbackUrl: "/auth/signin" })` au lieu de rester bloquée sur « Redirection vers la connexion... » avec une session encore active dans le header.
 - ✅ Objectif : éviter l’état incohérent « session côté client mais profil impossible à charger » et forcer une vraie déconnexion propre avant de renvoyer vers la page de connexion.
 
+### Réservations aux cours : retrait du front (Mars 2026)
+
+- ✅ Suppression de `components/ScheduleBooking.tsx` et remplacement de `/agenda` par une page statique informative (`app/agenda/page.tsx`) : pas d’appel à `/api/bookings`, renvoi vers l’accueil / connexion.
+- ✅ CTAs « Réserver » / liens vers réservation : `HomeStitch`, `HomeHeroDesktop`, `yin-yoga` → libellés type « Voir l’agenda » / « Voir le planning » / « Infos agenda », hero premier slide « Connexion » au lieu de « S’inscrire » (compte, pas cours).
+- ✅ Profil : section « Mes réservations » et fetch `/api/bookings` supprimés.
+- ✅ Admin dashboard (`app/admin/page.tsx`) : plus de carte ni de compteur « Réservations », plus de ligne « inscrits » sur les cartes cours ; plus d’appel à `/api/admin/bookings` depuis cette page.
+- ✅ Admin membres (`app/admin/users/page.tsx`) : colonne « Réservations » retirée.
+- ℹ️ Les routes API `/api/bookings`, `/api/admin/bookings` restent disponibles pour un usage backend / outils.
+
 ### Vérification : Les données de profil existent-elles dans Supabase ? (Janvier 2025)
 
 **Question :** Le problème de la page profile est-il lié au fait que Supabase ne dispose pas des informations à afficher sur cette page ?
