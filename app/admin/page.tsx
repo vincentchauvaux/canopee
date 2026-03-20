@@ -101,8 +101,9 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        {/* Statistiques */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="flex flex-col gap-8">
+        {/* Statistiques — sous les actions sur mobile (order) */}
+        <div className="order-2 md:order-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white rounded-card p-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
@@ -196,6 +197,7 @@ export default function AdminDashboard() {
               </div>
             </div>
           </Link>
+        </div>
         </div>
       </div>
     </div>

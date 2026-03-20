@@ -38,7 +38,7 @@
 
    - [x] Vue calendrier hebdomadaire avec navigation
    - [x] Affichage des cours avec couleurs par type
-   - [x] Fonctionnalité de réservation/annulation
+   - [ ] Réservation depuis le calendrier d&apos;accueil (retirée mars 2026 — l&apos;agenda est consultatif ; l&apos;API `/api/bookings` reste disponible)
    - [x] API routes pour CRUD des cours
    - [x] API routes pour les réservations
    - [ ] Intégration Google Calendar API (à venir)
@@ -194,7 +194,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - **Adresse** : Rue Jean Theys, 10, 1440 Wauthier-Braine
 - **Professeure** : Carol Nelissen
   - Certifiée E.T.Y. et Karma Yoga Institute
-  - Membre ABEFY
+  - Membre ABEPY
 - **Site web** : canopee-yin-yoga.com
 - **Bienfaits** :
   - Action sur les tissus profonds (articulations, fascias…)
@@ -252,12 +252,12 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 - `components/Header.tsx` - Header sticky avec transition et adaptation automatique des couleurs de texte selon le background (blanc sur fond transparent, couleurs sombres sur fond blanc). Sur les pages `/profile`, `/mon-parcours`, `/yin-yoga` et `/faq`, le header a un fond blanc dès le départ (pas d'effet de transparence). Le menu contient un lien vers "Mon parcours" (`/mon-parcours`) accessible depuis le menu desktop et mobile
 - `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
-- `components/Agenda.tsx` - Section agenda interactive avec calendrier hebdomadaire, réservations. Accessible uniquement aux utilisateurs admin
-- `components/NewsFeed.tsx` - Fil d'actualité affichant les descriptions des prochains cours (3 par défaut, bouton "Voir plus" pour afficher plus). Accessible uniquement aux utilisateurs admin
+- `components/Agenda.tsx` - Section agenda interactive (semaine / mois), cours avec horaires et intervenant ; sans affichage des places ni boutons de réservation. Visible pour les membres connectés. **Administrateurs** : clic sur un jour ouvre la création de cours (`ClassFormModal`) avec la date du jour présélectionnée.
+- `components/NewsFeed.tsx` - Fil d'actualité (cours à venir + actualités datées). Visible uniquement pour les utilisateurs connectés ; si la timeline est vide après chargement, la section n'est pas affichée (pas de carte « vide »). Pas d'actualité factice quand il n'y a aucune news
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). La colonne de gauche (bienfaits) est centrée verticalement avec `items-center` sur la grille. La colonne de droite (infos pratiques) a une bordure verte (`border-2 border-primary`).
 - `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
-- `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours
+- `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours ; prop optionnelle `initialDate` (`YYYY-MM-DD`) pour préremplir la date en création (ex. depuis l&apos;agenda d&apos;accueil)
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
 
 ### Utilitaires
@@ -712,6 +712,14 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Mise à jour de l&apos;API `/api/news` (POST/GET) et `/api/news/[id]` (PATCH) pour lire/écrire `eventDate` et trier les actualités d&apos;abord par `eventDate`, puis par `createdAt`.
 - ✅ Mise à jour de `NewsFormModal` pour permettre le choix d&apos;une date de l&apos;actualité via un champ `type="date"`.
 - ✅ Assouplissement du `NewsFeed` : le Fil d&apos;actualité affiche maintenant tous les cours à venir (date ≥ aujourd&apos;hui), même si la description est vide (le filtre qui exigeait une description non vide a été retiré).
+
+### Accueil membre : agenda, fil d&apos;actualité et admin mobile (Mars 2026)
+
+- ✅ `Agenda` et `NewsFeed` sur l&apos;accueil : affichage pour toute session authentifiée (`status === 'authenticated'`), pas seulement le rôle admin — les membres `user` voient le même contenu que l&apos;admin sur ces blocs.
+- ✅ Suppression de l&apos;actualité de remplissage (« Aucune actualité spécifique… ») et masquage complet du bloc fil d&apos;actualité lorsqu&apos;il n&apos;y a ni cours ni actualité à afficher (évite une fausse carte d&apos;article).
+- ✅ `app/admin/page.tsx` : sur mobile, la grille « Actions rapides » (liens Cours, Actualités, Utilisateurs) est affichée au-dessus des cartes de statistiques (`order-1` / `order-2` avec `md:order-*`).
+- ✅ Agenda d&apos;accueil : suppression du compteur participants et des actions Réserver / Annuler / Complet / Connectez-vous ; plus d&apos;appel à `/api/bookings` depuis `Agenda.tsx`. Même logique d&apos;affichage des participants retirée des cartes « cours » dans `NewsFeed.tsx`.
+- ✅ **Admin — création de cours depuis l&apos;agenda d&apos;accueil** : pour les utilisateurs `role === admin`, un clic sur une case jour (vue semaine ou mois) ouvre `ClassFormModal` avec le champ date prérempli (`initialDate` en `YYYY-MM-DD`). Réutilise le même formulaire que `/admin/classes`. Les cartes cours existantes utilisent `stopPropagation` pour ne pas ouvrir le formulaire en cliquant sur un cours.
 
 ### Correction de l'erreur 401 lors de la connexion (Décembre 2024)
 

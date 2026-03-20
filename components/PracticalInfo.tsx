@@ -118,7 +118,7 @@ export default function PracticalInfo() {
                         <span className="text-sm italic">
                           Certifiée E.T.Y. et Karma Yoga Institute
                           <br />
-                          Membre ABEFY
+                          Membre ABEPY
                         </span>
                       </p>
                     </div>

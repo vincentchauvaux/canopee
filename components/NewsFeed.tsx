@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Calendar, Clock, User, Users, ChevronDown } from 'lucide-react'
+import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
 import { format, parseISO, startOfToday } from 'date-fns'
 import { fr } from 'date-fns/locale/fr'
 
@@ -16,8 +16,6 @@ interface UpcomingClass {
   startTime: string
   endTime: string
   instructor: string
-  maxParticipants: number
-  currentParticipants: number
 }
 
 interface NewsItem {
@@ -34,7 +32,7 @@ type TimelineItem =
   | { kind: 'news'; date: string; item: NewsItem }
 
 export default function NewsFeed() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [classes, setClasses] = useState<UpcomingClass[]>([])
   const [news, setNews] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -43,15 +41,14 @@ export default function NewsFeed() {
   const [isMounted, setIsMounted] = useState(false)
   const initialDisplayCount = 3
 
-  // Vérifier si l'utilisateur est admin
-  const isAdmin = (session?.user as any)?.role === 'admin'
+  const isMember = status === 'authenticated' && !!session?.user
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
   const fetchUpcomingClasses = async () => {
-    if (!isAdmin) return
+    if (!isMember) return
 
     try {
       const today = startOfToday()
@@ -85,7 +82,7 @@ export default function NewsFeed() {
   }
 
   const fetchNews = async () => {
-    if (!isAdmin) return
+    if (!isMember) return
 
     try {
       const today = startOfToday()
@@ -117,22 +114,7 @@ export default function NewsFeed() {
         .sort((a, b) => a._dateObj.getTime() - b._dateObj.getTime())
         .map(({ _dateObj, ...rest }) => rest)
 
-      // Si aucune actualité future, créer une actualité "par défaut"
-      if (upcomingNews.length === 0) {
-        const todayIso = today.toISOString()
-        setNews([
-          {
-            id: 'default-news',
-            title: 'Actualités Canopée',
-            content: "Aucune actualité spécifique pour le moment. Revenez bientôt pour découvrir les prochaines informations importantes concernant les cours et les événements.",
-            coverImage: null,
-            eventDate: todayIso,
-            createdAt: todayIso,
-          },
-        ])
-      } else {
-        setNews(upcomingNews)
-      }
+      setNews(upcomingNews)
     } catch (err) {
       console.error(err)
     }
@@ -140,7 +122,7 @@ export default function NewsFeed() {
 
   useEffect(() => {
     const load = async () => {
-      if (!isAdmin || !isMounted) return
+      if (!isMember || !isMounted) return
       setLoading(true)
       setError('')
       try {
@@ -153,10 +135,13 @@ export default function NewsFeed() {
     }
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted, isAdmin])
+  }, [isMounted, isMember])
 
-  // Ne rien afficher si l'utilisateur n'est pas admin
-  if (!isAdmin) {
+  if (status === 'loading') {
+    return null
+  }
+
+  if (!isMember) {
     return null
   }
 
@@ -172,6 +157,10 @@ export default function NewsFeed() {
 
   const displayedItems = showAll ? timeline : timeline.slice(0, initialDisplayCount)
   const hasMoreItems = timeline.length > initialDisplayCount
+
+  if (!loading && !error && timeline.length === 0) {
+    return null
+  }
 
   return (
     <section id="actualites" className="py-20 bg-white">
@@ -192,10 +181,6 @@ export default function NewsFeed() {
         ) : error ? (
           <div className="text-center py-12">
             <p className="text-red-600">{error}</p>
-          </div>
-        ) : timeline.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-text-dark/60">Aucun cours à venir avec description pour le moment</p>
           </div>
         ) : (
           <>
@@ -248,10 +233,6 @@ export default function NewsFeed() {
                           <div className="flex items-center">
                             <User className="w-4 h-4 mr-2 text-primary" />
                             {classItem.instructor}
-                          </div>
-                          <div className="flex items-center">
-                            <Users className="w-4 h-4 mr-2 text-primary" />
-                            {classItem.currentParticipants}/{classItem.maxParticipants} participants
                           </div>
                         </div>
 

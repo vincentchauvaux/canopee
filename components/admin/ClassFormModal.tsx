@@ -20,6 +20,8 @@ interface ClassFormModalProps {
   classItem: Class | null;
   isOpen: boolean;
   onClose: () => void;
+  /** Création uniquement : date du jour cliqué (YYYY-MM-DD), ex. agenda d'accueil */
+  initialDate?: string | null;
 }
 
 const CLASS_TYPES = [
@@ -45,6 +47,7 @@ export default function ClassFormModal({
   classItem,
   isOpen,
   onClose,
+  initialDate = null,
 }: ClassFormModalProps) {
   const [formData, setFormData] = useState({
     title: "",
@@ -80,23 +83,27 @@ export default function ClassFormModal({
         maxParticipants: classItem.maxParticipants,
       });
     } else {
-      // Réinitialiser le formulaire avec valeurs par défaut pour Yin Yoga
       const today = new Date();
-      // Trouver le prochain vendredi (5 = vendredi en JavaScript, 0 = dimanche)
-      const currentDay = today.getDay(); // 0 = dimanche, 5 = vendredi
-      let daysUntilFriday = 5 - currentDay;
-      if (daysUntilFriday <= 0) {
-        daysUntilFriday += 7; // Si on est déjà vendredi ou après, prendre le vendredi suivant
+      let defaultDateStr: string;
+      if (initialDate && /^\d{4}-\d{2}-\d{2}$/.test(initialDate)) {
+        defaultDateStr = initialDate;
+      } else {
+        const currentDay = today.getDay();
+        let daysUntilFriday = 5 - currentDay;
+        if (daysUntilFriday <= 0) {
+          daysUntilFriday += 7;
+        }
+        const nextFriday = new Date(today);
+        nextFriday.setDate(today.getDate() + daysUntilFriday);
+        defaultDateStr = nextFriday.toISOString().split("T")[0];
       }
-      const nextFriday = new Date(today);
-      nextFriday.setDate(today.getDate() + daysUntilFriday);
 
       setFormData({
         title: "Yin Yoga",
         description: "",
         type: "Yin",
         color: CLASS_COLORS.Yin || "#4F7F5A",
-        date: nextFriday.toISOString().split("T")[0],
+        date: defaultDateStr,
         startTime: "18:00",
         endTime: "19:00",
         instructor: "Carol Nelissen",
@@ -104,7 +111,7 @@ export default function ClassFormModal({
       });
     }
     setError("");
-  }, [classItem, isOpen]);
+  }, [classItem, isOpen, initialDate]);
 
   const handleTypeChange = (type: string) => {
     setFormData({
