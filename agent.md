@@ -184,7 +184,14 @@ yoga/
 - **Repository GitHub** : `git@github.com:vincentchauvaux/canopee.git`
 - **Branche principale** : `main`
 - **Branche VPS** : `main` (doit être utilisée sur le VPS en production)
+- **Branche `Carol`** : travail et livrables côté Carol (nom exact sur le remote : `origin/Carol`)
+- **Branche `vinc`** : branche de travail Vincent ; pour y intégrer le dernier état de Carol puis pousser :
+  ```bash
+  git checkout vinc && git fetch origin && git merge origin/Carol && git push origin vinc
+  ```
 - Projet initialisé et poussé sur GitHub avec commit initial
+
+**Dernière synchro `Carol` → `vinc` (push)** : 20 mars 2025 — fast-forward `5d3982d..ddf82f6` sur `origin/vinc`.
 
 ## Informations sur le Yin Yoga
 
