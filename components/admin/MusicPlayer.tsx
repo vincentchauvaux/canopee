@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ListMusic, Play, Repeat } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ListMusic, Play, Repeat, Volume2 } from "lucide-react";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 import {
   formatDuration,
@@ -18,6 +18,14 @@ function formatTime(seconds: number) {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
+function isIosDevice() {
+  if (typeof navigator === "undefined") return false;
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
 export default function MusicPlayer() {
   const {
     playCategory,
@@ -29,9 +37,17 @@ export default function MusicPlayer() {
     setLoopPlaylist,
     currentTime,
     duration,
+    volume,
+    setVolume,
+    isActive,
   } = useAudioPlayer();
 
   const [selectedCategory, setSelectedCategory] = useState<PlaylistCategory>("zen");
+  const [isIos, setIsIos] = useState(false);
+
+  useEffect(() => {
+    setIsIos(isIosDevice());
+  }, []);
 
   const tracks = useMemo(
     () => getCategoryTracks(selectedCategory),
@@ -105,6 +121,32 @@ export default function MusicPlayer() {
             {status === "playing" ? "Lecture" : "Pause"} · {formatTime(currentTime)} /{" "}
             {formatTime(duration)}
           </p>
+        </div>
+      )}
+
+      {isActive && currentTrack && (
+        <div className="mb-4 rounded-xl border border-primary/10 bg-accent/20 px-4 py-3">
+          <div className="flex items-center gap-2">
+            <Volume2 className="h-4 w-4 shrink-0 text-primary" />
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={(event) => setVolume(Number(event.target.value))}
+              className="w-full accent-primary"
+              aria-label="Volume"
+            />
+            <span className="w-8 shrink-0 text-right text-xs tabular-nums text-text-dark/60">
+              {Math.round(volume * 100)}%
+            </span>
+          </div>
+          {isIos && (
+            <p className="mt-2 text-xs text-text-dark/50">
+              Sur iPhone, utilisez les boutons volume du téléphone.
+            </p>
+          )}
         </div>
       )}
 

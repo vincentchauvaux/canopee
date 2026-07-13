@@ -260,8 +260,8 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
 - `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours ; prop optionnelle `initialDate` (`YYYY-MM-DD`) pour préremplir la date en création (ex. depuis l&apos;agenda d&apos;accueil)
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
-- `components/admin/YogaTimer.tsx` - Minuteur circulaire style iPhone (presets 1–4 min) ; switch Sonner/Vibrer (choix exclusif à la fin, persistance `localStorage`)
-- `components/admin/MusicPlayer.tsx` - Lecteur playlist zen par catégorie (admin)
+- `components/admin/YogaTimer.tsx` - Minuteur circulaire (presets 1–4 min en grille 2×2 / 4 col.) ; ±1 min et switch Sonner/Vibrer dans le cercle
+- `components/admin/MusicPlayer.tsx` - Lecteur playlist zen par catégorie (admin) ; slider volume + note iOS
 - `components/admin/GlobalAudioBar.tsx` - Barre de lecture fixe en bas du site (lecture persistante)
 - `contexts/AudioPlayerContext.tsx` - Contexte audio global (playlist, volume, boucle)
 - `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, temple, pluie, nature)
@@ -731,9 +731,11 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ 21 pistes MP3 hébergées dans `public/audio/` (Internet Archive + Mixkit) ; crédits dans `public/audio/CREDITS.md`.
 - ✅ Pistes longues (~1 h+) par catégorie : Zen (mix ~62 min + 528 Hz ~2 h), Temple (bols ~1 h 10 + cristal ~3 h), Pluie (1 h + ~2 h), Nature (rossignol 1 h + forêt nocturne 1 h).
 - ✅ Minuteur : gong synthétisé doux/grave (`lib/timer-sound.ts`, Web Audio) ; vibration triple sur Android à la fin.
-- ✅ Switch Sonner/Vibrer sur le minuteur : choix exclusif à la fin du compte à rebours, persistance `localStorage` (`yoga-timer-alert-mode`) ; message si vibration indisponible (ex. iPhone).
+- ✅ Switch Sonner/Vibrer sur le minuteur : choix exclusif à la fin du compte à rebours, persistance `localStorage` (`yoga-timer-alert-mode`) ; intégré dans le cercle sous le statut.
+- ✅ Presets minuteur : grille 2×2 sur mobile, 4 colonnes sur écran large (plus de bouton seul).
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
-- ✅ Minuteur : boutons ±1 min déplacés à l&apos;intérieur du cercle.
+- ✅ Volume musique : slider dans `MusicPlayer` en plus de `GlobalAudioBar` ; sur iPhone le volume logiciel est ignoré par Safari (boutons physiques uniquement).
+- ✅ Minuteur : boutons ±1 min à l&apos;intérieur du cercle.
 - ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.
 

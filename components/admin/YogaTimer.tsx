@@ -145,13 +145,13 @@ export default function YogaTimer() {
         </p>
       </div>
 
-      <div className="mb-6 flex flex-wrap justify-center gap-2">
+      <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
         {PRESETS.map((preset) => (
           <button
             key={preset.seconds}
             type="button"
             onClick={() => selectPreset(preset.seconds)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            className={`w-full rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               duration === preset.seconds
                 ? "bg-primary text-white"
                 : "bg-accent/60 text-text-dark hover:bg-accent"
@@ -160,35 +160,6 @@ export default function YogaTimer() {
             {preset.label}
           </button>
         ))}
-      </div>
-
-      <div className="mb-6 flex flex-col items-center gap-1">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            role="switch"
-            aria-checked={isVibrateMode}
-            aria-label={isVibrateMode ? "Vibrer à la fin" : "Sonner à la fin"}
-            onClick={toggleAlertMode}
-            className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ${
-              isVibrateMode ? "bg-primary" : "bg-primary/20"
-            }`}
-          >
-            <span
-              className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-sm transition-transform duration-300 ${
-                isVibrateMode ? "translate-x-5" : "translate-x-0"
-              }`}
-            />
-          </button>
-          <span className="text-sm font-medium text-text-dark">
-            {isVibrateMode ? "Vibrer" : "Sonner"}
-          </span>
-        </div>
-        {isVibrateMode && !canUseVibration() && (
-          <p className="text-center text-xs text-text-dark/50">
-            Vibration non disponible sur cet appareil (ex. iPhone)
-          </p>
-        )}
       </div>
 
       <div className="relative mx-auto mb-8 flex items-center justify-center" style={{ width: SIZE, height: SIZE }}>
@@ -215,33 +186,59 @@ export default function YogaTimer() {
             className="text-primary transition-[stroke-dashoffset] duration-300"
           />
         </svg>
-        <div className="absolute inset-0 flex items-center justify-between px-6">
-          <button
-            type="button"
-            onClick={() => adjustDuration(-STEP_SECONDS)}
-            disabled={!canAdjustDuration || remaining <= MIN_SECONDS}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
-            aria-label="Retirer 1 minute"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
-          <div className="flex flex-col items-center">
-            <span className="font-serif text-5xl font-bold tabular-nums text-text-dark">
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
+          <div className="flex w-full items-center justify-between">
+            <button
+              type="button"
+              onClick={() => adjustDuration(-STEP_SECONDS)}
+              disabled={!canAdjustDuration || remaining <= MIN_SECONDS}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
+              aria-label="Retirer 1 minute"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <span className="font-serif text-4xl font-bold tabular-nums text-text-dark sm:text-5xl">
               {formatTime(remaining)}
             </span>
-            <span className="mt-1 text-xs uppercase tracking-wider text-text-dark/50">
-              {status === "finished" ? "Terminé" : status === "running" ? "En cours" : status === "paused" ? "Pause" : "Prêt"}
+            <button
+              type="button"
+              onClick={() => adjustDuration(STEP_SECONDS)}
+              disabled={!canAdjustDuration || remaining >= MAX_SECONDS}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
+              aria-label="Ajouter 1 minute"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+          <span className="mt-0.5 text-xs uppercase tracking-wider text-text-dark/50">
+            {status === "finished" ? "Terminé" : status === "running" ? "En cours" : status === "paused" ? "Pause" : "Prêt"}
+          </span>
+          <div className="mt-2 flex items-center gap-2">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={isVibrateMode}
+              aria-label={isVibrateMode ? "Vibrer à la fin" : "Sonner à la fin"}
+              onClick={toggleAlertMode}
+              className={`relative h-6 w-10 shrink-0 rounded-full transition-colors duration-300 ${
+                isVibrateMode ? "bg-primary" : "bg-primary/20"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-300 ${
+                  isVibrateMode ? "translate-x-4" : "translate-x-0"
+                }`}
+              />
+            </button>
+            <span className="text-xs font-medium text-text-dark">
+              {isVibrateMode ? "Vibrer" : "Sonner"}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => adjustDuration(STEP_SECONDS)}
-            disabled={!canAdjustDuration || remaining >= MAX_SECONDS}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
-            aria-label="Ajouter 1 minute"
-          >
-            <Plus className="h-4 w-4" />
-          </button>
+          {isVibrateMode && !canUseVibration() && (
+            <p className="mt-1 max-w-[11rem] text-center text-[10px] leading-tight text-text-dark/50">
+              Vibration non disponible sur cet appareil (ex. iPhone)
+            </p>
+          )}
         </div>
       </div>
 
