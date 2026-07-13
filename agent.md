@@ -733,6 +733,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Minuteur : gong synthétisé doux/grave (`lib/timer-sound.ts`, Web Audio) ; vibration triple sur Android à la fin.
 - ✅ Switch Sonner/Vibrer sur le minuteur : choix exclusif à la fin du compte à rebours, persistance `localStorage` (`yoga-timer-alert-mode`) ; message si vibration indisponible (ex. iPhone).
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
+- ✅ Minuteur : boutons ±1 min déplacés à l&apos;intérieur du cercle.
 - ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.
 

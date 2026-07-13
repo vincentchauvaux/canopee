@@ -191,42 +191,41 @@ export default function YogaTimer() {
         )}
       </div>
 
-      <div className="relative mx-auto mb-8 flex items-center justify-center gap-3 sm:gap-5">
-        <button
-          type="button"
-          onClick={() => adjustDuration(-STEP_SECONDS)}
-          disabled={!canAdjustDuration || remaining <= MIN_SECONDS}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
-          aria-label="Retirer 1 minute"
-        >
-          <Minus className="h-5 w-5" />
-        </button>
-
-        <div className="relative flex items-center justify-center" style={{ width: SIZE, height: SIZE }}>
-          <svg width={SIZE} height={SIZE} className="-rotate-90">
-            <circle
-              cx={SIZE / 2}
-              cy={SIZE / 2}
-              r={RADIUS}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={STROKE}
-              className="text-primary/10"
-            />
-            <circle
-              cx={SIZE / 2}
-              cy={SIZE / 2}
-              r={RADIUS}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={STROKE}
-              strokeLinecap="round"
-              strokeDasharray={CIRCUMFERENCE}
-              strokeDashoffset={strokeOffset}
-              className="text-primary transition-[stroke-dashoffset] duration-300"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <div className="relative mx-auto mb-8 flex items-center justify-center" style={{ width: SIZE, height: SIZE }}>
+        <svg width={SIZE} height={SIZE} className="-rotate-90">
+          <circle
+            cx={SIZE / 2}
+            cy={SIZE / 2}
+            r={RADIUS}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={STROKE}
+            className="text-primary/10"
+          />
+          <circle
+            cx={SIZE / 2}
+            cy={SIZE / 2}
+            r={RADIUS}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={STROKE}
+            strokeLinecap="round"
+            strokeDasharray={CIRCUMFERENCE}
+            strokeDashoffset={strokeOffset}
+            className="text-primary transition-[stroke-dashoffset] duration-300"
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-between px-6">
+          <button
+            type="button"
+            onClick={() => adjustDuration(-STEP_SECONDS)}
+            disabled={!canAdjustDuration || remaining <= MIN_SECONDS}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
+            aria-label="Retirer 1 minute"
+          >
+            <Minus className="h-4 w-4" />
+          </button>
+          <div className="flex flex-col items-center">
             <span className="font-serif text-5xl font-bold tabular-nums text-text-dark">
               {formatTime(remaining)}
             </span>
@@ -234,17 +233,16 @@ export default function YogaTimer() {
               {status === "finished" ? "Terminé" : status === "running" ? "En cours" : status === "paused" ? "Pause" : "Prêt"}
             </span>
           </div>
+          <button
+            type="button"
+            onClick={() => adjustDuration(STEP_SECONDS)}
+            disabled={!canAdjustDuration || remaining >= MAX_SECONDS}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
+            aria-label="Ajouter 1 minute"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={() => adjustDuration(STEP_SECONDS)}
-          disabled={!canAdjustDuration || remaining >= MAX_SECONDS}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/20 text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-40"
-          aria-label="Ajouter 1 minute"
-        >
-          <Plus className="h-5 w-5" />
-        </button>
       </div>
 
       <div className="flex justify-center gap-3">
