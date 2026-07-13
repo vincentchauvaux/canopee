@@ -18,13 +18,7 @@ function formatTime(seconds: number) {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
-function isIosDevice() {
-  if (typeof navigator === "undefined") return false;
-  return (
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-  );
-}
+import { isIosDevice } from "@/lib/device";
 
 export default function MusicPlayer() {
   const {
@@ -124,7 +118,7 @@ export default function MusicPlayer() {
         </div>
       )}
 
-      {isActive && currentTrack && (
+      {isActive && currentTrack && !isIos && (
         <div className="mb-4 rounded-xl border border-primary/10 bg-accent/20 px-4 py-3">
           <div className="flex items-center gap-2">
             <Volume2 className="h-4 w-4 shrink-0 text-primary" />
@@ -142,11 +136,6 @@ export default function MusicPlayer() {
               {Math.round(volume * 100)}%
             </span>
           </div>
-          {isIos && (
-            <p className="mt-2 text-xs text-text-dark/50">
-              Sur iPhone, utilisez les boutons volume du téléphone.
-            </p>
-          )}
         </div>
       )}
 

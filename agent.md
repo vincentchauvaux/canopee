@@ -266,6 +266,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `contexts/AudioPlayerContext.tsx` - Contexte audio global (playlist, volume, boucle)
 - `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, temple, pluie, nature)
 - `lib/timer-sound.ts` - Gong doux/grave (Web Audio) ou vibration mobile fin de minuteur (`TimerAlertMode`, `playTimerEndAlert`)
+- `lib/device.ts` - Détection iOS (volume masqué sur iPhone)
 - `public/audio/` - Fichiers MP3 libres de droit + `CREDITS.md` ; script `scripts/download-yoga-audio.sh`
 - `components/mtc/ElementWatermark.tsx` - Icônes filigrane lucide-react par élément MTC
 - `components/mtc/MTCSeasonCard.tsx` - Carte saison (wrapper)
@@ -734,7 +735,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Switch Sonner/Vibrer sur le minuteur : choix exclusif à la fin du compte à rebours, persistance `localStorage` (`yoga-timer-alert-mode`) ; intégré dans le cercle sous le statut.
 - ✅ Presets minuteur : grille 2×2 sur mobile, 4 colonnes sur écran large (plus de bouton seul).
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
-- ✅ Volume musique : slider dans `MusicPlayer` en plus de `GlobalAudioBar` ; sur iPhone le volume logiciel est ignoré par Safari (boutons physiques uniquement).
+- ✅ Volume musique : slider dans `MusicPlayer` et `GlobalAudioBar` (masqué sur iPhone — Safari ignore le volume logiciel).
 - ✅ Minuteur : boutons ±1 min à l&apos;intérieur du cercle.
 - ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.

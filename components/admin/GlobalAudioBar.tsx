@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Pause,
   Play,
@@ -10,6 +10,7 @@ import {
   Volume2,
 } from "lucide-react";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
+import { isIosDevice } from "@/lib/device";
 import { getCategoryLabel } from "@/lib/yoga-playlist";
 
 function formatTime(seconds: number) {
@@ -39,6 +40,11 @@ export function GlobalAudioBar() {
   const progressRef = useRef<HTMLDivElement>(null);
   const [isSeeking, setIsSeeking] = useState(false);
   const [seekPreview, setSeekPreview] = useState<number | null>(null);
+  const [isIos, setIsIos] = useState(false);
+
+  useEffect(() => {
+    setIsIos(isIosDevice());
+  }, []);
 
   const getTimeFromClientX = useCallback(
     (clientX: number) => {
@@ -167,19 +173,21 @@ export function GlobalAudioBar() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 sm:w-40">
-            <Volume2 className="h-4 w-4 shrink-0 text-primary" />
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={volume}
-              onChange={(event) => setVolume(Number(event.target.value))}
-              className="w-full accent-primary"
-              aria-label="Volume"
-            />
-          </div>
+          {!isIos && (
+            <div className="flex items-center gap-2 sm:w-40">
+              <Volume2 className="h-4 w-4 shrink-0 text-primary" />
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={(event) => setVolume(Number(event.target.value))}
+                className="w-full accent-primary"
+                aria-label="Volume"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
