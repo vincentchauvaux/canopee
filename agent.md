@@ -256,7 +256,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/Agenda.tsx` - Section agenda interactive (semaine / mois), cours avec horaires et intervenant ; sans réservation depuis le calendrier. **Visible par tous** (visiteurs anonymes inclus) ; chargement via `/api/classes`. **Administrateurs** connectés : clic sur un jour ouvre `ClassFormModal` avec la date présélectionnée.
 - `components/NewsFeed.tsx` - Fil d&apos;actualité (cours à venir + actualités datées). **Visible par tous** ; données via `/api/classes` et `/api/news`. Si la timeline est vide après chargement, la section n&apos;est pas affichée. Pas d&apos;actualité factice
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
-- `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). La colonne de gauche (bienfaits) est centrée verticalement avec `items-center` sur la grille. La colonne de droite (infos pratiques) a une bordure verte (`border-2 border-primary`).
+- `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). **Test style éditorial (juillet 2026)** sur le bloc « Cours de Yin Yoga » : intro en grille avec image, encadrés `rounded-2xl`, cartes bienfaits/infos pratiques harmonisées avec les pages contenu.
 - `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
 - `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours ; prop optionnelle `initialDate` (`YYYY-MM-DD`) pour préremplir la date en création (ex. depuis l&apos;agenda d&apos;accueil)
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
@@ -723,7 +723,15 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 - ✅ Cartes modernes pour les 5 saisons (`MTCSeasonCard` / `MTCSeasonCardContent`) : dégradé, icône lucide-react en filigrane (coin sup. droit), grille de correspondances, vague animée.
 - ✅ `ElementWatermark` : `TreePine`, `Flame`, `Mountain`, `Anvil`, `Droplets`.
+- ✅ Intro page `/saisons-mtc` retravaillée (mise en page éditoriale + image) et suppression des emojis « décoratifs » dans les deux chapitres d’introduction.
 - ❌ Accordéon scroll abandonné (rendu visuel insatisfaisant).
+
+### Harmonisation style éditorial (Juillet 2026)
+
+- ✅ Page `/yin-yoga` alignée visuellement sur `/saisons-mtc` : intro en grille avec image, sections en encadrés `rounded-2xl` (`bg-primary/5`, `border-primary/10`), typographie et espacement harmonisés.
+- ✅ Visuels des intros `saisons-mtc` et `yin-yoga` : utilisation d’images dédiées depuis `images/background/` (imports statiques Next.js), au lieu de réutiliser `bg_01/bg_02`.
+- ✅ Page `/mon-parcours` harmonisée sur le même style éditorial : intro en grille, portrait Carol en cercle (`Carol_Nelissen_Yoga.png`), sections en encadrés, photo de pratique en extérieur pour la philosophie (`IMG-20240822-WA0055.jpg`).
+- ✅ Accueil — section « Cours de Yin Yoga » (`PracticalInfo`) : test du style éditorial (grille + image `yin-yoga-home.png`, encadrés, 3 repères Douceur/Profondeur/Équilibre).
 
 ### Outils admin — minuteur et musique zen (Juillet 2026)
 

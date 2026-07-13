@@ -1,17 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Info,
   ShoppingBag,
   Package,
-  HelpCircle,
-  Heart,
-  Leaf,
   Clock,
   MapPin,
   User,
 } from "lucide-react";
+import yinHomeImage from "@/images/background/yin-yoga-home.png";
 
 export default function PracticalInfo() {
   return (
@@ -19,26 +18,69 @@ export default function PracticalInfo() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Yin Yoga */}
         <div className="mt-16 mb-12">
-          <div className="rounded-card p-8 md:p-12">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
-                <Leaf className="w-8 h-8 text-primary" />
+          <div className="rounded-2xl border border-primary/10 bg-white/80 p-6 sm:p-8 lg:p-10 shadow-sm">
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-center mb-8">
+              <div className="lg:col-span-7">
+                <h2 className="text-4xl sm:text-5xl font-serif font-bold text-text-dark leading-tight">
+                  Cours de Yin Yoga
+                </h2>
+                <p className="mt-4 text-lg text-text-dark/70 italic leading-relaxed">
+                  Inspiré du yoga taoïste et de la médecine traditionnelle
+                  chinoise
+                </p>
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-xl border border-primary/10 bg-primary/5 p-4">
+                    <p className="text-sm font-semibold text-text-dark">
+                      Douceur
+                    </p>
+                    <p className="mt-1 text-sm text-text-dark/70">
+                      Postures passives et apaisantes.
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-primary/10 bg-primary/5 p-4">
+                    <p className="text-sm font-semibold text-text-dark">
+                      Profondeur
+                    </p>
+                    <p className="mt-1 text-sm text-text-dark/70">
+                      Fascias, articulations, méridiens.
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-primary/10 bg-primary/5 p-4">
+                    <p className="text-sm font-semibold text-text-dark">
+                      Équilibre
+                    </p>
+                    <p className="mt-1 text-sm text-text-dark/70">
+                      Idéal quand la vie est trop yang.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-text-dark mb-4">
-                Cours de Yin Yoga
-              </h2>
-              <p className="text-lg text-text-dark/70 max-w-2xl mx-auto italic">
-                Inspiré du yoga taoïste et de la médecine traditionnelle
-                chinoise
-              </p>
+
+              <div className="lg:col-span-5">
+                <div className="relative overflow-hidden rounded-2xl border border-primary/10 bg-primary/5">
+                  <div className="relative aspect-[16/10]">
+                    <Image
+                      src={yinHomeImage}
+                      alt="Illustration Yin Yoga — équilibre du yin et du yang"
+                      fill
+                      className="object-cover object-center"
+                      sizes="(min-width: 1024px) 420px, 100vw"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <p className="text-sm text-text-dark/70 leading-relaxed">
+                      Une pratique lente pour relâcher les tensions, retrouver
+                      le calme intérieur et rééquilibrer l&apos;énergie.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              {/* Colonne gauche : Bienfaits */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:items-center">
               <div className="space-y-6">
-                <div>
-                  <h3 className="text-2xl font-serif font-semibold text-primary mb-4 flex items-center">
-                    <Heart className="w-6 h-6 mr-2" />
+                <div className="rounded-xl border border-primary/10 bg-primary/5 p-6">
+                  <h3 className="text-xl font-serif font-semibold text-text-dark mb-4">
                     Son action sur
                   </h3>
                   <ul className="space-y-3 text-text-dark/80">
@@ -60,9 +102,8 @@ export default function PracticalInfo() {
                   </ul>
                 </div>
 
-                <div>
-                  <h3 className="text-2xl font-serif font-semibold text-primary mb-4 flex items-center">
-                    <Leaf className="w-6 h-6 mr-2" />
+                <div className="rounded-xl border border-primary/10 bg-primary/5 p-6">
+                  <h3 className="text-xl font-serif font-semibold text-text-dark mb-4">
                     Peut répondre à
                   </h3>
                   <ul className="space-y-3 text-text-dark/80">
@@ -82,8 +123,7 @@ export default function PracticalInfo() {
                 </div>
               </div>
 
-              {/* Colonne droite : Infos pratiques */}
-              <div className="bg-white/60 rounded-card p-6 shadow-md">
+              <div className="rounded-xl border-2 border-primary bg-white/90 p-6">
                 <h3 className="text-2xl font-serif font-semibold text-text-dark mb-6">
                   Infos pratiques
                 </h3>

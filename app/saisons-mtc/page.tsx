@@ -1,6 +1,8 @@
 import Footer from "@/components/Footer";
 import MTCSeasonCard from "@/components/mtc/MTCSeasonCard";
 import type { MTCSeasonInfo } from "@/components/mtc/mtc-season-utils";
+import Image from "next/image";
+import mtcIntroImage from "@/images/background/little.puffy_A_serene_minimalist_indoor_meditation_space_with_s_ae53c4bc-42fd-44b7-a47d-24f8c250af01.png";
 
 const seasons: MTCSeasonInfo[] = [
   {
@@ -91,68 +93,100 @@ export default function SaisonsMTCPage() {
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-serif font-bold text-text-dark mb-4">
-              Les saisons en Énergétique Chinoise
-            </h1>
+            <div className="mb-12">
+              <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+                <div className="lg:col-span-7">
+                  <h1 className="text-4xl sm:text-5xl font-serif font-bold text-text-dark leading-tight">
+                    Les saisons en Énergétique Chinoise
+                  </h1>
+                  <p className="mt-4 text-lg text-text-dark/80 leading-relaxed">
+                    Le calendrier des saisons en Chine diffère sensiblement du
+                    nôtre. Contrairement à notre Nouvel An fixé au 1er janvier,
+                    le Nouvel An chinois varie chaque année.
+                  </p>
+                  <div className="mt-6 space-y-4 text-text-dark/80 leading-relaxed">
+                    <p>
+                      Le début du premier mois lunaire chinois se produit
+                      généralement entre la fin du mois de janvier et la
+                      mi-février, coïncidant avec l'équinoxe printanier.
+                    </p>
+                    <p>
+                      Cette différence provient de l'utilisation d'un système
+                      calendaire luni-solaire combinant les cycles solaires et
+                      lunaires. Ce calendrier remonterait à l'an 2697 avant notre
+                      ère, élaboré grâce à l'observation minutieuse des astres,
+                      des variations climatiques, des cycles agricoles et de
+                      l'alternance jour-nuit par les anciens Chinois.
+                    </p>
+                    <p>
+                      La structure temporelle chinoise intègre donc
+                      simultanément les rythmes solaires et lunaires, créant une
+                      harmonie entre ces deux cycles célestes pour organiser le
+                      temps.
+                    </p>
+                    <p>
+                      Chaque mois lunaire compte alternativement 29 ou 30 jours,
+                      suivant fidèlement les phases de notre satellite naturel.
+                    </p>
+                  </div>
+                </div>
 
-            <div className="prose prose-lg max-w-none mb-12">
-              <p className="text-text-dark/80 mb-4">
-                Le calendrier des saisons en Chine diffère sensiblement du
-                nôtre. Contrairement à notre Nouvel An fixé au 1er janvier, le
-                Nouvel An chinois varie chaque année 🎆
-              </p>
-              <p className="text-text-dark/80 mb-4">
-                Le début du premier mois lunaire chinois se produit généralement
-                entre la fin du mois de janvier et la mi-février, coïncidant
-                avec l'équinoxe printanier 🍃
-              </p>
-              <p className="text-text-dark/80 mb-4">
-                Cette différence provient de l'utilisation d'un système
-                calendaire luni-solaire combinant les cycles solaires ☀️ et
-                lunaires 🌕. Ce calendrier remonterait à l'an 2697 avant notre
-                ère, élaboré grâce à l'observation minutieuse des astres, des
-                variations climatiques, des cycles agricoles et de l'alternance
-                jour-nuit par les anciens Chinois.
-              </p>
-              <p className="text-text-dark/80 mb-4">
-                La structure temporelle chinoise intègre donc simultanément les
-                rythmes solaires et lunaires, créant une harmonie entre ces deux
-                cycles célestes pour organiser le temps.
-              </p>
-              <p className="text-text-dark/80 mb-4">
-                Chaque mois lunaire compte alternativement 29 ou 30 jours,
-                suivant fidèlement les phases de notre satellite naturel.
-              </p>
+                <div className="lg:col-span-5">
+                  <div className="relative overflow-hidden rounded-2xl border border-primary/10 bg-primary/5">
+                    <div className="relative aspect-[4/5]">
+                      <Image
+                        src={mtcIntroImage}
+                        alt="Espace calme baigné de lumière"
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 420px, 100vw"
+                        priority
+                      />
+                    </div>
+                    <div className="p-4">
+                      <p className="text-sm text-text-dark/70 leading-relaxed">
+                        Une lecture saisonnière en MTC sert de boussole : elle
+                        relie le climat, les mouvements du vivant et nos
+                        équilibres intérieurs.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-              <h2 className="text-2xl font-serif font-bold text-text-dark mt-8 mb-4">
-                Le principe des 5 saisons en MTC
-              </h2>
-              <p className="text-text-dark/80 mb-4">
-                Selon la médecine traditionnelle chinoise, le passage entre deux
-                saisons ne peut s'effectuer de manière abrupte en une seule
-                journée, contrairement à ce que suggèrent nos calendriers
-                conventionnels.
-              </p>
-              <p className="text-text-dark/80 mb-4">
-                Pour cette raison, la tradition chinoise a introduit une
-                cinquième période appelée <strong>Intersaison</strong>. Cette
-                phase représente un état de mutation et de réorganisation. Elle
-                assure l'alignement avec ce qui émerge sans être encore
-                pleinement manifesté. Elle constitue ainsi le pont permettant de
-                sortir de l'hiver pour accueillir le printemps, de quitter le
-                printemps pour entrer dans l'été, et ainsi de suite pour chaque
-                transition saisonnière.
-              </p>
-              <p className="text-text-dark/80 mb-8">
-                La vision chinoise des saisons s'appuie sur la théorie des cinq
-                éléments, également nommés cinq mouvements. Chaque élément
-                (Bois, Feu, Terre, Métal et Eau) se rattache à une saison
-                spécifique ainsi qu'à une paire organe-viscère, déterminant
-                ainsi une fonction et un mouvement énergétiques particuliers.
-                Sur le plan thérapeutique, chaque période saisonnière entretient
-                des liens avec des correspondances corporelles, sensorielles et
-                affectives.
-              </p>
+              <section className="mt-10 rounded-2xl border border-primary/10 bg-primary/5 p-6 sm:p-8">
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark">
+                  Le principe des 5 saisons en MTC
+                </h2>
+                <div className="mt-4 space-y-4 text-text-dark/80 leading-relaxed">
+                  <p>
+                    Selon la médecine traditionnelle chinoise, le passage entre
+                    deux saisons ne peut s'effectuer de manière abrupte en une
+                    seule journée, contrairement à ce que suggèrent nos
+                    calendriers conventionnels.
+                  </p>
+                  <p>
+                    Pour cette raison, la tradition chinoise a introduit une
+                    cinquième période appelée <strong>Intersaison</strong>. Cette
+                    phase représente un état de mutation et de réorganisation.
+                    Elle assure l'alignement avec ce qui émerge sans être encore
+                    pleinement manifesté. Elle constitue ainsi le pont
+                    permettant de sortir de l'hiver pour accueillir le
+                    printemps, de quitter le printemps pour entrer dans l'été,
+                    et ainsi de suite pour chaque transition saisonnière.
+                  </p>
+                  <p>
+                    La vision chinoise des saisons s'appuie sur la théorie des
+                    cinq éléments, également nommés cinq mouvements. Chaque
+                    élément (Bois, Feu, Terre, Métal et Eau) se rattache à une
+                    saison spécifique ainsi qu'à une paire organe-viscère,
+                    déterminant ainsi une fonction et un mouvement énergétiques
+                    particuliers. Sur le plan thérapeutique, chaque période
+                    saisonnière entretient des liens avec des correspondances
+                    corporelles, sensorielles et affectives.
+                  </p>
+                </div>
+              </section>
             </div>
 
             <div className="space-y-12">

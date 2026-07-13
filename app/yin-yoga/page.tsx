@@ -1,48 +1,90 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Leaf, Clock, Heart, Target, Users, Sparkles } from "lucide-react";
-import Link from "next/link";
+import { Clock, Heart, Target } from "lucide-react";
+import Image from "next/image";
+import yinIntroImage from "@/images/background/happy_life50_83858_minimal_yoga_space_with_natural_wooden_floor_5af99ad7-3ccc-44d9-b419-0ab9d676885d.png";
 
 export default function YinYogaPage() {
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      <div className="pt-16 pb-16">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent py-20">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/20 rounded-full mb-6">
-                <Leaf className="w-10 h-10 text-primary" />
-              </div>
-              <h1 className="text-5xl md:text-6xl font-serif font-bold text-text-dark mb-6">
-                Découverte du Yin Yoga
-              </h1>
-            </div>
-          </div>
-        </section>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="pt-24 pb-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            {/* Section : Le Yin yoga, c&apos;est quoi ? */}
-            <section className="mb-16">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                  <Sparkles className="w-6 h-6 text-primary" />
+            <div className="mb-12">
+              <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+                <div className="lg:col-span-7">
+                  <h1 className="text-4xl sm:text-5xl font-serif font-bold text-text-dark leading-tight">
+                    Découverte du Yin Yoga
+                  </h1>
+                  <p className="mt-4 text-lg text-text-dark/80 leading-relaxed">
+                    Une pratique douce, profonde et méditative, centrée sur les
+                    tissus conjonctifs, la respiration et l'écoute du corps.
+                  </p>
+                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="rounded-xl border border-primary/10 bg-primary/5 p-4">
+                      <p className="text-sm font-semibold text-text-dark">
+                        Passif
+                      </p>
+                      <p className="mt-1 text-sm text-text-dark/70">
+                        Postures tenues sans force.
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-primary/10 bg-primary/5 p-4">
+                      <p className="text-sm font-semibold text-text-dark">
+                        Long
+                      </p>
+                      <p className="mt-1 text-sm text-text-dark/70">
+                        De 2 à 20 minutes.
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-primary/10 bg-primary/5 p-4">
+                      <p className="text-sm font-semibold text-text-dark">
+                        Profond
+                      </p>
+                      <p className="mt-1 text-sm text-text-dark/70">
+                        Fascias, ligaments, articulations.
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h2 className="text-4xl font-serif font-bold text-text-dark">
-                  Le Yin yoga, c&apos;est quoi ?
-                </h2>
-              </div>
 
-              <div className="bg-white rounded-card p-8 shadow-md border-l-4 border-primary">
+                <div className="lg:col-span-5">
+                  <div className="relative overflow-hidden rounded-2xl border border-primary/10 bg-primary/5">
+                    <div className="relative aspect-[4/5]">
+                      <Image
+                        src={yinIntroImage}
+                        alt="Ambiance calme et nature"
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 420px, 100vw"
+                        priority
+                      />
+                    </div>
+                    <div className="p-4">
+                      <p className="text-sm text-text-dark/70 leading-relaxed">
+                        Le Yin yoga invite à ralentir, à ressentir, et à laisser
+                        l’espace intérieur se réorganiser.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section : Le Yin yoga, c&apos;est quoi ? */}
+            <section className="mb-10 rounded-2xl border border-primary/10 bg-primary/5 p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark">
+                Le Yin yoga, c&apos;est quoi ?
+              </h2>
+              <div className="mt-4">
                 <p className="text-lg text-text-dark/80 leading-relaxed mb-6">
                   Le Yin yoga est une discipline assez récente développée par{" "}
                   <strong>Paul Grilley en 1989</strong>, qui s&apos;est inspiré
                   du yoga taoïste et de la théorie des méridiens.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                  <div className="bg-accent/30 rounded-lg p-6">
+                  <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
                     <h3 className="text-xl font-semibold text-text-dark mb-3 flex items-center">
                       <Target className="w-5 h-5 text-primary mr-2" />
                       Différence avec les autres yogas
@@ -56,7 +98,7 @@ export default function YinYogaPage() {
                       fascias…) qu&apos;il met sous traction passive.
                     </p>
                   </div>
-                  <div className="bg-accent/30 rounded-lg p-6">
+                  <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
                     <h3 className="text-xl font-semibold text-text-dark mb-3 flex items-center">
                       <Heart className="w-5 h-5 text-primary mr-2" />
                       Action sur les méridiens
@@ -74,17 +116,13 @@ export default function YinYogaPage() {
             </section>
 
             {/* Section : Le Yin yoga, comment ? */}
-            <section className="mb-16">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                  <Clock className="w-6 h-6 text-primary" />
-                </div>
-                <h2 className="text-4xl font-serif font-bold text-text-dark">
-                  Le Yin yoga, comment ?
-                </h2>
-              </div>
+            <section className="mb-10 rounded-2xl border border-primary/10 bg-primary/5 p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark flex items-center gap-3">
+                <Clock className="w-6 h-6 text-primary" />
+                Le Yin yoga, comment ?
+              </h2>
 
-              <div className="bg-white rounded-card p-8 shadow-md border-l-4 border-secondary">
+              <div className="mt-6">
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
@@ -149,7 +187,7 @@ export default function YinYogaPage() {
                   </div>
                 </div>
 
-                <div className="mt-8 p-6 bg-primary/5 rounded-lg border border-primary/20">
+                <div className="mt-8 p-6 bg-white/70 rounded-xl border border-primary/10">
                   <p className="text-lg italic text-text-dark text-center font-serif">
                     &ldquo;Adapter sa pratique, poser ses limites, ce n&apos;est
                     pas une faiblesse, mais une force&rdquo;
@@ -159,17 +197,13 @@ export default function YinYogaPage() {
             </section>
 
             {/* Section : Le Yin yoga, pourquoi ? */}
-            <section className="mb-16">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                  <Heart className="w-6 h-6 text-primary" />
-                </div>
-                <h2 className="text-4xl font-serif font-bold text-text-dark">
-                  Le Yin yoga, pourquoi ?
-                </h2>
-              </div>
+            <section className="mb-10 rounded-2xl border border-primary/10 bg-primary/5 p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark flex items-center gap-3">
+                <Heart className="w-6 h-6 text-primary" />
+                Le Yin yoga, pourquoi ?
+              </h2>
 
-              <div className="bg-white rounded-card p-8 shadow-md border-l-4 border-primary">
+              <div className="mt-6">
                 <p className="text-lg text-text-dark/80 leading-relaxed mb-8">
                   Au delà d&apos;un réel effet sur la souplesse via le travail
                   sur les articulations, ainsi qu'un rééquilibrage profond via
@@ -178,7 +212,7 @@ export default function YinYogaPage() {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-accent/30 rounded-lg p-6">
+                  <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
                     <h3 className="text-xl font-semibold text-text-dark mb-4 flex items-center">
                       <Target className="w-5 h-5 text-primary mr-2" />
                       Bienfaits physiques
@@ -203,7 +237,7 @@ export default function YinYogaPage() {
                     </ul>
                   </div>
 
-                  <div className="bg-accent/30 rounded-lg p-6">
+                  <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
                     <h3 className="text-xl font-semibold text-text-dark mb-4 flex items-center">
                       <Heart className="w-5 h-5 text-primary mr-2" />
                       Bienfaits mentaux et émotionnels
