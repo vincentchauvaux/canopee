@@ -4,13 +4,42 @@ export const TIMER_ALERT_MODE_KEY = "yoga-timer-alert-mode";
 
 const TIMER_VIBRATE_PATTERN = [0, 400, 150, 400, 150, 600] as const;
 
+let sharedAudioContext: AudioContext | null = null;
+
+function getAudioContextClass() {
+  if (typeof window === "undefined") return null;
+  return (
+    window.AudioContext ??
+    (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext ??
+    null
+  );
+}
+
+function getOrCreateAudioContext() {
+  const AudioCtx = getAudioContextClass();
+  if (!AudioCtx) return null;
+
+  if (!sharedAudioContext || sharedAudioContext.state === "closed") {
+    sharedAudioContext = new AudioCtx();
+  }
+
+  return sharedAudioContext;
+}
+
+/** Débloque l'audio Web sur un geste utilisateur (démarrage minuteur, switch Sonner). */
+export async function unlockTimerAudio() {
+  const ctx = getOrCreateAudioContext();
+  if (!ctx || ctx.state !== "suspended") return;
+  await ctx.resume();
+}
+
 export function canUseVibration() {
   return typeof navigator !== "undefined" && "vibrate" in navigator;
 }
 
 export function playTimerEndAlert(mode: TimerAlertMode) {
   if (mode === "sound") {
-    playTimerEndSound();
+    void playTimerEndSound();
     return;
   }
   vibrateTimerEnd();
@@ -21,14 +50,15 @@ export function vibrateTimerEnd() {
   navigator.vibrate([...TIMER_VIBRATE_PATTERN]);
 }
 
-export function playTimerEndSound() {
-  const AudioCtx =
-    window.AudioContext ??
-    (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-  if (!AudioCtx) return;
+export async function playTimerEndSound() {
+  const ctx = getOrCreateAudioContext();
+  if (!ctx) return;
 
-  const ctx = new AudioCtx();
-  void ctx.resume();
+  if (ctx.state === "suspended") {
+    await ctx.resume();
+  }
+
+  if (ctx.state !== "running") return;
 
   const now = ctx.currentTime;
   const master = ctx.createGain();
@@ -62,8 +92,4 @@ export function playTimerEndSound() {
   harmonic.start(now);
   fundamental.stop(end);
   harmonic.stop(end);
-
-  window.setTimeout(() => {
-    void ctx.close();
-  }, 6000);
 }

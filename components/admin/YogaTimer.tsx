@@ -6,6 +6,7 @@ import {
   canUseVibration,
   playTimerEndAlert,
   TIMER_ALERT_MODE_KEY,
+  unlockTimerAudio,
   type TimerAlertMode,
 } from "@/lib/timer-sound";
 
@@ -38,6 +39,7 @@ export default function YogaTimer() {
   const [remaining, setRemaining] = useState(60);
   const [status, setStatus] = useState<TimerStatus>("idle");
   const [alertMode, setAlertMode] = useState<TimerAlertMode>("sound");
+  const alertModeRef = useRef<TimerAlertMode>("sound");
   const endAtRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
   const progress = duration > 0 ? remaining / duration : 0;
@@ -56,13 +58,16 @@ export default function YogaTimer() {
     clearTimer();
     setRemaining(0);
     setStatus("finished");
-    playTimerEndAlert(alertMode);
-  }, [alertMode, clearTimer]);
+    playTimerEndAlert(alertModeRef.current);
+  }, [clearTimer]);
 
   const toggleAlertMode = useCallback(() => {
     setAlertMode((prev) => {
       const next: TimerAlertMode = prev === "sound" ? "vibrate" : "sound";
       localStorage.setItem(TIMER_ALERT_MODE_KEY, next);
+      if (next === "sound") {
+        void unlockTimerAudio();
+      }
       return next;
     });
   }, []);
@@ -79,6 +84,7 @@ export default function YogaTimer() {
   }, [finishTimer]);
 
   const startTimer = useCallback(() => {
+    void unlockTimerAudio();
     if (remaining <= 0) {
       setRemaining(duration);
     }
@@ -128,6 +134,10 @@ export default function YogaTimer() {
   );
 
   useEffect(() => () => clearTimer(), [clearTimer]);
+
+  useEffect(() => {
+    alertModeRef.current = alertMode;
+  }, [alertMode]);
 
   useEffect(() => {
     const stored = localStorage.getItem(TIMER_ALERT_MODE_KEY);
