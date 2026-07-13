@@ -1,20 +1,6 @@
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-interface MTCSeasonInfo {
-  season: string;
-  element: string;
-  dates: string;
-  description: string;
-  organ: string;
-  viscera: string;
-  color: string;
-  emotion: string;
-  orientation: string;
-  taste: string;
-  regenerationHours: string;
-  climate: string;
-}
+import MTCSeasonCard from "@/components/mtc/MTCSeasonCard";
+import type { MTCSeasonInfo } from "@/components/mtc/mtc-season-utils";
 
 const seasons: MTCSeasonInfo[] = [
   {
@@ -99,26 +85,9 @@ const seasons: MTCSeasonInfo[] = [
   },
 ];
 
-const elementEmojis: Record<string, string> = {
-  Bois: "🪵",
-  Feu: "🔥",
-  Terre: "🌍",
-  Métal: "⚙️",
-  Eau: "💧",
-};
-
-const seasonEmojis: Record<string, string> = {
-  Printemps: "🍃",
-  Été: "🌅",
-  Intersaison: "🌾",
-  Automne: "🍂",
-  Hiver: "❄️",
-};
-
 export default function SaisonsMTCPage() {
   return (
     <main className="min-h-screen bg-white">
-      <Header />
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
@@ -187,155 +156,8 @@ export default function SaisonsMTCPage() {
             </div>
 
             <div className="space-y-12">
-              {seasons.map((season, index) => (
-                <div
-                  key={season.season}
-                  className="bg-accent/30 rounded-lg p-8 border-l-4 border-primary"
-                >
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="text-5xl">
-                      {seasonEmojis[season.season]}{" "}
-                      {elementEmojis[season.element]}
-                    </div>
-                    <div className="flex-1">
-                      <h2 className="text-3xl font-serif font-bold text-text-dark mb-2">
-                        {season.season === "Intersaison"
-                          ? "L'INTERSAISON"
-                          : season.season === "Printemps"
-                            ? "LE PRINTEMPS"
-                            : season.season === "Été"
-                              ? "L'ÉTÉ"
-                              : season.season === "Automne"
-                                ? "L'AUTOMNE"
-                                : "L'HIVER"}{" "}
-                        – période{" "}
-                        {season.season === "Printemps"
-                          ? "d'épanouissement"
-                          : season.season === "Été"
-                            ? "de rayonnement"
-                            : season.season === "Intersaison"
-                              ? "de mutation"
-                              : season.season === "Automne"
-                                ? "de changement"
-                                : "de repli"}
-                      </h2>
-                      <p className="text-lg text-text-dark/70 mb-2">
-                        {season.season === "Intersaison"
-                          ? "Durant l'intersaison, l'élément"
-                          : season.season === "Printemps"
-                            ? "Au printemps, l'élément"
-                            : season.season === "Été"
-                              ? "Pendant l'été, l'élément"
-                              : season.season === "Automne"
-                                ? "Pendant l'automne, l'élément"
-                                : "Pendant l'hiver, l'élément"}{" "}
-                        <strong>{season.element}</strong> prédomine
-                      </p>
-                      <p className="text-sm text-text-dark/60 font-medium">
-                        {season.dates}
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="text-text-dark/80 mb-6 leading-relaxed">
-                    {season.description}
-                  </p>
-
-                  <div className="bg-white rounded-lg p-6 mb-6">
-                    <h3 className="text-xl font-semibold text-text-dark mb-4">
-                      Ce à quoi correspond{" "}
-                      {season.season === "Intersaison"
-                        ? "l&apos;intersaison"
-                        : `le ${season.season.toLowerCase()}`}{" "}
-                      en Médecine Traditionnelle Chinoise :
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">
-                          Élément
-                        </p>
-                        <p className="font-medium text-text-dark">
-                          {elementEmojis[season.element]} {season.element}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">Saison</p>
-                        <p className="font-medium text-text-dark">
-                          {season.season}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">Organe</p>
-                        <p className="font-medium text-text-dark">
-                          {season.organ}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">
-                          Viscère
-                        </p>
-                        <p className="font-medium text-text-dark">
-                          {season.viscera}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">
-                          Couleur
-                        </p>
-                        <p className="font-medium text-text-dark">
-                          {season.color}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">
-                          Heures de régénération
-                        </p>
-                        <p className="font-medium text-text-dark text-sm">
-                          {season.regenerationHours}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">Goût</p>
-                        <p className="font-medium text-text-dark">
-                          {season.taste}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">
-                          Émotion
-                        </p>
-                        <p className="font-medium text-text-dark">
-                          {season.emotion}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">
-                          Orientation
-                        </p>
-                        <p className="font-medium text-text-dark">
-                          {season.orientation}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-text-dark/60 mb-1">
-                          Énergie climatique
-                        </p>
-                        <p className="font-medium text-text-dark">
-                          {season.climate}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-text-dark/80 italic leading-relaxed">
-                    Dans la Médecine Traditionnelle Chinoise,{" "}
-                    {season.season === "Intersaison"
-                      ? "l'intersaison"
-                      : `le ${season.season.toLowerCase()}`}{" "}
-                    se rattache à la paire organe-viscère formée par{" "}
-                    {season.organ} et {season.viscera.toLowerCase()}.
-                  </p>
-                </div>
+              {seasons.map((season) => (
+                <MTCSeasonCard key={season.season} season={season} />
               ))}
             </div>
 

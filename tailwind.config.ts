@@ -43,6 +43,15 @@ const config: Config = {
         serif: ['Cormorant Garamond', 'serif'],
         sans: ['Inter', 'Montserrat', 'sans-serif'],
       },
+      keyframes: {
+        'mtc-wave': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        'mtc-wave': 'mtc-wave 12s linear infinite',
+      },
       borderRadius: {
         'card': '12px',
         'button': '8px',

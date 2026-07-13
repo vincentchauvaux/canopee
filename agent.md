@@ -224,12 +224,13 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/globals.css` - Styles globaux et polices
 - `app/providers.tsx` - Providers React (NextAuth)
 - `app/auth/signin/page.tsx` - Connexion uniquement (email / mot de passe + OAuth Google / Facebook). Plus de formulaire ni de bascule « créer un compte » ; l&apos;API `POST /api/auth/register` reste disponible hors UI
-- `app/saisons-mtc/page.tsx` - Page dédiée aux saisons en Médecine Traditionnelle Chinoise avec toutes les informations détaillées
+- `app/saisons-mtc/page.tsx` - Page dédiée aux saisons en Médecine Traditionnelle Chinoise avec toutes les informations détaillées. Relooking progressif des cartes saison (test Eau / Hiver en mars 2026)
 - `app/yin-yoga/page.tsx` - Page dédiée au Yin Yoga de Canopée avec présentation complète : origine, pratique, bienfaits et informations pratiques
 - `app/mon-parcours/page.tsx` - Page "Carol Nelissen" présentant son parcours de formation (Viniyoga, Yin Yoga), sa philosophie et ses certifications. La première image est affichée en cercle parfait (rounded-full) et la deuxième image occupe toute la hauteur de sa colonne.
 - `app/faq/page.tsx` - Page FAQ présentant les informations sur les cours de Yin Yoga : types de cours (individuel ou collectif, max 3 personnes), horaires (individuel selon convenance, collectif vendredi 18h-19h), prix (individuel 15€, collectif 12€) et modalités (individuel adapté aux besoins, collectif thématiques annoncées)
 - `app/profile/page.tsx` - Page de profil : informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). Photo via upload (max 5MB) ou URL. **Plus de section réservations / appel à `/api/bookings` côté front** (mars 2026). Admins : section « Actions rapides » (agenda, actualités, panel admin)
-- `app/admin/page.tsx` - Dashboard administrateur (stats cours, actualités, utilisateurs — sans carte réservations depuis mars 2026)
+- `app/admin/page.tsx` - Dashboard administrateur (stats cours, actualités, utilisateurs — lien vers Outils cours)
+- `app/admin/outils/page.tsx` - Outils cours admin : minuteur circulaire (1–4 min) et lecteur musique zen par catégories
 - `app/admin/classes/page.tsx` - Gestion des cours
 - `app/admin/news/page.tsx` - Gestion des actualités
 - `app/admin/users/page.tsx` - Gestion des utilisateurs
@@ -259,6 +260,17 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
 - `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours ; prop optionnelle `initialDate` (`YYYY-MM-DD`) pour préremplir la date en création (ex. depuis l&apos;agenda d&apos;accueil)
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
+- `components/admin/YogaTimer.tsx` - Minuteur circulaire style iPhone (presets 1–4 min)
+- `components/admin/MusicPlayer.tsx` - Lecteur playlist zen par catégorie (admin)
+- `components/admin/GlobalAudioBar.tsx` - Barre de lecture fixe en bas du site (lecture persistante)
+- `contexts/AudioPlayerContext.tsx` - Contexte audio global (playlist, volume, boucle)
+- `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, temple, pluie, nature)
+- `lib/timer-sound.ts` - Gong doux/grave (Web Audio) + vibration mobile fin de minuteur
+- `public/audio/` - Fichiers MP3 libres de droit + `CREDITS.md` ; script `scripts/download-yoga-audio.sh`
+- `components/mtc/ElementWatermark.tsx` - Icônes filigrane lucide-react par élément MTC
+- `components/mtc/MTCSeasonCard.tsx` - Carte saison (wrapper)
+- `components/mtc/MTCSeasonCardContent.tsx` - Contenu détaillé d&apos;une saison
+- `components/mtc/mtc-season-utils.ts` - Types et helpers partagés MTC
 
 ### Utilitaires
 
@@ -705,6 +717,21 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 - ✅ Correction des articles devant les saisons pour un français naturel : `LE PRINTEMPS`, `L&apos;ÉTÉ`, `L&apos;AUTOMNE`, `L&apos;HIVER` au lieu de formulations incorrectes comme `LE HIVER`.
 - ✅ Reformulation de la phrase d&apos;introduction de chaque saison : « Au printemps / Pendant l&apos;été / Pendant l&apos;automne / Pendant l&apos;hiver, l&apos;élément … prédomine » pour un ton plus fluide et pédagogique.
+
+### Relooking visuel page Saisons MTC (Juillet 2026)
+
+- ✅ Cartes modernes pour les 5 saisons (`MTCSeasonCard` / `MTCSeasonCardContent`) : dégradé, icône lucide-react en filigrane (coin sup. droit), grille de correspondances, vague animée.
+- ✅ `ElementWatermark` : `TreePine`, `Flame`, `Mountain`, `Anvil`, `Droplets`.
+- ❌ Accordéon scroll abandonné (rendu visuel insatisfaisant).
+
+### Outils admin — minuteur et musique zen (Juillet 2026)
+
+- ✅ Page `/admin/outils` : minuteur circulaire (presets 1, 2, 3, 4 min + réglage ±1 min avant lancement) + lecteur playlist par catégories (Zen, Temple, Pluie, Nature).
+- ✅ `AudioPlayerContext` + `GlobalAudioBar` : lecture persistante sur tout le site jusqu&apos;à pause/stop ; barre de progression cliquable / glissable (seek).
+- ✅ 17 pistes MP3 hébergées dans `public/audio/` (Internet Archive + Mixkit) ; crédits dans `public/audio/CREDITS.md`.
+- ✅ Pistes longues (~1 h+) par catégorie : Temple (bols ~1 h 10), Pluie (1 h), Nature (rossignol 1 h) ; Zen déjà couvert par le mix ambient (~62 min + compléments).
+- ✅ Minuteur : gong synthétisé doux/grave (`lib/timer-sound.ts`, Web Audio) ; vibration triple sur Android à la fin.
+- ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
 
 ### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
 

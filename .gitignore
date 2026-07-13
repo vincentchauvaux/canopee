@@ -40,3 +40,6 @@ next-env.d.ts
 # prisma
 /prisma/migrations
 
+# audio (télécharger via scripts/download-yoga-audio.sh)
+public/audio/**/*.mp3
+

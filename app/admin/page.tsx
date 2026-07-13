@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Calendar, Newspaper, Users } from 'lucide-react'
+import { Calendar, Newspaper, Users, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AdminDashboard() {
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Actions rapides */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="order-1 md:order-2 mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
           <Link
             href="/admin/classes"
             className="bg-white rounded-card p-6 shadow-lg hover:shadow-xl transition-shadow"
@@ -170,6 +170,23 @@ export default function AdminDashboard() {
                 </h3>
                 <p className="text-text-dark/60 text-sm">
                   Voir et gérer les membres
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/outils"
+            className="bg-white rounded-card p-6 shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <div className="flex items-center gap-4">
+              <Sparkles className="w-8 h-8 text-secondary" />
+              <div>
+                <h3 className="text-xl font-serif font-semibold text-text-dark mb-1">
+                  Outils cours
+                </h3>
+                <p className="text-text-dark/60 text-sm">
+                  Minuteur et musique zen pour les séances
                 </p>
               </div>
             </div>
