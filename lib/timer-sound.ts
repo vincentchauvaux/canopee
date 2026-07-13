@@ -1,7 +1,23 @@
+export type TimerAlertMode = "sound" | "vibrate";
+
+export const TIMER_ALERT_MODE_KEY = "yoga-timer-alert-mode";
+
 const TIMER_VIBRATE_PATTERN = [0, 400, 150, 400, 150, 600] as const;
 
+export function canUseVibration() {
+  return typeof navigator !== "undefined" && "vibrate" in navigator;
+}
+
+export function playTimerEndAlert(mode: TimerAlertMode) {
+  if (mode === "sound") {
+    playTimerEndSound();
+    return;
+  }
+  vibrateTimerEnd();
+}
+
 export function vibrateTimerEnd() {
-  if (typeof navigator === "undefined" || !("vibrate" in navigator)) return;
+  if (!canUseVibration()) return;
   navigator.vibrate([...TIMER_VIBRATE_PATTERN]);
 }
 

@@ -47,6 +47,6 @@ Musiques et sons utilisés dans les outils admin (lecteur zen). Téléchargés p
 
 Le signal de fin est généré en direct (Web Audio API) : gong doux et grave, sans fichier MP3.
 
-Sur mobile Android, le vibreur s&apos;active à la fin du compte à rebours (triple vibration). iOS Safari ne prend pas en charge `navigator.vibrate`.
+Au choix via le switch du minuteur : **Sonner** (gong) ou **Vibrer** (triple vibration sur Android). Les deux ne se déclenchent pas en même temps. iOS Safari ne prend pas en charge `navigator.vibrate` ; un message d&apos;aide s&apos;affiche si le mode Vibrer est sélectionné sur un appareil non compatible.
 
 Téléchargement automatisé : `scripts/download-yoga-audio.sh`

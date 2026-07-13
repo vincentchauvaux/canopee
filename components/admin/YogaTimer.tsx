@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Minus, Pause, Play, Plus, RotateCcw } from "lucide-react";
-import { playTimerEndSound, vibrateTimerEnd } from "@/lib/timer-sound";
+import {
+  canUseVibration,
+  playTimerEndAlert,
+  TIMER_ALERT_MODE_KEY,
+  type TimerAlertMode,
+} from "@/lib/timer-sound";
 
 const PRESETS = [
   { label: "1 min", seconds: 60 },
@@ -32,10 +37,12 @@ export default function YogaTimer() {
   const [duration, setDuration] = useState(60);
   const [remaining, setRemaining] = useState(60);
   const [status, setStatus] = useState<TimerStatus>("idle");
+  const [alertMode, setAlertMode] = useState<TimerAlertMode>("sound");
   const endAtRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
   const progress = duration > 0 ? remaining / duration : 0;
   const strokeOffset = CIRCUMFERENCE * (1 - progress);
+  const isVibrateMode = alertMode === "vibrate";
 
   const clearTimer = useCallback(() => {
     if (rafRef.current !== null) {
@@ -49,9 +56,16 @@ export default function YogaTimer() {
     clearTimer();
     setRemaining(0);
     setStatus("finished");
-    playTimerEndSound();
-    vibrateTimerEnd();
-  }, [clearTimer]);
+    playTimerEndAlert(alertMode);
+  }, [alertMode, clearTimer]);
+
+  const toggleAlertMode = useCallback(() => {
+    setAlertMode((prev) => {
+      const next: TimerAlertMode = prev === "sound" ? "vibrate" : "sound";
+      localStorage.setItem(TIMER_ALERT_MODE_KEY, next);
+      return next;
+    });
+  }, []);
 
   const tick = useCallback(() => {
     if (endAtRef.current === null) return;
@@ -115,6 +129,13 @@ export default function YogaTimer() {
 
   useEffect(() => () => clearTimer(), [clearTimer]);
 
+  useEffect(() => {
+    const stored = localStorage.getItem(TIMER_ALERT_MODE_KEY);
+    if (stored === "sound" || stored === "vibrate") {
+      setAlertMode(stored);
+    }
+  }, []);
+
   return (
     <div className="rounded-2xl border border-primary/10 bg-white p-6 shadow-canopee-soft sm:p-8">
       <div className="mb-6">
@@ -139,6 +160,35 @@ export default function YogaTimer() {
             {preset.label}
           </button>
         ))}
+      </div>
+
+      <div className="mb-6 flex flex-col items-center gap-1">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={isVibrateMode}
+            aria-label={isVibrateMode ? "Vibrer à la fin" : "Sonner à la fin"}
+            onClick={toggleAlertMode}
+            className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ${
+              isVibrateMode ? "bg-primary" : "bg-primary/20"
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-sm transition-transform duration-300 ${
+                isVibrateMode ? "translate-x-5" : "translate-x-0"
+              }`}
+            />
+          </button>
+          <span className="text-sm font-medium text-text-dark">
+            {isVibrateMode ? "Vibrer" : "Sonner"}
+          </span>
+        </div>
+        {isVibrateMode && !canUseVibration() && (
+          <p className="text-center text-xs text-text-dark/50">
+            Vibration non disponible sur cet appareil (ex. iPhone)
+          </p>
+        )}
       </div>
 
       <div className="relative mx-auto mb-8 flex items-center justify-center gap-3 sm:gap-5">

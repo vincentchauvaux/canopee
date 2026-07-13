@@ -57,6 +57,8 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   const tracksRef = useRef<YogaTrack[]>([]);
 
   const loopPlaylistRef = useRef(true);
+  const volumeRef = useRef(0.75);
+  const playNextRef = useRef<() => void>(() => {});
 
   const [status, setStatus] = useState<PlayerStatus>("idle");
   const [isActive, setIsActive] = useState(false);
@@ -75,7 +77,7 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
 
       setCurrentTrack(track);
       audio.src = track.src;
-      audio.volume = volume;
+      audio.volume = volumeRef.current;
       setCurrentTime(0);
       setDuration(track.durationSeconds);
 
@@ -89,7 +91,7 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
         });
       }
     },
-    [volume],
+    [],
   );
 
   const playCategory = useCallback(
@@ -190,6 +192,7 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
 
   const setVolume = useCallback((value: number) => {
     const clamped = Math.min(Math.max(value, 0), 1);
+    volumeRef.current = clamped;
     setVolumeState(clamped);
     if (audioRef.current) {
       audioRef.current.volume = clamped;
@@ -214,14 +217,16 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     setCurrentTime(clamped);
   }, [duration]);
 
+  playNextRef.current = playNext;
+
   useEffect(() => {
     const audio = new Audio();
     audioRef.current = audio;
-    audio.volume = volume;
+    audio.volume = volumeRef.current;
 
     const onTimeUpdate = () => setCurrentTime(audio.currentTime);
     const onLoadedMetadata = () => setDuration(audio.duration || 0);
-    const onEnded = () => playNext();
+    const onEnded = () => playNextRef.current();
 
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("loadedmetadata", onLoadedMetadata);
@@ -234,7 +239,7 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
       audio.removeEventListener("ended", onEnded);
       audioRef.current = null;
     };
-  }, [playNext, volume]);
+  }, []);
 
   useEffect(() => {
     document.body.classList.toggle("audio-bar-active", isActive);
