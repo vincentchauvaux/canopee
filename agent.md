@@ -732,6 +732,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Visuels des intros `saisons-mtc` et `yin-yoga` : utilisation d’images dédiées depuis `images/background/` (imports statiques Next.js), au lieu de réutiliser `bg_01/bg_02`.
 - ✅ Page `/mon-parcours` harmonisée sur le même style éditorial : intro en grille, portrait Carol en cercle (`Carol_Nelissen_Yoga.png`), sections en encadrés, photo de pratique en extérieur pour la philosophie (`IMG-20240822-WA0055.jpg`).
 - ✅ Accueil — section « Cours de Yin Yoga » (`PracticalInfo`) : test du style éditorial (grille + image `yin-yoga-home.png`, encadrés, 3 repères Douceur/Profondeur/Équilibre).
+- ✅ Fix prod VPS (juillet 2026) : conflit double PM2 (root + ubuntu) sur le port 3000 après déploiement → `ecosystem.config.js` lance `next start` directement ; arrêt du PM2 root dupliqué.
 
 ### Outils admin — minuteur et musique zen (Juillet 2026)
 

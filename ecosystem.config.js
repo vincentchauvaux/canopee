@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'canopee',
-      script: 'npm',
-      args: 'start',
+      script: 'node_modules/next/dist/bin/next',
+      args: 'start -p 3000',
       cwd: '/var/www/canopee',
       instances: 1,
       exec_mode: 'fork',
