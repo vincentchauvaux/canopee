@@ -26,40 +26,16 @@ function getOrCreateAudioContext() {
   return sharedAudioContext;
 }
 
-/** Débloque l'audio Web sur un geste utilisateur (démarrage minuteur, switch Sonner). */
-export async function unlockTimerAudio() {
-  const ctx = getOrCreateAudioContext();
-  if (!ctx || ctx.state !== "suspended") return;
-  await ctx.resume();
-}
-
-export function canUseVibration() {
-  return typeof navigator !== "undefined" && "vibrate" in navigator;
-}
-
-export function playTimerEndAlert(mode: TimerAlertMode) {
-  if (mode === "sound") {
-    void playTimerEndSound();
-    return;
-  }
-  vibrateTimerEnd();
-}
-
-export function vibrateTimerEnd() {
-  if (!canUseVibration()) return;
-  navigator.vibrate([...TIMER_VIBRATE_PATTERN]);
-}
-
-export async function playTimerEndSound() {
-  const ctx = getOrCreateAudioContext();
-  if (!ctx) return;
-
-  if (ctx.state === "suspended") {
+async function resumeContext(ctx: AudioContext) {
+  if (ctx.state === "running" || ctx.state === "closed") return;
+  try {
     await ctx.resume();
+  } catch {
+    // Autoplay policy : reprise impossible sans geste utilisateur récent
   }
+}
 
-  if (ctx.state !== "running") return;
-
+function scheduleGong(ctx: AudioContext) {
   const now = ctx.currentTime;
   const master = ctx.createGain();
   master.gain.setValueAtTime(0, now);
@@ -92,4 +68,51 @@ export async function playTimerEndSound() {
   harmonic.start(now);
   fundamental.stop(end);
   harmonic.stop(end);
+}
+
+/** Débloque l'audio Web sur un geste utilisateur (démarrage minuteur, switch Sonner). */
+export async function unlockTimerAudio() {
+  const ctx = getOrCreateAudioContext();
+  if (!ctx) return;
+  await resumeContext(ctx);
+}
+
+export function canUseVibration() {
+  return typeof navigator !== "undefined" && "vibrate" in navigator;
+}
+
+export function playTimerEndAlert(mode: TimerAlertMode) {
+  if (mode === "sound") {
+    void playTimerEndSound();
+    return;
+  }
+  vibrateTimerEnd();
+}
+
+export function vibrateTimerEnd() {
+  if (!canUseVibration()) return;
+  navigator.vibrate([...TIMER_VIBRATE_PATTERN]);
+}
+
+export async function playTimerEndSound() {
+  let ctx = getOrCreateAudioContext();
+  if (!ctx) return;
+
+  await resumeContext(ctx);
+
+  // Contexte partagé suspendu en fin de minuteur : repli sur un contexte éphémère (comportement d'origine)
+  if (ctx.state !== "running") {
+    const AudioCtx = getAudioContextClass();
+    if (!AudioCtx) return;
+    ctx = new AudioCtx();
+    await resumeContext(ctx);
+  }
+
+  scheduleGong(ctx);
+
+  if (ctx !== sharedAudioContext) {
+    window.setTimeout(() => {
+      void ctx.close();
+    }, 6000);
+  }
 }

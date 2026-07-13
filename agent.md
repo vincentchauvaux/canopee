@@ -737,6 +737,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
 - ✅ Volume musique : slider dans `MusicPlayer` et `GlobalAudioBar` (masqué sur iPhone — Safari ignore le volume logiciel).
 - ✅ Minuteur : boutons ±1 min à l&apos;intérieur du cercle.
+- ✅ Fix gong minuteur : reprise AudioContext renforcée + repli contexte éphémère si suspendu en fin de décompte.
 - ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.
 

@@ -109,6 +109,7 @@ export default function YogaTimer() {
 
   const selectPreset = useCallback(
     (seconds: number) => {
+      void unlockTimerAudio();
       clearTimer();
       setDuration(seconds);
       setRemaining(seconds);
@@ -123,6 +124,7 @@ export default function YogaTimer() {
     (delta: number) => {
       if (!canAdjustDuration) return;
 
+      void unlockTimerAudio();
       clearTimer();
       const base = status === "finished" ? duration : remaining;
       const next = Math.min(Math.max(base + delta, MIN_SECONDS), MAX_SECONDS);
@@ -143,6 +145,7 @@ export default function YogaTimer() {
     const stored = localStorage.getItem(TIMER_ALERT_MODE_KEY);
     if (stored === "sound" || stored === "vibrate") {
       setAlertMode(stored);
+      alertModeRef.current = stored;
     }
   }, []);
 
