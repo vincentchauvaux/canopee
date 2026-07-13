@@ -729,7 +729,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Page `/admin/outils` : minuteur circulaire (presets 1, 2, 3, 4 min + réglage ±1 min avant lancement) + lecteur playlist par catégories (Zen, Temple, Pluie, Nature).
 - ✅ `AudioPlayerContext` + `GlobalAudioBar` : lecture persistante sur tout le site jusqu&apos;à pause/stop ; barre de progression cliquable / glissable (seek).
 - ✅ 21 pistes MP3 hébergées dans `public/audio/` (Internet Archive + Mixkit) ; crédits dans `public/audio/CREDITS.md`.
-- ✅ Pistes longues (~1 h+) par catégorie : Zen (mix ~62 min + Four World ~1 h 15), Temple (bols ~1 h 10 + cristal ~3 h), Pluie (1 h + ~2 h), Nature (rossignol 1 h + forêt nocturne 1 h).
+- ✅ Pistes longues (~1 h+) par catégorie : Zen (mix ~62 min + 528 Hz ~2 h), Temple (bols ~1 h 10 + cristal ~3 h), Pluie (1 h + ~2 h), Nature (rossignol 1 h + forêt nocturne 1 h).
 - ✅ Minuteur : gong synthétisé doux/grave (`lib/timer-sound.ts`, Web Audio) ; vibration triple sur Android à la fin.
 - ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.

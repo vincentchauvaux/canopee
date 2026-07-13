@@ -7,7 +7,7 @@ Musiques et sons utilisés dans les outils admin (lecteur zen). Téléchargés p
 | Fichier | Titre | Artiste | Source | Licence |
 |---------|-------|---------|--------|---------|
 | `zen/ambient-groove-mix.mp3` | Ambient Groove Mix | ambientgroove.net | [Internet Archive](https://archive.org/details/ambientgroove.net_mix1) | CC BY-ND 3.0 |
-| `zen/four-world-meditation.mp3` | Four World Meditation (~1 h 15) | Four World Meditation | [Internet Archive](https://archive.org/details/FourWorldMeditation) | Internet Archive |
+| `zen/healing-528hz-2h.mp3` | Méditation 528 Hz — régénération (~2 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
 | `zen/ambient-meditation.mp3` | Ambient Meditation | MokkaMusic | [Internet Archive / Jamendo](https://archive.org/details/jamendo-498246) | Jamendo CC |
 | `zen/rising-star.mp3` | Rising Star | Yoga & Meditacion | [Internet Archive](https://archive.org/details/meditation-music-2019) | Compilation 2019 |
 | `zen/softness-red.mp3` | Softness Red | Funkana | [Internet Archive](https://archive.org/details/meditation-music-2019) | Compilation 2019 |

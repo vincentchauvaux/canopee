@@ -22,8 +22,8 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
   "$AUDIO/zen/rising-star.mp3"
 download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/23.%20%20Funkana%20%20-%20%20Softness%20Red%20(Zen%20Ambient%20Meditation).mp3" \
   "$AUDIO/zen/softness-red.mp3"
-download "https://archive.org/download/FourWorldMeditation/4worlds4-29-08.mp3" \
-  "$AUDIO/zen/four-world-meditation.mp3"
+download "https://archive.org/download/m_20210503/528hz_whole_body_regeneration_full_body_healing_emotional_physical_healing_epxe_XIByoK-gucZgB0-.mp3" \
+  "$AUDIO/zen/healing-528hz-2h.mp3"
 
 # Temple — bols / ambient spirituel
 download "https://archive.org/download/jamendo-615329/01-2279515-Alex%20Saym-Gentle%20Flowing%20Meditative%20Ambient.mp3" \

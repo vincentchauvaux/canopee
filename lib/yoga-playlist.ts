@@ -48,12 +48,12 @@ export const YOGA_TRACKS: YogaTrack[] = [
     license: "CC BY-ND 3.0 (Internet Archive)",
   },
   {
-    id: "zen-four-world",
-    title: "Four World Meditation (~1 h 15)",
+    id: "zen-healing-528hz",
+    title: "Méditation 528 Hz — régénération (~2 h)",
     category: "zen",
-    src: "/audio/zen/four-world-meditation.mp3",
-    durationSeconds: 4436,
-    artist: "Four World Meditation",
+    src: "/audio/zen/healing-528hz-2h.mp3",
+    durationSeconds: 7209,
+    artist: "Healing Meditation Music",
     license: "Internet Archive",
   },
   {
