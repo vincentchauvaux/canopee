@@ -732,6 +732,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Pistes longues (~1 h+) par catégorie : Temple (bols ~1 h 10), Pluie (1 h), Nature (rossignol 1 h) ; Zen déjà couvert par le mix ambient (~62 min + compléments).
 - ✅ Minuteur : gong synthétisé doux/grave (`lib/timer-sound.ts`, Web Audio) ; vibration triple sur Android à la fin.
 - ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
+- ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.
 
 ### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
 
