@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Clock, Heart, Target } from "lucide-react";
 import Image from "next/image";
 import yinIntroImage from "@/images/background/happy_life50_83858_minimal_yoga_space_with_natural_wooden_floor_5af99ad7-3ccc-44d9-b419-0ab9d676885d.png";
 
@@ -85,8 +84,7 @@ export default function YinYogaPage() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                   <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
-                    <h3 className="text-xl font-semibold text-text-dark mb-3 flex items-center">
-                      <Target className="w-5 h-5 text-primary mr-2" />
+                    <h3 className="text-xl font-semibold text-text-dark mb-3">
                       Différence avec les autres yogas
                     </h3>
                     <p className="text-text-dark/70">
@@ -99,8 +97,7 @@ export default function YinYogaPage() {
                     </p>
                   </div>
                   <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
-                    <h3 className="text-xl font-semibold text-text-dark mb-3 flex items-center">
-                      <Heart className="w-5 h-5 text-primary mr-2" />
+                    <h3 className="text-xl font-semibold text-text-dark mb-3">
                       Action sur les méridiens
                     </h3>
                     <p className="text-text-dark/70">
@@ -117,8 +114,7 @@ export default function YinYogaPage() {
 
             {/* Section : Le Yin yoga, comment ? */}
             <section className="mb-10 rounded-2xl border border-primary/10 bg-primary/5 p-6 sm:p-8">
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark flex items-center gap-3">
-                <Clock className="w-6 h-6 text-primary" />
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark">
                 Le Yin yoga, comment ?
               </h2>
 
@@ -198,8 +194,7 @@ export default function YinYogaPage() {
 
             {/* Section : Le Yin yoga, pourquoi ? */}
             <section className="mb-10 rounded-2xl border border-primary/10 bg-primary/5 p-6 sm:p-8">
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark flex items-center gap-3">
-                <Heart className="w-6 h-6 text-primary" />
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text-dark">
                 Le Yin yoga, pourquoi ?
               </h2>
 
@@ -213,8 +208,7 @@ export default function YinYogaPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
-                    <h3 className="text-xl font-semibold text-text-dark mb-4 flex items-center">
-                      <Target className="w-5 h-5 text-primary mr-2" />
+                    <h3 className="text-xl font-semibold text-text-dark mb-4">
                       Bienfaits physiques
                     </h3>
                     <ul className="space-y-2 text-text-dark/70">
@@ -238,8 +232,7 @@ export default function YinYogaPage() {
                   </div>
 
                   <div className="rounded-xl border border-primary/10 bg-white/70 p-6">
-                    <h3 className="text-xl font-semibold text-text-dark mb-4 flex items-center">
-                      <Heart className="w-5 h-5 text-primary mr-2" />
+                    <h3 className="text-xl font-semibold text-text-dark mb-4">
                       Bienfaits mentaux et émotionnels
                     </h3>
                     <ul className="space-y-2 text-text-dark/70">

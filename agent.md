@@ -728,7 +728,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Harmonisation style éditorial (Juillet 2026)
 
-- ✅ Page `/yin-yoga` alignée visuellement sur `/saisons-mtc` : intro en grille avec image, sections en encadrés `rounded-2xl` (`bg-primary/5`, `border-primary/10`), typographie et espacement harmonisés.
+- ✅ Page `/yin-yoga` alignée visuellement sur `/saisons-mtc` : intro en grille avec image, sections en encadrés `rounded-2xl` (`bg-primary/5`, `border-primary/10`), typographie et espacement harmonisés. Icônes lucide-react retirées des titres de section (juillet 2026).
 - ✅ Visuels des intros `saisons-mtc` et `yin-yoga` : utilisation d’images dédiées depuis `images/background/` (imports statiques Next.js), au lieu de réutiliser `bg_01/bg_02`.
 - ✅ Page `/mon-parcours` harmonisée sur le même style éditorial : intro en grille, portrait Carol en cercle (`Carol_Nelissen_Yoga.png`), sections en encadrés, photo de pratique en extérieur pour la philosophie (`IMG-20240822-WA0055.jpg`).
 - ✅ Accueil — section « Cours de Yin Yoga » (`PracticalInfo`) : test du style éditorial (grille + image `yin-yoga-home.png`, encadrés, 3 repères Douceur/Profondeur/Équilibre).
