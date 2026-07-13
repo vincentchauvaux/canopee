@@ -22,6 +22,8 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
   "$AUDIO/zen/rising-star.mp3"
 download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/23.%20%20Funkana%20%20-%20%20Softness%20Red%20(Zen%20Ambient%20Meditation).mp3" \
   "$AUDIO/zen/softness-red.mp3"
+download "https://archive.org/download/FourWorldMeditation/4worlds4-29-08.mp3" \
+  "$AUDIO/zen/four-world-meditation.mp3"
 
 # Temple — bols / ambient spirituel
 download "https://archive.org/download/jamendo-615329/01-2279515-Alex%20Saym-Gentle%20Flowing%20Meditative%20Ambient.mp3" \
@@ -34,10 +36,14 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
 # Temple — piste longue (~1 h 10) bols tibétains
 download "https://archive.org/download/m_20210503/432hz_nature_s_healing_music_aura_cleanse_all_7_chakras_cleanse_positive_energy_boost_-3328895234798558088.mp3" \
   "$AUDIO/temple/singing-bowls-healing.mp3"
+download "https://archive.org/download/m_20210503/432hz_3_hour_crystal_singing_bowl_healing_sound_bath_4k_no_talking_singing_bowls_sound_bath_-6866116459838027795.mp3" \
+  "$AUDIO/temple/crystal-singing-bowl-3h.mp3"
 
 # Pluie — pluie + ambient
 download "https://archive.org/download/y-2mate.com-rain-sounds-1-hours-sound-of-rain-meditation-2/y2mate.com%20-%20Rain%20Sounds%201%20Hours%20%20%20%20Sound%20of%20Rain%20Meditation%20_2.mp3" \
   "$AUDIO/pluie/rain-1-hour.mp3"
+download "https://archive.org/download/rain-sounds-for-sleep-1/RAIN%20SOUNDS%20FOR%20SLEEP%201.mp3" \
+  "$AUDIO/pluie/rain-sleep-2h.mp3"
 download "https://assets.mixkit.co/active_storage/sfx/2394/2394-preview.mp3" \
   "$AUDIO/pluie/rain-long-loop.mp3"
 download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/24.%20%20Biocuo%20%20-%20%20Rain%20In%20The%20City%20(Original%20Mix).mp3" \
@@ -58,5 +64,7 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
 # Nature — rossignol 1 heure
 download "https://archive.org/download/one-hour-relaxing-birdsong-the-nightingale./One%20Hour%20Relaxing%20Birdsong_%20the%20Nightingale..mp3" \
   "$AUDIO/nature/birdsong-1-hour.mp3"
+download "https://archive.org/download/avatar-music-ambience-pandora-at-night-bioluminescence-forest-sounds-and-occasional-rain/Avatar%20Music%20%26%20Ambience%20-%20Pandora%20at%20Night%20%28Bioluminescence%2C%20Forest%20Sounds%20and%20Occasional%20Rain%29.mp3" \
+  "$AUDIO/nature/pandora-forest-night.mp3"
 
 echo "✅ Téléchargement terminé."
