@@ -133,10 +133,10 @@ export default function Agenda() {
   });
 
   return (
-    <section id="agenda" className="py-20 bg-accent">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="agenda" className="py-20 bg-accent overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-serif font-bold text-text-dark mb-4">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-text-dark mb-4">
             Notre Agenda
           </h2>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
@@ -151,56 +151,64 @@ export default function Agenda() {
         </div>
 
         {/* Contrôles */}
-        <div className="bg-white rounded-card p-6 shadow-lg mb-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-4">
+        <div className="bg-white rounded-card p-4 sm:p-6 shadow-lg mb-6 overflow-hidden">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2 w-full min-w-0">
               <button
+                type="button"
+                onClick={() => navigateWeek("prev")}
+                className="shrink-0 p-2 hover:bg-accent rounded-button"
+                aria-label="Période précédente"
+              >
+                ←
+              </button>
+              <span className="flex-1 min-w-0 text-center font-semibold text-sm sm:text-base leading-snug px-1">
+                {view === "week"
+                  ? `${format(weekStart, "d MMM", { locale: fr })} - ${format(weekEnd, "d MMM yyyy", { locale: fr })}`
+                  : format(selectedDate, "MMMM yyyy", { locale: fr })}
+              </span>
+              <button
+                type="button"
+                onClick={() => navigateWeek("next")}
+                className="shrink-0 p-2 hover:bg-accent rounded-button"
+                aria-label="Période suivante"
+              >
+                →
+              </button>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <button
+                type="button"
                 onClick={() => setSelectedDate(new Date())}
-                className="px-4 py-2 bg-secondary text-white rounded-button hover:bg-secondary-light transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-secondary text-white rounded-button hover:bg-secondary-light transition-colors text-center"
               >
                 Aujourd&apos;hui
               </button>
-              <div className="flex items-center gap-2">
+              <div className="flex gap-2 w-full sm:w-auto">
                 <button
-                  onClick={() => navigateWeek("prev")}
-                  className="p-2 hover:bg-accent rounded-button"
+                  type="button"
+                  onClick={() => setView("week")}
+                  className={`flex-1 sm:flex-none px-4 py-2 rounded-button transition-colors ${
+                    view === "week"
+                      ? "bg-primary text-white"
+                      : "bg-gray text-text-dark hover:bg-gray/80"
+                  }`}
                 >
-                  ←
+                  Semaine
                 </button>
-                <span className="font-semibold min-w-[200px] text-center">
-                  {view === "week"
-                    ? `${format(weekStart, "d MMM", { locale: fr })} - ${format(weekEnd, "d MMM yyyy", { locale: fr })}`
-                    : format(selectedDate, "MMMM yyyy", { locale: fr })}
-                </span>
                 <button
-                  onClick={() => navigateWeek("next")}
-                  className="p-2 hover:bg-accent rounded-button"
+                  type="button"
+                  onClick={() => setView("month")}
+                  className={`flex-1 sm:flex-none px-4 py-2 rounded-button transition-colors ${
+                    view === "month"
+                      ? "bg-primary text-white"
+                      : "bg-gray text-text-dark hover:bg-gray/80"
+                  }`}
                 >
-                  →
+                  Mois
                 </button>
               </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setView("week")}
-                className={`px-4 py-2 rounded-button transition-colors ${
-                  view === "week"
-                    ? "bg-primary text-white"
-                    : "bg-gray text-text-dark hover:bg-gray/80"
-                }`}
-              >
-                Semaine
-              </button>
-              <button
-                onClick={() => setView("month")}
-                className={`px-4 py-2 rounded-button transition-colors ${
-                  view === "month"
-                    ? "bg-primary text-white"
-                    : "bg-gray text-text-dark hover:bg-gray/80"
-                }`}
-              >
-                Mois
-              </button>
             </div>
           </div>
 
@@ -232,7 +240,7 @@ export default function Agenda() {
             <p className="text-red-600">{error}</p>
           </div>
         ) : (
-          <div className="bg-white rounded-card p-6 shadow-lg">
+          <div className="bg-white rounded-card p-3 sm:p-6 shadow-lg overflow-hidden">
             {view === "week" ? (
               <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
                 {weekDays.map((day, index) => {
@@ -319,14 +327,14 @@ export default function Agenda() {
                 })}
               </div>
             ) : (
-              <div>
+              <div className="min-w-0">
                 {/* En-têtes des jours de la semaine */}
-                <div className="grid grid-cols-7 gap-2 mb-2">
+                <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
                   {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map(
                     (dayName) => (
                       <div
                         key={dayName}
-                        className="text-center text-sm font-semibold text-text-dark/70 py-2"
+                        className="text-center text-[10px] sm:text-sm font-semibold text-text-dark/70 py-1 sm:py-2"
                       >
                         {dayName}
                       </div>
@@ -334,7 +342,7 @@ export default function Agenda() {
                   )}
                 </div>
                 {/* Grille du mois */}
-                <div className="grid grid-cols-7 gap-2">
+                <div className="grid grid-cols-7 gap-1 sm:gap-2">
                   {monthDays.map((day, index) => {
                     const dayClasses = getClassesForDay(day);
                     const isToday = today ? isSameDay(day, today) : false;
@@ -364,7 +372,7 @@ export default function Agenda() {
                             ? "Ajouter un cours à cette date"
                             : undefined
                         }
-                        className={`border rounded-card p-2 min-h-[120px] ${
+                        className={`border rounded-card p-1 sm:p-2 min-h-[72px] sm:min-h-[120px] ${
                           isToday
                             ? "border-primary border-2 bg-accent/30"
                             : isCurrentMonth
@@ -378,7 +386,7 @@ export default function Agenda() {
                       >
                         <div className="mb-2">
                           <div
-                            className={`text-sm font-semibold ${
+                            className={`text-xs sm:text-sm font-semibold ${
                               isToday
                                 ? "text-primary"
                                 : isCurrentMonth

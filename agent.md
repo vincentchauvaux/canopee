@@ -253,7 +253,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 - `components/Header.tsx` - Header sticky (couleurs selon le fond). Fond blanc dès le départ sur `/profile`, `/mon-parcours`, `/yin-yoga`, `/faq`, `/saisons-mtc`. Lien « Mon parcours ». Visiteurs non connectés : un seul bouton **Se connecter** (plus de « S&apos;inscrire » depuis mars 2026)
 - `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
-- `components/Agenda.tsx` - Section agenda interactive (semaine / mois), cours avec horaires et intervenant ; sans réservation depuis le calendrier. **Visible par tous** (visiteurs anonymes inclus) ; chargement via `/api/classes`. **Administrateurs** connectés : clic sur un jour ouvre `ClassFormModal` avec la date présélectionnée.
+- `components/Agenda.tsx` - Section agenda interactive (semaine / mois), cours avec horaires et intervenant ; sans réservation depuis le calendrier. **Visible par tous** (visiteurs anonymes inclus) ; chargement via `/api/classes`. **Administrateurs** connectés : clic sur un jour ouvre `ClassFormModal` avec la date présélectionnée. **Responsive mobile** (juillet 2026) : barre de navigation empilée, pas de débordement horizontal.
 - `components/NewsFeed.tsx` - Fil d&apos;actualité (cours à venir + actualités datées). **Visible par tous** ; données via `/api/classes` et `/api/news`. Si la timeline est vide après chargement, la section n&apos;est pas affichée. Pas d&apos;actualité factice
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). **Test style éditorial (juillet 2026)** sur le bloc « Cours de Yin Yoga » : intro en grille avec image, encadrés `rounded-2xl`, cartes bienfaits/infos pratiques harmonisées avec les pages contenu.
@@ -733,6 +733,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Page `/mon-parcours` harmonisée sur le même style éditorial : intro en grille, portrait Carol en cercle (`Carol_Nelissen_Yoga.png`), sections en encadrés, photo de pratique en extérieur pour la philosophie (`IMG-20240822-WA0055.jpg`).
 - ✅ Accueil — section « Cours de Yin Yoga » (`PracticalInfo`) : test du style éditorial (grille + image `yin-yoga-home.png`, encadrés, 3 repères Douceur/Profondeur/Équilibre).
 - ✅ Fix prod VPS (juillet 2026) : conflit double PM2 (root + ubuntu) sur le port 3000 après déploiement → `ecosystem.config.js` lance `next start` directement ; arrêt du PM2 root dupliqué.
+- ✅ Accueil — section Agenda (`Agenda.tsx`, juillet 2026) : responsive mobile corrigé — navigation date sur une ligne pleine largeur, boutons « Aujourd&apos;hui » / Semaine / Mois empilés ou en grille sur petit écran, suppression du `min-w-[200px]` qui faisait déborder la carte ; vue mois avec espacements et typo réduits sur mobile.
 
 ### Outils admin — minuteur et musique zen (Juillet 2026)
 
