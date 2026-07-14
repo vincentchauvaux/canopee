@@ -227,11 +227,11 @@ export default function ProfilePage() {
       : user.firstName || user.email.split("@")[0];
 
   return (
-    <div className="min-h-screen bg-accent py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-accent py-20 overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-serif font-bold text-text-dark mb-2">
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-text-dark mb-2">
             Mon Profil
           </h1>
           <p className="text-text-dark/60">
@@ -243,34 +243,36 @@ export default function ProfilePage() {
           {/* Colonne principale - Informations */}
           <div className="lg:col-span-2 space-y-6">
             {/* Carte Profil */}
-            <div className="bg-white rounded-card shadow-lg p-6">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
+            <div className="bg-white rounded-card shadow-lg p-4 sm:p-6 overflow-hidden">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                   {isEditing && profilePicPreview ? (
                     <img
                       src={profilePicPreview}
                       alt={displayName}
-                      className="w-20 h-20 rounded-full object-cover border-4 border-accent"
+                      className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full object-cover border-4 border-accent"
                     />
                   ) : user.profilePic ? (
                     <img
                       src={user.profilePic}
                       alt={displayName}
-                      className="w-20 h-20 rounded-full object-cover border-4 border-accent"
+                      className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full object-cover border-4 border-accent"
                     />
                   ) : (
-                    <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white text-2xl font-bold border-4 border-accent">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full bg-primary flex items-center justify-center text-white text-xl sm:text-2xl font-bold border-4 border-accent">
                       {displayName.charAt(0).toUpperCase()}
                     </div>
                   )}
-                  <div>
-                    <h2 className="text-2xl font-serif font-bold text-text-dark">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-xl sm:text-2xl font-serif font-bold text-text-dark truncate">
                       {displayName}
                     </h2>
-                    <p className="text-text-dark/60">{user.email}</p>
+                    <p className="text-text-dark/60 text-sm sm:text-base break-all">
+                      {user.email}
+                    </p>
                     {isAdmin && (
-                      <span className="inline-block mt-2 px-3 py-1 bg-primary text-white rounded-full text-sm font-medium">
-                        <Shield className="w-4 h-4 inline mr-1" />
+                      <span className="inline-flex items-center mt-2 px-3 py-1 bg-primary text-white rounded-full text-sm font-medium">
+                        <Shield className="w-4 h-4 shrink-0 mr-1" />
                         Administrateur
                       </span>
                     )}
@@ -278,8 +280,9 @@ export default function ProfilePage() {
                 </div>
                 {!isEditing && (
                   <button
+                    type="button"
                     onClick={() => setIsEditing(true)}
-                    className="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors flex items-center gap-2"
+                    className="w-full sm:w-auto shrink-0 px-4 py-2 bg-primary text-white rounded-button hover:bg-primary-light transition-colors flex items-center justify-center gap-2"
                   >
                     <Settings className="w-4 h-4" />
                     Modifier
@@ -365,7 +368,7 @@ export default function ProfilePage() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-text-dark mb-2">
                       Prénom
@@ -459,8 +462,9 @@ export default function ProfilePage() {
                 </div>
 
                 {isEditing && (
-                  <div className="flex gap-4 pt-4">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
                     <button
+                      type="button"
                       onClick={handleSave}
                       disabled={saving}
                       className="flex-1 px-6 py-3 bg-primary text-white rounded-button hover:bg-primary-light transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
@@ -469,8 +473,9 @@ export default function ProfilePage() {
                       {saving ? "Enregistrement..." : "Enregistrer"}
                     </button>
                     <button
+                      type="button"
                       onClick={handleCancel}
-                      className="px-6 py-3 bg-gray text-text-dark rounded-button hover:bg-gray/80 transition-colors flex items-center gap-2"
+                      className="w-full sm:w-auto px-6 py-3 bg-gray text-text-dark rounded-button hover:bg-gray/80 transition-colors flex items-center justify-center gap-2"
                     >
                       <X className="w-4 h-4" />
                       Annuler
