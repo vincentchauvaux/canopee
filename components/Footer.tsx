@@ -11,10 +11,12 @@ import {
   MapPin,
 } from "lucide-react";
 import MoonPhase from "./MoonPhase";
+import { computeLunarData } from "@/lib/lunar";
 
 interface LunarPhase {
   phase: string;
-  illumination?: number | null;
+  illumination: number;
+  dayOfCycle: number;
   distance?: string | null;
   nextFullMoon?: number | null;
 }
@@ -33,11 +35,21 @@ export default function Footer() {
   const [isMounted, setIsMounted] = useState(false);
   const dailyIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fonction pour récupérer la phase lunaire depuis lunopia.com
-  const fetchLunarPhase = async (): Promise<LunarPhase | null> => {
+  // Phase lunaire : calcul local (= graphique) + enrichissement lunopia (libellé, distance)
+  const fetchLunarPhase = async (): Promise<LunarPhase> => {
+    const computed = computeLunarData();
+    const local: LunarPhase = {
+      phase: computed.phase,
+      illumination: computed.illuminationPercent,
+      dayOfCycle: computed.dayOfCycle,
+      distance: null,
+      nextFullMoon: null,
+    };
+
     try {
       const response = await fetch("/api/lunar", {
         credentials: "include",
+        cache: "no-store",
       });
 
       if (!response.ok) {
@@ -45,10 +57,21 @@ export default function Footer() {
       }
 
       const data = await response.json();
-      return data;
+
+      return {
+        // Illumination toujours alignée sur le calcul du graphique (évite un 0% figé)
+        phase:
+          typeof data.phase === "string" && data.phase.trim()
+            ? data.phase.trim()
+            : local.phase,
+        illumination: local.illumination,
+        dayOfCycle: local.dayOfCycle,
+        distance: data.distance ?? null,
+        nextFullMoon: data.nextFullMoon ?? null,
+      };
     } catch (error) {
       console.error("Error fetching lunar phase:", error);
-      return null;
+      return local;
     }
   };
 
@@ -141,11 +164,8 @@ export default function Footer() {
 
   // Fonction pour mettre à jour toutes les informations
   const updateSpiritualInfo = useCallback(async () => {
-    // Récupérer la phase lunaire depuis lunopia.com
     const lunarData = await fetchLunarPhase();
-    if (lunarData) {
-      setLunarPhase(lunarData);
-    }
+    setLunarPhase(lunarData);
 
     setMtcSeason(getMTCSeason());
 
@@ -171,7 +191,13 @@ export default function Footer() {
   useEffect(() => {
     setIsMounted(true);
     setCurrentYear(new Date().getFullYear());
-    // Mettre à jour les informations au chargement
+    // Affichage immédiat via calcul local (évite 0% / Chargement en attendant l’API)
+    const computed = computeLunarData();
+    setLunarPhase({
+      phase: computed.phase,
+      illumination: computed.illuminationPercent,
+      dayOfCycle: computed.dayOfCycle,
+    });
     updateSpiritualInfo();
 
     // Mettre à jour toutes les heures pour la phase lunaire
@@ -295,12 +321,20 @@ export default function Footer() {
             <div className="flex flex-col gap-4 flex-1">
               {/* Phase lunaire - toujours afficher avec le composant MoonPhase */}
               <div className="flex items-center gap-3">
-                <MoonPhase size={60} className="flex-shrink-0" />
+                <MoonPhase
+                  size={60}
+                  className="flex-shrink-0"
+                  illumination={
+                    lunarPhase
+                      ? lunarPhase.illumination / 100
+                      : undefined
+                  }
+                  dayOfCycle={lunarPhase?.dayOfCycle}
+                />
                 <div className="flex flex-col">
-                  {lunarPhase?.illumination !== null &&
-                  lunarPhase?.illumination !== undefined ? (
+                  {lunarPhase ? (
                     <p className="text-2xl font-bold text-text-light">
-                      {Math.round(lunarPhase.illumination)}%
+                      {lunarPhase.illumination}%
                     </p>
                   ) : null}
                   {lunarPhase?.phase ? (

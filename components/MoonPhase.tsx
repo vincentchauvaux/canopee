@@ -1,40 +1,42 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { computeLunarData } from "@/lib/lunar";
 
 interface MoonPhaseProps {
   size?: number;
   className?: string;
+  /** Illumination 0–1 fournie par le parent (sinon calcul local) */
+  illumination?: number;
+  /** Jour du cycle 0–29.53 fourni par le parent (sinon calcul local) */
+  dayOfCycle?: number;
 }
 
-export default function MoonPhase({ size = 80, className = "" }: MoonPhaseProps) {
+export default function MoonPhase({
+  size = 80,
+  className = "",
+  illumination: illuminationProp,
+  dayOfCycle: dayOfCycleProp,
+}: MoonPhaseProps) {
   const [moonData, setMoonData] = useState<{
     illumination: number;
     dayOfCycle: number;
   } | null>(null);
 
   useEffect(() => {
-    // Calcul de la phase lunaire en temps réel (uniquement côté client)
-    const calculateMoonPhase = () => {
-      const now = new Date();
-      const referenceNewMoon = new Date("2024-01-11T00:00:00Z").getTime();
-      const lunarCycle = 29.530588 * 24 * 60 * 60 * 1000;
-      const daysSinceNewMoon = (now.getTime() - referenceNewMoon) % lunarCycle;
-      const dayOfCycle = daysSinceNewMoon / (24 * 60 * 60 * 1000);
-      
-      // Calcul de l'illumination (0 = nouvelle lune, 1 = pleine lune)
-      // Utiliser une formule plus précise basée sur l'angle de phase
-      const phaseAngle = (2 * Math.PI * dayOfCycle) / 29.530588;
-      const illumination = 0.5 - 0.5 * Math.cos(phaseAngle);
-      
-      return {
-        illumination: Math.max(0, Math.min(1, illumination)),
-        dayOfCycle,
-      };
-    };
-
-    setMoonData(calculateMoonPhase());
-  }, []);
+    if (illuminationProp !== undefined && dayOfCycleProp !== undefined) {
+      setMoonData({
+        illumination: illuminationProp,
+        dayOfCycle: dayOfCycleProp,
+      });
+      return;
+    }
+    const computed = computeLunarData();
+    setMoonData({
+      illumination: computed.illumination,
+      dayOfCycle: computed.dayOfCycle,
+    });
+  }, [illuminationProp, dayOfCycleProp]);
 
   // Valeurs par défaut pour le rendu serveur
   const illumination = moonData?.illumination ?? 0.5;
@@ -42,17 +44,10 @@ export default function MoonPhase({ size = 80, className = "" }: MoonPhaseProps)
   const radius = size / 2;
   const center = size / 2;
 
-  // Déterminer si la lune est croissante (waxing) ou décroissante (waning)
-  const isWaxing = dayOfCycle < 14.765; // Moitié du cycle
-
-  // Calculer la position de l'ombre pour créer l'effet de phase
-  // L'illumination va de 0 (nouvelle lune) à 1 (pleine lune)
-  // On calcule la largeur de l'ombre en fonction de l'illumination
-  const shadowRatio = Math.abs(illumination * 2 - 1); // 0 à pleine lune, 1 à nouvelle lune
+  const isWaxing = dayOfCycle < 14.765;
+  const shadowRatio = Math.abs(illumination * 2 - 1);
   const shadowWidth = radius * shadowRatio;
-  
-  // Position de l'ombre : à gauche pour croissante, à droite pour décroissante
-  const shadowX = isWaxing 
+  const shadowX = isWaxing
     ? center - radius + shadowWidth
     : center + radius - shadowWidth;
 
@@ -68,14 +63,11 @@ export default function MoonPhase({ size = 80, className = "" }: MoonPhaseProps)
           <circle cx={center} cy={center} r={radius} />
         </clipPath>
       </defs>
-      
-      {/* Cercle de la lune (blanc) */}
+
       <g clipPath={`url(#moonClip-${size})`}>
         <circle cx={center} cy={center} r={radius} fill="#ffffff" />
-        
-        {/* Ombre pour créer l'effet de phase */}
+
         {illumination < 0.5 ? (
-          // Moins de la moitié : ombre à gauche (croissante) ou droite (décroissante)
           <ellipse
             cx={shadowX}
             cy={center}
@@ -84,11 +76,14 @@ export default function MoonPhase({ size = 80, className = "" }: MoonPhaseProps)
             fill="#2e332b"
           />
         ) : (
-          // Plus de la moitié : on dessine l'ombre sur le côté opposé
           <>
             <circle cx={center} cy={center} r={radius} fill="#ffffff" />
             <ellipse
-              cx={isWaxing ? center + radius - shadowWidth : center - radius + shadowWidth}
+              cx={
+                isWaxing
+                  ? center + radius - shadowWidth
+                  : center - radius + shadowWidth
+              }
               cy={center}
               rx={shadowWidth}
               ry={radius}
@@ -100,4 +95,3 @@ export default function MoonPhase({ size = 80, className = "" }: MoonPhaseProps)
     </svg>
   );
 }
-

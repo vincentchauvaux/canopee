@@ -24,6 +24,10 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
   "$AUDIO/zen/softness-red.mp3"
 download "https://archive.org/download/m_20210503/528hz_whole_body_regeneration_full_body_healing_emotional_physical_healing_epxe_XIByoK-gucZgB0-.mp3" \
   "$AUDIO/zen/healing-528hz-2h.mp3"
+download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/09.%20%20Lunamica%20%20-%20%20Rising%20Mountains%20(Original%20Mix).mp3" \
+  "$AUDIO/zen/rising-mountains.mp3"
+download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/17.%20%208s8%20%20-%20%20Cosmica%20(Original%20Mix).mp3" \
+  "$AUDIO/zen/cosmica.mp3"
 
 # Temple — bols / ambient spirituel
 download "https://archive.org/download/jamendo-615329/01-2279515-Alex%20Saym-Gentle%20Flowing%20Meditative%20Ambient.mp3" \
@@ -32,6 +36,8 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
   "$AUDIO/temple/sol-naciente.mp3"
 download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/16.%20%20Mouni%20Mantra%20%20-%20%20Stillness%20(Original%20Mix).mp3" \
   "$AUDIO/temple/stillness.mp3"
+download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/07.%20%20Gurulike%20%20-%20%20New%20Planet%20(Meditation%20%26%20Inspiration).mp3" \
+  "$AUDIO/temple/new-planet.mp3"
 
 # Temple — piste longue (~1 h 10) bols tibétains
 download "https://archive.org/download/m_20210503/432hz_nature_s_healing_music_aura_cleanse_all_7_chakras_cleanse_positive_energy_boost_-3328895234798558088.mp3" \
@@ -50,6 +56,10 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
   "$AUDIO/pluie/rain-in-the-city.mp3"
 download "https://assets.mixkit.co/active_storage/sfx/2507/2507-preview.mp3" \
   "$AUDIO/pluie/soft-ambient-rain.mp3"
+download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/25.%20%20Surbica%20%20-%20%20Condensacion%20(Ambient%20Relax%20%26%20Meditation%20Edit).mp3" \
+  "$AUDIO/pluie/condensacion.mp3"
+download "https://assets.mixkit.co/active_storage/sfx/2515/2515-preview.mp3" \
+  "$AUDIO/pluie/light-rain.mp3"
 
 # Nature — forêt, oiseaux
 download "https://assets.mixkit.co/active_storage/sfx/1213/1213-preview.mp3" \
@@ -60,6 +70,12 @@ download "https://archive.org/download/meditation-music-2019/Meditation%20Music%
   "$AUDIO/nature/natural-theme.mp3"
 download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/15.%20%20Material%20Nature%20%20-%20%20Out%20Side%20(Original%20Mix).mp3" \
   "$AUDIO/nature/outside-nature.mp3"
+download "https://archive.org/download/meditation-music-2019/Meditation%20Music%20(2019)/14.%20%20Planez%20T%20%20-%20%20The%20Second%20Desert%20(Original%20Mix).mp3" \
+  "$AUDIO/nature/second-desert.mp3"
+download "https://assets.mixkit.co/active_storage/sfx/2393/2393-preview.mp3" \
+  "$AUDIO/nature/ocean-waves.mp3"
+download "https://assets.mixkit.co/active_storage/sfx/1214/1214-preview.mp3" \
+  "$AUDIO/nature/stream-water.mp3"
 
 # Nature — rossignol 1 heure
 download "https://archive.org/download/one-hour-relaxing-birdsong-the-nightingale./One%20Hour%20Relaxing%20Birdsong_%20the%20Nightingale..mp3" \

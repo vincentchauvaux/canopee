@@ -228,7 +228,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/yin-yoga/page.tsx` - Page dédiée au Yin Yoga de Canopée avec présentation complète : origine, pratique, bienfaits et informations pratiques
 - `app/mon-parcours/page.tsx` - Page "Carol Nelissen" présentant son parcours de formation (Viniyoga, Yin Yoga), sa philosophie et ses certifications. La première image est affichée en cercle parfait (rounded-full) et la deuxième image occupe toute la hauteur de sa colonne.
 - `app/faq/page.tsx` - Page FAQ présentant les informations sur les cours de Yin Yoga : types de cours (individuel ou collectif, max 3 personnes), horaires (individuel selon convenance, collectif vendredi 18h-19h), prix (individuel 15€, collectif 12€) et modalités (individuel adapté aux besoins, collectif thématiques annoncées)
-- `app/profile/page.tsx` - Page de profil : informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). Photo via upload (max 5MB) ou URL. **Plus de section réservations / appel à `/api/bookings` côté front** (mars 2026). Admins : section « Actions rapides » (agenda, actualités, panel admin)
+- `app/profile/page.tsx` - Page de profil : informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). Photo via upload (max 5MB) ou URL. **Plus de section réservations / appel à `/api/bookings` côté front** (mars 2026). Admins : section « Actions rapides » (agenda, actualités, panel admin). **Responsive mobile** (juillet 2026) : en-tête profil sans débordement horizontal.
 - `app/admin/page.tsx` - Dashboard administrateur (stats cours, actualités, utilisateurs — lien vers Outils cours)
 - `app/admin/outils/page.tsx` - Outils cours admin : minuteur circulaire (1–4 min) et lecteur musique zen par catégories
 - `app/admin/classes/page.tsx` - Gestion des cours
@@ -247,7 +247,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/api/news/[id]/route.ts` - Gestion d'une actualité (GET, PATCH, DELETE)
 - `app/api/admin/users/route.ts` - Liste des utilisateurs (admin uniquement)
 - `app/api/admin/bookings/route.ts` - Liste des réservations (admin uniquement)
-- `app/api/lunar/route.ts` - Récupération des informations lunaires depuis lunopia.com (phase, illumination, image dynamique)
+- `app/api/lunar/route.ts` - Récupération des informations lunaires depuis lunopia.com (phase, illumination, distance) avec parsing robuste des balises `<strong>` ; repli sur `lib/lunar.ts` si scrape KO ; `cache: no-store`
 
 ### Composants
 
@@ -257,15 +257,17 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/NewsFeed.tsx` - Fil d&apos;actualité (cours à venir + actualités datées). **Visible par tous** ; données via `/api/classes` et `/api/news`. Si la timeline est vide après chargement, la section n&apos;est pas affichée. Pas d&apos;actualité factice
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). **Test style éditorial (juillet 2026)** sur le bloc « Cours de Yin Yoga » : intro en grille avec image, encadrés `rounded-2xl`, cartes bienfaits/infos pratiques harmonisées avec les pages contenu.
-- `components/Footer.tsx` - Footer avec phase lunaire récupérée depuis lunopia.com (image dynamique incluse), saisons de la médecine traditionnelle chinoise (MTC) avec dates 2025 précises et citation du jour. Mise à jour automatique : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
+- `components/Footer.tsx` - Footer avec phase lunaire (calcul local aligné sur le graphique + enrichissement lunopia), saisons MTC, citation du jour. Mise à jour : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
+- `components/MoonPhase.tsx` - Graphique SVG de phase lunaire (calcul partagé `lib/lunar.ts`)
+- `lib/lunar.ts` - Calcul partagé illumination / phase (source de vérité pour le % et le graphique du footer)
 - `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours ; prop optionnelle `initialDate` (`YYYY-MM-DD`) pour préremplir la date en création (ex. depuis l&apos;agenda d&apos;accueil)
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
-- `components/admin/YogaTimer.tsx` - Minuteur circulaire (presets 1–4 min en grille 2×2 / 4 col.) ; ±1 min et switch Sonner/Vibrer dans le cercle
+- `components/admin/YogaTimer.tsx` - Minuteur circulaire (presets 1–4 min en grille 2×2 / 4 col.) ; ±1 min et switch Sonner/Vibrer dans le cercle ; alarme fin en boucle + bouton Stop
 - `components/admin/MusicPlayer.tsx` - Lecteur playlist zen par catégorie (admin) ; slider volume + note iOS
 - `components/admin/GlobalAudioBar.tsx` - Barre de lecture fixe en bas du site (lecture persistante)
 - `contexts/AudioPlayerContext.tsx` - Contexte audio global (playlist, volume, boucle)
-- `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, temple, pluie, nature)
-- `lib/timer-sound.ts` - Gong doux/grave (Web Audio partagé + `unlockTimerAudio`) ou vibration mobile fin de minuteur (`TimerAlertMode`, `playTimerEndAlert`)
+- `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, temple, pluie, nature) — 29 pistes
+- `lib/timer-sound.ts` - Gong répété (Web Audio + `unlockTimerAudio`) ou vibration type réveil en boucle (`TimerAlertMode`, `playTimerEndAlert`, `stopTimerAlert`)
 - `lib/device.ts` - Détection iOS (volume masqué sur iPhone)
 - `public/audio/` - Fichiers MP3 libres de droit + `CREDITS.md` ; script `scripts/download-yoga-audio.sh`
 - `components/mtc/ElementWatermark.tsx` - Icônes filigrane lucide-react par élément MTC
@@ -390,6 +392,8 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `ecosystem.config.js` - Configuration PM2 pour la production
 - `CHECKLIST_DEPLOIEMENT.md` - Checklist complète pour suivre l'avancement du déploiement
 - `scripts/install-vps.sh` - Script d'installation automatique pour le VPS (Ubuntu 22.04)
+- `scripts/fix-pm2-vps.sh` - Diagnostic/correction séparation PM2 ubuntu (Canopée) / root (streamtv)
+- `scripts/fix-production-vps.sh` - Déploiement prod avec garde-fous PM2 (refuse canopee dans PM2 root)
 - `GUIDE_INSTALLATION_VPS.md` - Guide d'installation détaillé avec méthode automatique et manuelle
 
 ### Statut du Déploiement
@@ -733,15 +737,32 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Page `/mon-parcours` harmonisée sur le même style éditorial : intro en grille, portrait Carol en cercle (`Carol_Nelissen_Yoga.png`), sections en encadrés, photo de pratique en extérieur pour la philosophie (`IMG-20240822-WA0055.jpg`).
 - ✅ Accueil — section « Cours de Yin Yoga » (`PracticalInfo`) : test du style éditorial (grille + image `yin-yoga-home.png`, encadrés, 3 repères Douceur/Profondeur/Équilibre).
 - ✅ Fix prod VPS (juillet 2026) : conflit double PM2 (root + ubuntu) sur le port 3000 après déploiement → `ecosystem.config.js` lance `next start` directement ; arrêt du PM2 root dupliqué.
+- ✅ PM2 VPS stabilisé (juillet 2026) : **Canopée** sous PM2 `ubuntu` (port 3000), **streamtv** sous PM2 `root` (port 3001) ; dumps root sans `canopee` ; services systemd `pm2-ubuntu` et `pm2-root` activés. Déploiements Canopée : toujours en SSH `ubuntu`, jamais `sudo pm2` pour canopee. Script diagnostic : `scripts/fix-pm2-vps.sh`.
 - ✅ Accueil — section Agenda (`Agenda.tsx`, juillet 2026) : responsive mobile corrigé — navigation date sur une ligne pleine largeur, boutons « Aujourd&apos;hui » / Semaine / Mois empilés ou en grille sur petit écran, suppression du `min-w-[200px]` qui faisait déborder la carte ; vue mois avec espacements et typo réduits sur mobile.
+- ✅ Page profil (`app/profile/page.tsx`, juillet 2026) : responsive mobile — en-tête carte profil empilé (avatar + nom/email + badge admin), `min-w-0` / `truncate` / `break-all`, bouton Modifier pleine largeur sur mobile ; grille prénom/nom et boutons Enregistrer/Annuler en colonne sur petit écran.
+
+### Correction Infos Spirituelles footer — illumination figée à 0% (Août 2026)
+
+**Problème :** Le pourcentage d&apos;illumination dans le footer restait à 0% pendant plusieurs jours, alors que le graphique lunaire évoluait correctement.
+
+**Causes :**
+- Scraping lunopia.com cassé : les libellés sont dans `<strong>Illumination :</strong> 82 %`, alors que la regex attendait `Illumination : 82 %` immédiatement après les deux-points → extraction de la phase / illumination en échec.
+- Le graphique (`MoonPhase`) calculait l&apos;illumination en local, indépendamment du texte fourni par `/api/lunar` → désynchronisation visuelle.
+- Possible cache fetch Next.js qui figeait une mauvaise réponse.
+
+**Solutions :**
+- ✅ `lib/lunar.ts` : calcul partagé (illumination 0–1 / %, nom de phase).
+- ✅ `MoonPhase` et le % du footer utilisent le même calcul → toujours alignés.
+- ✅ `/api/lunar` : parsing via `id="_phase"` / `id="_illumination"` + tolérance `</strong>` ; `cache: "no-store"` ; repli sur le calcul local.
+- ✅ Footer : affichage immédiat du calcul local, puis enrichissement du libellé de phase via l&apos;API.
 
 ### Outils admin — minuteur et musique zen (Juillet 2026)
 
 - ✅ Page `/admin/outils` : minuteur circulaire (presets 1, 2, 3, 4 min + réglage ±1 min avant lancement) + lecteur playlist par catégories (Zen, Temple, Pluie, Nature).
 - ✅ `AudioPlayerContext` + `GlobalAudioBar` : lecture persistante sur tout le site jusqu&apos;à pause/stop ; barre de progression cliquable / glissable (seek).
-- ✅ 21 pistes MP3 hébergées dans `public/audio/` (Internet Archive + Mixkit) ; crédits dans `public/audio/CREDITS.md`.
+- ✅ 29 pistes MP3 hébergées dans `public/audio/` (Internet Archive + Mixkit) ; crédits dans `public/audio/CREDITS.md`.
 - ✅ Pistes longues (~1 h+) par catégorie : Zen (mix ~62 min + 528 Hz ~2 h), Temple (bols ~1 h 10 + cristal ~3 h), Pluie (1 h + ~2 h), Nature (rossignol 1 h + forêt nocturne 1 h).
-- ✅ Minuteur : gong synthétisé doux/grave (`lib/timer-sound.ts`, Web Audio) ; vibration triple sur Android à la fin.
+- ✅ Minuteur : gong synthétisé doux/grave (`lib/timer-sound.ts`, Web Audio) ; vibration type réveil en boucle sur Android à la fin ; bouton **Stop** pour couper sonnerie/vibration.
 - ✅ Switch Sonner/Vibrer sur le minuteur : choix exclusif à la fin du compte à rebours, persistance `localStorage` (`yoga-timer-alert-mode`) ; intégré dans le cercle sous le statut. Mode lu via ref à la fin (évite closure stale) ; audio débloqué au démarrage ou au passage sur Sonner.
 - ✅ Presets minuteur : grille 2×2 sur mobile, 4 colonnes sur écran large (plus de bouton seul).
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
@@ -750,6 +771,8 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Fix gong minuteur : reprise AudioContext renforcée + repli contexte éphémère si suspendu en fin de décompte.
 - ✅ Script de téléchargement : `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.
+- ✅ Alarme minuteur renforcée (août 2026) : motif vibration type réveil (`bzz` / `bzzz` / `bzzzz`) en boucle ; gong répété jusqu&apos;au Stop ; bouton Stop rouge sur le minuteur.
+- ✅ Playlist zen enrichie (août 2026) : +8 pistes (Rising Mountains, Cosmica, New Planet, Condensacion, Second Desert, Vagues océan, Pluie légère, Ruisseau) — total 29 pistes.
 
 ### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
 

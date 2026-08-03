@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Minus, Pause, Play, Plus, RotateCcw } from "lucide-react";
+import { Minus, Pause, Play, Plus, RotateCcw, Square } from "lucide-react";
 import {
   canUseVibration,
   playTimerEndAlert,
+  stopTimerAlert,
   TIMER_ALERT_MODE_KEY,
   unlockTimerAudio,
   type TimerAlertMode,
@@ -39,6 +40,7 @@ export default function YogaTimer() {
   const [remaining, setRemaining] = useState(60);
   const [status, setStatus] = useState<TimerStatus>("idle");
   const [alertMode, setAlertMode] = useState<TimerAlertMode>("sound");
+  const [alerting, setAlerting] = useState(false);
   const alertModeRef = useRef<TimerAlertMode>("sound");
   const endAtRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -54,11 +56,17 @@ export default function YogaTimer() {
     endAtRef.current = null;
   }, []);
 
+  const silenceAlert = useCallback(() => {
+    stopTimerAlert();
+    setAlerting(false);
+  }, []);
+
   const finishTimer = useCallback(() => {
     clearTimer();
     setRemaining(0);
     setStatus("finished");
     playTimerEndAlert(alertModeRef.current);
+    setAlerting(true);
   }, [clearTimer]);
 
   const toggleAlertMode = useCallback(() => {
@@ -84,6 +92,7 @@ export default function YogaTimer() {
   }, [finishTimer]);
 
   const startTimer = useCallback(() => {
+    silenceAlert();
     void unlockTimerAudio();
     if (remaining <= 0) {
       setRemaining(duration);
@@ -91,7 +100,7 @@ export default function YogaTimer() {
     endAtRef.current = Date.now() + (remaining > 0 ? remaining : duration) * 1000;
     setStatus("running");
     rafRef.current = requestAnimationFrame(tick);
-  }, [duration, remaining, tick]);
+  }, [duration, remaining, silenceAlert, tick]);
 
   const pauseTimer = useCallback(() => {
     if (endAtRef.current === null) return;
@@ -102,20 +111,22 @@ export default function YogaTimer() {
   }, [clearTimer]);
 
   const resetTimer = useCallback(() => {
+    silenceAlert();
     clearTimer();
     setRemaining(duration);
     setStatus("idle");
-  }, [clearTimer, duration]);
+  }, [clearTimer, duration, silenceAlert]);
 
   const selectPreset = useCallback(
     (seconds: number) => {
+      silenceAlert();
       void unlockTimerAudio();
       clearTimer();
       setDuration(seconds);
       setRemaining(seconds);
       setStatus("idle");
     },
-    [clearTimer],
+    [clearTimer, silenceAlert],
   );
 
   const canAdjustDuration = status === "idle" || status === "finished";
@@ -124,6 +135,7 @@ export default function YogaTimer() {
     (delta: number) => {
       if (!canAdjustDuration) return;
 
+      silenceAlert();
       void unlockTimerAudio();
       clearTimer();
       const base = status === "finished" ? duration : remaining;
@@ -132,10 +144,16 @@ export default function YogaTimer() {
       setRemaining(next);
       setStatus("idle");
     },
-    [canAdjustDuration, clearTimer, duration, remaining, status],
+    [canAdjustDuration, clearTimer, duration, remaining, silenceAlert, status],
   );
 
-  useEffect(() => () => clearTimer(), [clearTimer]);
+  useEffect(
+    () => () => {
+      clearTimer();
+      stopTimerAlert();
+    },
+    [clearTimer],
+  );
 
   useEffect(() => {
     alertModeRef.current = alertMode;
@@ -224,7 +242,17 @@ export default function YogaTimer() {
             </button>
           </div>
           <span className="mt-0.5 text-xs uppercase tracking-wider text-text-dark/50">
-            {status === "finished" ? "Terminé" : status === "running" ? "En cours" : status === "paused" ? "Pause" : "Prêt"}
+            {alerting
+              ? isVibrateMode
+                ? "Alarme"
+                : "Sonnerie"
+              : status === "finished"
+                ? "Terminé"
+                : status === "running"
+                  ? "En cours"
+                  : status === "paused"
+                    ? "Pause"
+                    : "Prêt"}
           </span>
           <div className="mt-2 flex items-center gap-2">
             <button
@@ -255,8 +283,17 @@ export default function YogaTimer() {
         </div>
       </div>
 
-      <div className="flex justify-center gap-3">
-        {status === "running" ? (
+      <div className="flex flex-wrap justify-center gap-3">
+        {alerting ? (
+          <button
+            type="button"
+            onClick={silenceAlert}
+            className="inline-flex items-center gap-2 rounded-full bg-red-700 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-800"
+          >
+            <Square className="h-4 w-4 fill-current" />
+            Stop
+          </button>
+        ) : status === "running" ? (
           <button
             type="button"
             onClick={pauseTimer}
