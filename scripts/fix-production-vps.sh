@@ -84,18 +84,21 @@ node scripts/check-database.js || {
 }
 echo ""
 
-# Étape 5: Redémarrer l'application PM2
+# Étape 5: Redémarrer l'application PM2 (ubuntu uniquement)
 echo "📋 Étape 5: Redémarrage de l'application"
 echo "---------------------------------------"
 if command -v pm2 &> /dev/null; then
-    pm2 restart canopee || {
-        echo "⚠️  Avertissement: Erreur lors du redémarrage PM2"
-        echo "   Vérifiez que l'application est bien configurée"
-    }
-    echo "✅ Application redémarrée"
+    if sudo pm2 list 2>/dev/null | grep -q canopee; then
+        echo "⚠️  canopee détecté dans PM2 root — suppression pour éviter conflit port 3000"
+        sudo pm2 delete canopee 2>/dev/null || true
+        sudo pm2 save 2>/dev/null || true
+    fi
+
+    pm2 restart canopee || pm2 start ecosystem.config.js
+    pm2 save
+    echo "✅ Application redémarrée (PM2 ubuntu)"
     echo ""
-    
-    # Afficher le statut
+
     echo "📊 Statut de l'application:"
     pm2 status canopee || true
 else

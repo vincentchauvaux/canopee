@@ -9,7 +9,7 @@ ssh ubuntu@51.178.44.114
 
 ## 🚀 Correction automatique (Recommandé)
 
-Une fois connecté, exécutez ces commandes :
+Une fois connecté en **ubuntu** (pas root), exécutez ces commandes :
 
 ```bash
 cd /var/www/canopee
@@ -23,11 +23,43 @@ npx prisma generate
 # Vérifier la base de données
 node scripts/check-database.js
 
-# Redémarrer l'application
+# Redémarrer Canopée (PM2 ubuntu uniquement — jamais sudo pm2 pour canopee)
 pm2 restart canopee
 
 # Vérifier les logs
 pm2 logs canopee --lines 50
+```
+
+## ⚙️ PM2 — séparation Canopée / streamtv
+
+| App | Utilisateur PM2 | Port |
+|-----|-----------------|------|
+| Canopée | `ubuntu` | 3000 |
+| streamtv | `root` | 3001 |
+
+```bash
+# Canopée (ubuntu)
+pm2 list
+pm2 restart canopee
+
+# streamtv (root)
+sudo pm2 list
+sudo pm2 restart streamtv
+```
+
+**Important :** ne jamais lancer `canopee` via `sudo pm2` — cela recrée le conflit sur le port 3000.
+
+Diagnostic rapide :
+
+```bash
+pm2 list && sudo pm2 list
+sudo ss -tlnp | grep -E ':3000|:3001'
+```
+
+Script de correction automatique (depuis le repo local) :
+
+```bash
+ssh ubuntu@51.178.44.114 'bash -s' < scripts/fix-pm2-vps.sh
 ```
 
 ## 📋 Correction étape par étape

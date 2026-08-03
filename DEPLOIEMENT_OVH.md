@@ -168,32 +168,27 @@ npm run build
 
 ### 6. Configurer PM2
 
-Créer un fichier `ecosystem.config.js` :
+Le fichier [`ecosystem.config.js`](ecosystem.config.js) du projet lance Next.js directement (évite les processus `npm start` orphelins).
 
-```javascript
-module.exports = {
-  apps: [
-    {
-      name: "canopee",
-      script: "npm",
-      args: "start",
-      cwd: "/var/www/canopee",
-      env: {
-        NODE_ENV: "production",
-        PORT: 3000,
-      },
-    },
-  ],
-};
-```
+**Important — séparation PM2 sur le VPS :**
 
-Démarrer avec PM2 :
+| App | Utilisateur PM2 | Port |
+|-----|-----------------|------|
+| Canopée | `ubuntu` | 3000 |
+| streamtv | `root` | 3001 |
+
+Canopée ne doit **jamais** être gérée par `sudo pm2` (conflit port 3000).
+
+Démarrer Canopée (utilisateur **ubuntu**) :
 
 ```bash
+cd /var/www/canopee
 pm2 start ecosystem.config.js
 pm2 save
-pm2 startup
+pm2 startup systemd -u ubuntu --hp /home/ubuntu
 ```
+
+Diagnostic PM2 : `bash -s < scripts/fix-pm2-vps.sh` (via SSH ubuntu).
 
 ### 7. Configurer Nginx
 
@@ -298,14 +293,14 @@ A       www          IP_DE_VOTRE_VPS-1  3600
 Pour mettre à jour l'application après des modifications :
 
 ```bash
-# Se connecter au VPS
-ssh root@votre-ip-ovh
+# Se connecter au VPS en ubuntu (pas root)
+ssh ubuntu@votre-ip-ovh
 
 # Aller dans le répertoire
 cd /var/www/canopee
 
 # Récupérer les dernières modifications
-git pull
+git pull origin Carol
 
 # Installer les nouvelles dépendances
 npm install
@@ -313,10 +308,11 @@ npm install
 # Appliquer les migrations de base de données (si nécessaire)
 npx prisma migrate deploy
 
-# Rebuild
+# Rebuild (sudo chown -R ubuntu:ubuntu .next si EACCES)
+rm -rf .next
 npm run build
 
-# Redémarrer l'application
+# Redémarrer Canopée (PM2 ubuntu — jamais sudo pm2)
 pm2 restart canopee
 ```
 
