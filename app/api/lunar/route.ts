@@ -42,7 +42,6 @@ export async function GET() {
       },
       // Évite un cache Next/fetch qui figerait l’illumination plusieurs jours
       cache: "no-store",
-      next: { revalidate: 0 },
     });
 
     if (!response.ok) {
