@@ -379,12 +379,24 @@ export default function Footer() {
                 : new Date().getFullYear()}{" "}
               Canopée. Tous droits réservés.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="hover:text-text-light transition-colors">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 md:mt-0">
+              <a
+                href="/mentions-legales"
+                className="hover:text-text-light transition-colors"
+              >
                 Mentions légales
               </a>
-              <a href="#" className="hover:text-text-light transition-colors">
+              <a
+                href="/politique-confidentialite"
+                className="hover:text-text-light transition-colors"
+              >
                 Politique de confidentialité
+              </a>
+              <a
+                href="/cookies"
+                className="hover:text-text-light transition-colors"
+              >
+                Cookies
               </a>
             </div>
           </div>

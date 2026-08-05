@@ -4,6 +4,7 @@ import './globals.css'
 import { Providers } from './providers'
 import Script from 'next/script'
 import Header from '@/components/Header'
+import CookieConsent from '@/components/CookieConsent'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -104,6 +105,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           {children}
+          <CookieConsent />
         </Providers>
       </body>
     </html>

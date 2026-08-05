@@ -12,28 +12,20 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Sur les pages profile, mon-parcours, yin-yoga et faq, le header doit avoir un fond blanc dès le départ
-  const isProfilePage = pathname === "/profile";
-  const isMonParcoursPage = pathname === "/mon-parcours";
-  const isYinYogaPage = pathname === "/yin-yoga";
-  const isFAQPage = pathname === "/faq";
-  const isSaisonsMTCPage = pathname === "/saisons-mtc";
-  const shouldHaveWhiteBackground =
-    isProfilePage ||
-    isMonParcoursPage ||
-    isYinYogaPage ||
-    isFAQPage ||
-    isSaisonsMTCPage ||
-    isScrolled;
+  // Pages contenu / légales : fond blanc dès le départ
+  const forceWhiteHeader =
+    pathname === "/profile" ||
+    pathname === "/mon-parcours" ||
+    pathname === "/yin-yoga" ||
+    pathname === "/faq" ||
+    pathname === "/saisons-mtc" ||
+    pathname === "/mentions-legales" ||
+    pathname === "/politique-confidentialite" ||
+    pathname === "/cookies";
+  const shouldHaveWhiteBackground = forceWhiteHeader || isScrolled;
 
   useEffect(() => {
-    if (
-      isProfilePage ||
-      isMonParcoursPage ||
-      isYinYogaPage ||
-      isFAQPage ||
-      isSaisonsMTCPage
-    ) {
+    if (forceWhiteHeader) {
       setIsScrolled(true);
       return;
     }
@@ -44,13 +36,7 @@ export default function Header() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [
-    isProfilePage,
-    isMonParcoursPage,
-    isYinYogaPage,
-    isFAQPage,
-    isSaisonsMTCPage,
-  ]);
+  }, [forceWhiteHeader]);
 
   const displayName =
     session?.user?.name || (session?.user as any)?.firstName || "Utilisateur";

@@ -228,6 +228,9 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `app/yin-yoga/page.tsx` - Page dédiée au Yin Yoga de Canopée avec présentation complète : origine, pratique, bienfaits et informations pratiques
 - `app/mon-parcours/page.tsx` - Page "Carol Nelissen" présentant son parcours de formation (Viniyoga, Yin Yoga), sa philosophie et ses certifications. La première image est affichée en cercle parfait (rounded-full) et la deuxième image occupe toute la hauteur de sa colonne.
 - `app/faq/page.tsx` - Page FAQ présentant les informations sur les cours de Yin Yoga : types de cours (individuel ou collectif, max 3 personnes), horaires (individuel selon convenance, collectif vendredi 18h-19h), prix (individuel 15€, collectif 12€) et modalités (individuel adapté aux besoins, collectif thématiques annoncées)
+- `app/mentions-legales/page.tsx` - Mentions légales (éditeur Carol Nelissen, hébergeur OVH, propriété intellectuelle)
+- `app/politique-confidentialite/page.tsx` - Politique de confidentialité RGPD (données, finalités, droits, APD Belgique)
+- `app/cookies/page.tsx` - Politique cookies (session NextAuth, consentement)
 - `app/profile/page.tsx` - Page de profil : informations personnelles (prénom, nom, téléphone, date de naissance, photo de profil). Photo via upload (max 5MB) ou URL. **Plus de section réservations / appel à `/api/bookings` côté front** (mars 2026). Admins : section « Actions rapides » (agenda, actualités, panel admin). **Responsive mobile** (juillet 2026) : en-tête profil sans débordement horizontal.
 - `app/admin/page.tsx` - Dashboard administrateur (stats cours, actualités, utilisateurs — lien vers Outils cours)
 - `app/admin/outils/page.tsx` - Outils cours admin : minuteur circulaire (1–4 min) et lecteur musique zen par catégories
@@ -251,9 +254,11 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Composants
 
-- `components/Header.tsx` - Header sticky (couleurs selon le fond). Fond blanc dès le départ sur `/profile`, `/mon-parcours`, `/yin-yoga`, `/faq`, `/saisons-mtc`. Lien « Mon parcours ». Visiteurs non connectés : un seul bouton **Se connecter** (plus de « S&apos;inscrire » depuis mars 2026)
+- `components/Header.tsx` - Header sticky (couleurs selon le fond). Fond blanc dès le départ sur `/profile`, `/mon-parcours`, `/yin-yoga`, `/faq`, `/saisons-mtc`, pages légales (`/mentions-legales`, `/politique-confidentialite`, `/cookies`). Lien « Mon parcours ». Visiteurs non connectés : un seul bouton **Se connecter** (plus de « S&apos;inscrire » depuis mars 2026)
 - `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
 - `components/Agenda.tsx` - Section agenda interactive (semaine / mois), cours avec horaires et intervenant ; sans réservation depuis le calendrier. **Visible par tous** (visiteurs anonymes inclus) ; chargement via `/api/classes`. **Administrateurs** connectés : clic sur un jour ouvre `ClassFormModal` avec la date présélectionnée. **Responsive mobile** (juillet 2026) : barre de navigation empilée, pas de débordement horizontal.
+- `components/CookieConsent.tsx` - Bannière RGPD cookies (essentiels / accepter) ; stockage `localStorage` + cookie `canopee-cookie-consent`
+- `components/legal/LegalPageShell.tsx` - Coquille commune des pages légales (titre, article, liens croisés, Footer)
 - `components/NewsFeed.tsx` - Fil d&apos;actualité (cours à venir + actualités datées). **Visible par tous** ; données via `/api/classes` et `/api/news`. Si la timeline est vide après chargement, la section n&apos;est pas affichée. Pas d&apos;actualité factice
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). **Test style éditorial (juillet 2026)** sur le bloc « Cours de Yin Yoga » : intro en grille avec image, encadrés `rounded-2xl`, cartes bienfaits/infos pratiques harmonisées avec les pages contenu.
@@ -350,6 +355,11 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` - Authentification Google
 - `FACEBOOK_CLIENT_ID` / `FACEBOOK_CLIENT_SECRET` - Authentification Facebook
+
+#### Optionnelles (inscription API)
+
+- `ALLOW_PUBLIC_REGISTER` - `true` pour réouvrir `POST /api/auth/register` (désactivé par défaut)
+- `REGISTER_API_SECRET` - secret à envoyer en en-tête `x-register-secret` pour créer un compte via l&apos;API sans ouvrir l&apos;inscription publique
 
 #### Système
 
@@ -740,6 +750,15 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ PM2 VPS stabilisé (juillet 2026) : **Canopée** sous PM2 `ubuntu` (port 3000), **streamtv** sous PM2 `root` (port 3001) ; dumps root sans `canopee` ; services systemd `pm2-ubuntu` et `pm2-root` activés. Déploiements Canopée : toujours en SSH `ubuntu`, jamais `sudo pm2` pour canopee. Script diagnostic : `scripts/fix-pm2-vps.sh`.
 - ✅ Accueil — section Agenda (`Agenda.tsx`, juillet 2026) : responsive mobile corrigé — navigation date sur une ligne pleine largeur, boutons « Aujourd&apos;hui » / Semaine / Mois empilés ou en grille sur petit écran, suppression du `min-w-[200px]` qui faisait déborder la carte ; vue mois avec espacements et typo réduits sur mobile.
 - ✅ Page profil (`app/profile/page.tsx`, juillet 2026) : responsive mobile — en-tête carte profil empilé (avatar + nom/email + badge admin), `min-w-0` / `truncate` / `break-all`, bouton Modifier pleine largeur sur mobile ; grille prénom/nom et boutons Enregistrer/Annuler en colonne sur petit écran.
+
+### Sécurité et conformité légale (août 2026)
+
+- ✅ **Pages légales** : `/mentions-legales`, `/politique-confidentialite`, `/cookies` ; liens actifs dans le Footer ; header fond blanc sur ces pages.
+- ✅ **Bannière cookies** (`CookieConsent`) : consentement essentiels / accepter, page politique cookies.
+- ✅ **En-têtes de sécurité** (`next.config.js` + `middleware.ts`) : `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, HSTS.
+- ✅ **Middleware** : protection des routes `/admin/*` (session JWT + rôle `admin`, sinon redirection signin / accueil).
+- ✅ **API register** : inscription publique **désactivée** par défaut (403) ; réactivation via `ALLOW_PUBLIC_REGISTER=true` ou en-tête `x-register-secret` = `REGISTER_API_SECRET` ; mot de passe min. 8 caractères ; bcrypt cost 12.
+- ✅ **robots.txt**, **sitemap.xml**, **`.well-known/security.txt`**.
 
 ### Correction Infos Spirituelles footer — illumination figée à 0% (Août 2026)
 

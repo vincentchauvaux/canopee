@@ -5,13 +5,41 @@ import { z } from 'zod'
 
 const registerSchema = z.object({
   email: z.string().email('Email invalide'),
-  password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
+  password: z
+    .string()
+    .min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
 })
 
+/**
+ * Inscription publique désactivée par défaut (UI masquée).
+ * Pour scripts / back-office : ALLOW_PUBLIC_REGISTER=true dans .env
+ * ou en-tête x-register-secret = REGISTER_API_SECRET
+ */
+function isRegistrationAllowed(request: NextRequest): boolean {
+  if (process.env.ALLOW_PUBLIC_REGISTER === 'true') {
+    return true
+  }
+  const secret = process.env.REGISTER_API_SECRET
+  if (secret && request.headers.get('x-register-secret') === secret) {
+    return true
+  }
+  return false
+}
+
 export async function POST(request: NextRequest) {
   try {
+    if (!isRegistrationAllowed(request)) {
+      return NextResponse.json(
+        {
+          error:
+            "L'inscription publique est désactivée. Contactez l'administrateur.",
+        },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const validatedData = registerSchema.parse(body)
 
@@ -27,8 +55,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Hasher le mot de passe
-    const passwordHash = await bcrypt.hash(validatedData.password, 10)
+    // Hasher le mot de passe (coût bcrypt 12)
+    const passwordHash = await bcrypt.hash(validatedData.password, 12)
 
     // Créer l'utilisateur
     const user = await prisma.user.create({
@@ -69,4 +97,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-
