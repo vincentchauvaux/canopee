@@ -1,4 +1,4 @@
-export type PlaylistCategory = "zen" | "temple" | "pluie" | "nature";
+export type PlaylistCategory = "zen" | "om" | "temple" | "pluie" | "nature";
 
 export interface YogaTrack {
   id: string;
@@ -10,6 +10,9 @@ export interface YogaTrack {
   license: string;
 }
 
+/** Durée minimale d'une piste (1 heure). */
+export const MIN_TRACK_DURATION_SECONDS = 3600;
+
 export const PLAYLIST_CATEGORIES: {
   id: PlaylistCategory;
   label: string;
@@ -19,6 +22,11 @@ export const PLAYLIST_CATEGORIES: {
     id: "zen",
     label: "Zen",
     description: "Méditation douce et ambient relaxant",
+  },
+  {
+    id: "om",
+    label: "Om",
+    description: "Chants OM et mantras méditatifs",
   },
   {
     id: "temple",
@@ -37,10 +45,11 @@ export const PLAYLIST_CATEGORIES: {
   },
 ];
 
+/** Uniquement des morceaux ≥ 1 h. */
 export const YOGA_TRACKS: YogaTrack[] = [
   {
     id: "zen-ambient-groove",
-    title: "Ambient Groove Mix",
+    title: "Ambient Groove Mix (~1 h)",
     category: "zen",
     src: "/audio/zen/ambient-groove-mix.mp3",
     durationSeconds: 3755,
@@ -57,49 +66,22 @@ export const YOGA_TRACKS: YogaTrack[] = [
     license: "Internet Archive",
   },
   {
-    id: "zen-ambient-meditation",
-    title: "Ambient Meditation",
-    category: "zen",
-    src: "/audio/zen/ambient-meditation.mp3",
-    durationSeconds: 397,
-    artist: "MokkaMusic",
-    license: "Jamendo / CC (Internet Archive)",
+    id: "om-chanting-528hz",
+    title: "Chant OM @ 528 Hz (~1 h 42)",
+    category: "om",
+    src: "/audio/om/om-chanting-528hz.mp3",
+    durationSeconds: 6150,
+    artist: "OM Chanting",
+    license: "Internet Archive",
   },
   {
-    id: "zen-rising-star",
-    title: "Rising Star",
-    category: "zen",
-    src: "/audio/zen/rising-star.mp3",
-    durationSeconds: 409,
-    artist: "Yoga & Meditacion",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "zen-softness-red",
-    title: "Softness Red",
-    category: "zen",
-    src: "/audio/zen/softness-red.mp3",
-    durationSeconds: 178,
-    artist: "Funkana",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "zen-rising-mountains",
-    title: "Rising Mountains",
-    category: "zen",
-    src: "/audio/zen/rising-mountains.mp3",
-    durationSeconds: 237,
-    artist: "Lunamica",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "zen-cosmica",
-    title: "Cosmica",
-    category: "zen",
-    src: "/audio/zen/cosmica.mp3",
-    durationSeconds: 281,
-    artist: "8s8",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
+    id: "om-vibrations-1h",
+    title: "Vibrations OM — énergie positive (~1 h)",
+    category: "om",
+    src: "/audio/om/om-vibrations-1h.mp3",
+    durationSeconds: 3638,
+    artist: "OM Mantras",
+    license: "Internet Archive",
   },
   {
     id: "temple-singing-bowls-healing",
@@ -120,40 +102,13 @@ export const YOGA_TRACKS: YogaTrack[] = [
     license: "Internet Archive",
   },
   {
-    id: "temple-gentle-flowing",
-    title: "Gentle Flowing Meditative Ambient",
+    id: "temple-buddhist-monk-2h",
+    title: "Chant bouddhiste — mantra de paix (~2 h)",
     category: "temple",
-    src: "/audio/temple/gentle-flowing-bowls.mp3",
-    durationSeconds: 239,
-    artist: "Alex Saym",
-    license: "Jamendo / CC (Internet Archive)",
-  },
-  {
-    id: "temple-sol-naciente",
-    title: "Sol Naciente",
-    category: "temple",
-    src: "/audio/temple/sol-naciente.mp3",
-    durationSeconds: 359,
-    artist: "Ressonnimo",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "temple-stillness",
-    title: "Stillness",
-    category: "temple",
-    src: "/audio/temple/stillness.mp3",
-    durationSeconds: 93,
-    artist: "Mouni Mantra",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "temple-new-planet",
-    title: "New Planet",
-    category: "temple",
-    src: "/audio/temple/new-planet.mp3",
-    durationSeconds: 216,
-    artist: "Gurulike",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
+    src: "/audio/temple/buddhist-monk-chant-2h.mp3",
+    durationSeconds: 7297,
+    artist: "Buddhist Monk Peace Chant",
+    license: "Internet Archive",
   },
   {
     id: "pluie-rain-1-hour",
@@ -174,51 +129,6 @@ export const YOGA_TRACKS: YogaTrack[] = [
     license: "Internet Archive",
   },
   {
-    id: "pluie-rain-loop",
-    title: "Pluie — boucle courte",
-    category: "pluie",
-    src: "/audio/pluie/rain-long-loop.mp3",
-    durationSeconds: 120,
-    artist: "Mixkit",
-    license: "Mixkit License",
-  },
-  {
-    id: "pluie-rain-city",
-    title: "Rain In The City",
-    category: "pluie",
-    src: "/audio/pluie/rain-in-the-city.mp3",
-    durationSeconds: 224,
-    artist: "Biocuo",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "pluie-soft-ambient",
-    title: "Ambient doux",
-    category: "pluie",
-    src: "/audio/pluie/soft-ambient-rain.mp3",
-    durationSeconds: 90,
-    artist: "Mixkit",
-    license: "Mixkit License",
-  },
-  {
-    id: "pluie-condensacion",
-    title: "Condensacion",
-    category: "pluie",
-    src: "/audio/pluie/condensacion.mp3",
-    durationSeconds: 159,
-    artist: "Surbica",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "pluie-light-rain",
-    title: "Pluie légère",
-    category: "pluie",
-    src: "/audio/pluie/light-rain.mp3",
-    durationSeconds: 27,
-    artist: "Mixkit",
-    license: "Mixkit License",
-  },
-  {
     id: "nature-birdsong-1-hour",
     title: "Rossignol — 1 heure",
     category: "nature",
@@ -235,69 +145,6 @@ export const YOGA_TRACKS: YogaTrack[] = [
     durationSeconds: 3601,
     artist: "Avatar Music & Ambience",
     license: "Internet Archive",
-  },
-  {
-    id: "nature-forest",
-    title: "Forêt européenne",
-    category: "nature",
-    src: "/audio/nature/european-forest.mp3",
-    durationSeconds: 180,
-    artist: "Mixkit",
-    license: "Mixkit License",
-  },
-  {
-    id: "nature-crickets",
-    title: "Nuit d'été — grillons",
-    category: "nature",
-    src: "/audio/nature/summer-night-crickets.mp3",
-    durationSeconds: 90,
-    artist: "Mixkit",
-    license: "Mixkit License",
-  },
-  {
-    id: "nature-natural-theme",
-    title: "Natural Theme",
-    category: "nature",
-    src: "/audio/nature/natural-theme.mp3",
-    durationSeconds: 178,
-    artist: "Mind Forest",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "nature-outside",
-    title: "Outside",
-    category: "nature",
-    src: "/audio/nature/outside-nature.mp3",
-    durationSeconds: 108,
-    artist: "Material Nature",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "nature-second-desert",
-    title: "The Second Desert",
-    category: "nature",
-    src: "/audio/nature/second-desert.mp3",
-    durationSeconds: 208,
-    artist: "Planez T",
-    license: "Compilation Meditation Music 2019 (Internet Archive)",
-  },
-  {
-    id: "nature-ocean-waves",
-    title: "Vagues océan",
-    category: "nature",
-    src: "/audio/nature/ocean-waves.mp3",
-    durationSeconds: 15,
-    artist: "Mixkit",
-    license: "Mixkit License",
-  },
-  {
-    id: "nature-stream-water",
-    title: "Ruisseau",
-    category: "nature",
-    src: "/audio/nature/stream-water.mp3",
-    durationSeconds: 28,
-    artist: "Mixkit",
-    license: "Mixkit License",
   },
 ];
 

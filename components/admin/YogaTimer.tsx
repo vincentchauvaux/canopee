@@ -1,14 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Minus, Pause, Play, Plus, RotateCcw, Square } from "lucide-react";
+import { Minus, Pause, Play, Plus, RotateCcw, Square, Volume2 } from "lucide-react";
 import {
   canUseVibration,
+  DEFAULT_TIMER_RINGTONE,
+  DEFAULT_TIMER_VOLUME,
+  getTimerRingtone,
   playTimerEndAlert,
+  previewTimerRingtone,
+  resolveStoredRingtone,
+  setTimerAlertVolume,
   stopTimerAlert,
-  TIMER_ALERT_MODE_KEY,
+  TIMER_RINGTONE_KEY,
+  TIMER_RINGTONES,
+  TIMER_VOLUME_KEY,
   unlockTimerAudio,
-  type TimerAlertMode,
+  type TimerRingtoneId,
 } from "@/lib/timer-sound";
 
 const PRESETS = [
@@ -39,14 +47,17 @@ export default function YogaTimer() {
   const [duration, setDuration] = useState(60);
   const [remaining, setRemaining] = useState(60);
   const [status, setStatus] = useState<TimerStatus>("idle");
-  const [alertMode, setAlertMode] = useState<TimerAlertMode>("sound");
+  const [ringtone, setRingtone] = useState<TimerRingtoneId>(DEFAULT_TIMER_RINGTONE);
+  const [volume, setVolume] = useState(DEFAULT_TIMER_VOLUME);
   const [alerting, setAlerting] = useState(false);
-  const alertModeRef = useRef<TimerAlertMode>("sound");
+  const ringtoneRef = useRef<TimerRingtoneId>(DEFAULT_TIMER_RINGTONE);
+  const volumeRef = useRef(DEFAULT_TIMER_VOLUME);
   const endAtRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
   const progress = duration > 0 ? remaining / duration : 0;
   const strokeOffset = CIRCUMFERENCE * (1 - progress);
-  const isVibrateMode = alertMode === "vibrate";
+  const selectedRingtone = getTimerRingtone(ringtone);
+  const isAudioRingtone = selectedRingtone.kind === "audio";
 
   const clearTimer = useCallback(() => {
     if (rafRef.current !== null) {
@@ -65,19 +76,28 @@ export default function YogaTimer() {
     clearTimer();
     setRemaining(0);
     setStatus("finished");
-    playTimerEndAlert(alertModeRef.current);
+    playTimerEndAlert(ringtoneRef.current, volumeRef.current);
     setAlerting(true);
   }, [clearTimer]);
 
-  const toggleAlertMode = useCallback(() => {
-    setAlertMode((prev) => {
-      const next: TimerAlertMode = prev === "sound" ? "vibrate" : "sound";
-      localStorage.setItem(TIMER_ALERT_MODE_KEY, next);
-      if (next === "sound") {
-        void unlockTimerAudio();
-      }
-      return next;
-    });
+  const selectRingtone = useCallback((next: TimerRingtoneId) => {
+    setRingtone(next);
+    ringtoneRef.current = next;
+    localStorage.setItem(TIMER_RINGTONE_KEY, next);
+    if (getTimerRingtone(next).kind === "audio") {
+      void unlockTimerAudio();
+    }
+  }, []);
+
+  const changeVolume = useCallback((next: number) => {
+    setVolume(next);
+    volumeRef.current = next;
+    setTimerAlertVolume(next);
+    localStorage.setItem(TIMER_VOLUME_KEY, String(next));
+  }, []);
+
+  const previewRingtone = useCallback(() => {
+    void previewTimerRingtone(ringtoneRef.current, volumeRef.current);
   }, []);
 
   const tick = useCallback(() => {
@@ -156,14 +176,30 @@ export default function YogaTimer() {
   );
 
   useEffect(() => {
-    alertModeRef.current = alertMode;
-  }, [alertMode]);
+    ringtoneRef.current = ringtone;
+  }, [ringtone]);
 
   useEffect(() => {
-    const stored = localStorage.getItem(TIMER_ALERT_MODE_KEY);
-    if (stored === "sound" || stored === "vibrate") {
-      setAlertMode(stored);
-      alertModeRef.current = stored;
+    volumeRef.current = volume;
+    setTimerAlertVolume(volume);
+  }, [volume]);
+
+  useEffect(() => {
+    const storedRingtone = localStorage.getItem(TIMER_RINGTONE_KEY);
+    const legacyMode = localStorage.getItem("yoga-timer-alert-mode");
+    const resolved = resolveStoredRingtone(storedRingtone ?? legacyMode);
+    setRingtone(resolved);
+    ringtoneRef.current = resolved;
+
+    const storedVolume = localStorage.getItem(TIMER_VOLUME_KEY);
+    if (storedVolume !== null) {
+      const parsed = Number(storedVolume);
+      if (Number.isFinite(parsed)) {
+        const next = Math.min(1, Math.max(0, parsed));
+        setVolume(next);
+        volumeRef.current = next;
+        setTimerAlertVolume(next);
+      }
     }
   }, []);
 
@@ -172,7 +208,7 @@ export default function YogaTimer() {
       <div className="mb-6">
         <h2 className="font-serif text-2xl font-bold text-text-dark">Minuteur</h2>
         <p className="text-sm text-text-dark/60">
-          Choisissez une durée, ajustez avec ±1 min, puis lancez le cercle.
+          Choisissez une durée, une sonnerie douce, puis lancez le cercle.
         </p>
       </div>
 
@@ -193,7 +229,7 @@ export default function YogaTimer() {
         ))}
       </div>
 
-      <div className="relative mx-auto mb-8 flex items-center justify-center" style={{ width: SIZE, height: SIZE }}>
+      <div className="relative mx-auto mb-6 flex items-center justify-center" style={{ width: SIZE, height: SIZE }}>
         <svg width={SIZE} height={SIZE} className="-rotate-90">
           <circle
             cx={SIZE / 2}
@@ -243,7 +279,7 @@ export default function YogaTimer() {
           </div>
           <span className="mt-0.5 text-xs uppercase tracking-wider text-text-dark/50">
             {alerting
-              ? isVibrateMode
+              ? selectedRingtone.kind === "vibrate"
                 ? "Alarme"
                 : "Sonnerie"
               : status === "finished"
@@ -254,33 +290,61 @@ export default function YogaTimer() {
                     ? "Pause"
                     : "Prêt"}
           </span>
-          <div className="mt-2 flex items-center gap-2">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={isVibrateMode}
-              aria-label={isVibrateMode ? "Vibrer à la fin" : "Sonner à la fin"}
-              onClick={toggleAlertMode}
-              className={`relative h-6 w-10 shrink-0 rounded-full transition-colors duration-300 ${
-                isVibrateMode ? "bg-primary" : "bg-primary/20"
-              }`}
-            >
-              <span
-                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-300 ${
-                  isVibrateMode ? "translate-x-4" : "translate-x-0"
-                }`}
-              />
-            </button>
-            <span className="text-xs font-medium text-text-dark">
-              {isVibrateMode ? "Vibrer" : "Sonner"}
+        </div>
+      </div>
+
+      <div className="mb-6 space-y-3 rounded-xl border border-primary/10 bg-accent/20 px-4 py-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label htmlFor="timer-ringtone" className="shrink-0 text-sm font-medium text-text-dark">
+            Sonnerie
+          </label>
+          <select
+            id="timer-ringtone"
+            value={ringtone}
+            onChange={(event) => selectRingtone(event.target.value as TimerRingtoneId)}
+            className="w-full rounded-lg border border-primary/15 bg-white px-3 py-2 text-sm text-text-dark outline-none focus:border-primary"
+          >
+            {TIMER_RINGTONES.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={previewRingtone}
+            className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full border border-primary/20 px-3 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/5"
+          >
+            Tester
+          </button>
+        </div>
+        <p className="text-xs text-text-dark/55">{selectedRingtone.description}</p>
+
+        {isAudioRingtone && (
+          <div className="flex items-center gap-2">
+            <Volume2 className="h-4 w-4 shrink-0 text-primary" />
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={(event) => changeVolume(Number(event.target.value))}
+              className="w-full accent-primary"
+              aria-label="Volume de la sonnerie"
+            />
+            <span className="w-8 shrink-0 text-right text-xs tabular-nums text-text-dark/60">
+              {Math.round(volume * 100)}%
             </span>
           </div>
-          {isVibrateMode && !canUseVibration() && (
-            <p className="mt-1 max-w-[11rem] text-center text-[10px] leading-tight text-text-dark/50">
-              Vibration non disponible sur cet appareil (ex. iPhone)
-            </p>
-          )}
-        </div>
+        )}
+
+        {ringtone === "vibrate" && !canUseVibration() && (
+          <p className="text-[11px] leading-snug text-text-dark/50">
+            Vibration non disponible sur cet appareil (ex. iPhone) — choisissez « Buzz » pour une
+            imitation sonore avec volume réglable.
+          </p>
+        )}
       </div>
 
       <div className="flex flex-wrap justify-center gap-3">

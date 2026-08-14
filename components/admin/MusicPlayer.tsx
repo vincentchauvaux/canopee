@@ -58,11 +58,11 @@ export default function MusicPlayer() {
       <div className="mb-6">
         <h2 className="font-serif text-2xl font-bold text-text-dark">Musique zen</h2>
         <p className="text-sm text-text-dark/60">
-          Playlists pour accompagner un cours (~1 h). La lecture continue sur tout le site.
+          Playlists ≥ 1 h pour accompagner un cours. La lecture continue sur tout le site.
         </p>
       </div>
 
-      <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
         {PLAYLIST_CATEGORIES.map((item) => (
           <button
             key={item.id}
