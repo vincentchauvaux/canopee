@@ -418,6 +418,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 - ✅ Header et footer : le nom « Canopée » s&apos;affiche sans l&apos;emoji 🌿.
 - ✅ Favicon : lettre « C » en vert Canopée (`#264E36`) à la place de l&apos;icône herbe.
+- ✅ Déployé sur VPS (septembre 2026) : `Carol` @ `2228159` — pull, build, `pm2 restart canopee`.
 
 ### Corrections ESLint - Apostrophes et Guillemets (Décembre 2024)
 
