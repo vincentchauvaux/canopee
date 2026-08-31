@@ -796,6 +796,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Alarme minuteur renforcée (août 2026) : motif vibration type réveil ; gong répété jusqu&apos;au Stop ; bouton Stop rouge.
 - ✅ Vibration minuteur à intensité max (août 2026) : rafales de 1 s avec micro-pauses ; API Web = rythme seulement (Android).
 - ✅ Sonneries minuteur au choix (août 2026) : gong / bol / cloche / om / buzz audio (imitation vibreur, volume réglable, utile sur iPhone) / vibration matérielle ; persistance `yoga-timer-ringtone` + `yoga-timer-volume`.
+- ✅ Déployé sur VPS (août 2026) : `Carol` @ `24c4350` — pull, audio Om/Temple, build, `pm2 restart canopee`.
 
 ### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
 
