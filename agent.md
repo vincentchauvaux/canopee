@@ -263,7 +263,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). **Test style éditorial (juillet 2026)** sur le bloc « Cours de Yin Yoga » : intro en grille avec image, encadrés `rounded-2xl`, cartes bienfaits/infos pratiques harmonisées avec les pages contenu.
 - `components/Footer.tsx` - Footer avec phase lunaire (calcul local aligné sur le graphique + enrichissement lunopia), saisons MTC, citation du jour. Mise à jour : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com. Nom « Canopée » sans icône herbe (septembre 2026)
-- `components/MoonPhase.tsx` - Graphique SVG de phase lunaire (calcul partagé `lib/lunar.ts`)
+- `components/MoonPhase.tsx` - Graphique SVG de phase lunaire (hémisphère éclairé + ellipse du terminateur, aligné sur le % d&apos;illumination ; lumière à droite si croissante, à gauche si décroissante)
 - `lib/lunar.ts` - Calcul partagé illumination / phase (source de vérité pour le % et le graphique du footer)
 - `components/admin/ClassFormModal.tsx` - Formulaire de création/modification de cours ; prop optionnelle `initialDate` (`YYYY-MM-DD`) pour préremplir la date en création (ex. depuis l&apos;agenda d&apos;accueil)
 - `components/admin/NewsFormModal.tsx` - Formulaire de création/modification d'actualité
@@ -413,6 +413,11 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - 🔍 **Guide de vérification** - Voir [VERIFICATION_OVH.md](./VERIFICATION_OVH.md) pour identifier ce qui est déjà configuré
 
 ## Corrections Récentes
+
+### Correction du graphique lunaire (Septembre 2026)
+
+- ✅ `MoonPhase` : le dessin SVG utilisait une ellipse d&apos;ombre mal placée en phase gibbeuse, ce qui faisait apparaître un croissant (~20 %) alors que le texte indiquait ~81 % (gibbeuse décroissante).
+- ✅ Nouveau modèle : disque sombre + demi-lune éclairée (droite si croissante, gauche si décroissante) + ellipse du terminateur (blanche en gibbeuse, sombre en croissant). Le disque suit maintenant le pourcentage.
 
 ### Suppression de l&apos;icône herbe (logo + favicon) (Septembre 2026)
 

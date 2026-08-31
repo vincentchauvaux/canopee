@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { computeLunarData } from "@/lib/lunar";
+import { useState, useEffect, useId } from "react";
+import { computeLunarData, LUNAR_CYCLE_DAYS } from "@/lib/lunar";
 
 interface MoonPhaseProps {
   size?: number;
@@ -12,12 +12,16 @@ interface MoonPhaseProps {
   dayOfCycle?: number;
 }
 
+const UNLIT = "#2e332b";
+const LIT = "#ffffff";
+
 export default function MoonPhase({
   size = 80,
   className = "",
   illumination: illuminationProp,
   dayOfCycle: dayOfCycleProp,
 }: MoonPhaseProps) {
+  const clipId = `moonClip${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const [moonData, setMoonData] = useState<{
     illumination: number;
     dayOfCycle: number;
@@ -38,18 +42,15 @@ export default function MoonPhase({
     });
   }, [illuminationProp, dayOfCycleProp]);
 
-  // Valeurs par défaut pour le rendu serveur
   const illumination = moonData?.illumination ?? 0.5;
-  const dayOfCycle = moonData?.dayOfCycle ?? 14.765;
+  const dayOfCycle = moonData?.dayOfCycle ?? LUNAR_CYCLE_DAYS / 2;
   const radius = size / 2;
   const center = size / 2;
-
-  const isWaxing = dayOfCycle < 14.765;
-  const shadowRatio = Math.abs(illumination * 2 - 1);
-  const shadowWidth = radius * shadowRatio;
-  const shadowX = isWaxing
-    ? center - radius + shadowWidth
-    : center + radius - shadowWidth;
+  // Croissante : lumière à droite. Décroissante : lumière à gauche (hémisphère nord).
+  const isWaxing = dayOfCycle < LUNAR_CYCLE_DAYS / 2;
+  const isGibbous = illumination >= 0.5;
+  // Largeur du terminateur (ellipse) : 0 au quartier, r à la nouvelle / pleine lune.
+  const terminatorRx = radius * Math.abs(illumination * 2 - 1);
 
   return (
     <svg
@@ -57,41 +58,39 @@ export default function MoonPhase({
       height={size}
       viewBox={`0 0 ${size} ${size}`}
       className={className}
+      aria-hidden="true"
     >
       <defs>
-        <clipPath id={`moonClip-${size}`}>
+        <clipPath id={clipId}>
           <circle cx={center} cy={center} r={radius} />
         </clipPath>
       </defs>
 
-      <g clipPath={`url(#moonClip-${size})`}>
-        <circle cx={center} cy={center} r={radius} fill="#ffffff" />
-
-        {illumination < 0.5 ? (
-          <ellipse
-            cx={shadowX}
-            cy={center}
-            rx={shadowWidth}
-            ry={radius}
-            fill="#2e332b"
-          />
-        ) : (
-          <>
-            <circle cx={center} cy={center} r={radius} fill="#ffffff" />
-            <ellipse
-              cx={
-                isWaxing
-                  ? center + radius - shadowWidth
-                  : center - radius + shadowWidth
-              }
-              cy={center}
-              rx={shadowWidth}
-              ry={radius}
-              fill="#2e332b"
-            />
-          </>
-        )}
+      <g clipPath={`url(#${clipId})`}>
+        <circle cx={center} cy={center} r={radius} fill={UNLIT} />
+        <rect
+          x={isWaxing ? center : 0}
+          y={0}
+          width={radius}
+          height={size}
+          fill={LIT}
+        />
+        <ellipse
+          cx={center}
+          cy={center}
+          rx={Math.max(terminatorRx, 0.001)}
+          ry={radius}
+          fill={isGibbous ? LIT : UNLIT}
+        />
       </g>
+      <circle
+        cx={center}
+        cy={center}
+        r={Math.max(radius - 0.5, 0)}
+        fill="none"
+        stroke="rgba(255,255,255,0.4)"
+        strokeWidth={1}
+      />
     </svg>
   );
 }
