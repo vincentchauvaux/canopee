@@ -418,6 +418,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 - ✅ `MoonPhase` : le dessin SVG utilisait une ellipse d&apos;ombre mal placée en phase gibbeuse, ce qui faisait apparaître un croissant (~20 %) alors que le texte indiquait ~81 % (gibbeuse décroissante).
 - ✅ Nouveau modèle : disque sombre + demi-lune éclairée (droite si croissante, gauche si décroissante) + ellipse du terminateur (blanche en gibbeuse, sombre en croissant). Le disque suit maintenant le pourcentage.
+- ✅ Déployé sur VPS (septembre 2026) : `Carol` @ `5995a5a` — pull, build, `pm2 restart canopee`.
 
 ### Suppression de l&apos;icône herbe (logo + favicon) (Septembre 2026)
 
