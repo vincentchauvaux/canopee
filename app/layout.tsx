@@ -39,10 +39,9 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${inter.variable} ${montserrat.variable} ${cormorant.variable}`} suppressHydrationWarning>
       <head>
-        {/* Favicon : évite le 404 sur /favicon.ico (icône feuille pour Canopée) */}
         <link
           rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text x='16' y='22' text-anchor='middle' font-family='Georgia, serif' font-size='20' font-weight='700' fill='%23264E36'>C</text></svg>"
         />
         {/* Script pour supprimer les attributs ajoutés par les extensions */}
         <Script

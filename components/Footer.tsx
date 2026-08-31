@@ -248,7 +248,7 @@ export default function Footer() {
           {/* Colonne 1: Logo + Tagline */}
           <div className="flex flex-col h-full">
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">🌿 Canopée</h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">Canopée</h3>
               <p className="text-text-light/80 mb-4">
                 Votre espace de bien-être et de sérénité
               </p>

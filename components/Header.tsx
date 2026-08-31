@@ -58,7 +58,7 @@ export default function Header() {
                 shouldHaveWhiteBackground ? "text-primary" : "text-white"
               }`}
             >
-              🌿 Canopée
+              Canopée
             </div>
           </Link>
 
