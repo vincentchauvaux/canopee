@@ -81,8 +81,10 @@ export default function Header() {
               size={64}
               className={`transition-all duration-500 ease-out ${
                 isHome && !isScrolled
-                  ? "h-14 w-14 sm:h-16 sm:w-16"
+                  ? "h-10 w-10 sm:h-11 sm:w-11"
                   : "h-8 w-8 sm:h-9 sm:w-9"
+              } ${
+                shouldHaveWhiteBackground ? "opacity-100" : "opacity-50"
               }`}
               priority
             />
