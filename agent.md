@@ -427,6 +427,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 ### Logo et favicon yin-yang feuille (Septembre 2026)
 
 - ✅ Nouveau logo circulaire (yin-yang + feuilles) : `public/images/logo.png` (fond transparent), favicon `public/favicon.ico` + `app/icon.png` / `app/apple-icon.png`.
+- ✅ Recadrage du cercle pour retirer le liseret blanc autour du logo (septembre 2026).
 - ✅ Affiché devant le nom « Canopée » dans le header et le footer (`BrandMark`).
 - ✅ Déployé sur VPS (septembre 2026) : `Carol` @ `93e07c9` — pull, build, `pm2 restart canopee`.
 
