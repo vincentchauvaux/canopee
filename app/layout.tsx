@@ -29,6 +29,13 @@ export const metadata: Metadata = {
   title: 'Canopée - Studio de Yoga',
   description: 'Découvrez nos cours de yoga dans une atmosphère zen et bienveillante',
   keywords: 'yoga, méditation, bien-être, cours de yoga, studio, canopée',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/images/logo.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: '/apple-icon.png',
+  },
 }
 
 export default function RootLayout({
@@ -39,10 +46,6 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${inter.variable} ${montserrat.variable} ${cormorant.variable}`} suppressHydrationWarning>
       <head>
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text x='16' y='22' text-anchor='middle' font-family='Georgia, serif' font-size='20' font-weight='700' fill='%23264E36'>C</text></svg>"
-        />
         {/* Script pour supprimer les attributs ajoutés par les extensions */}
         <Script
           id="remove-extension-attributes"

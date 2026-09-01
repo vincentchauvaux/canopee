@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import BrandMark from "./BrandMark";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -52,7 +53,12 @@ export default function Header() {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center gap-2">
+            <BrandMark
+              size={40}
+              className="h-9 w-9 sm:h-10 sm:w-10"
+              priority
+            />
             <div
               className={`text-2xl font-serif font-bold transition-colors ${
                 shouldHaveWhiteBackground ? "text-primary" : "text-white"
