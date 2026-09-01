@@ -248,8 +248,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 ">
           {/* Colonne 1: Logo */}
           <div className="flex flex-col">
-            <Link href="/" className="inline-flex w-fit" aria-label="Canopée">
-              <BrandMark size={96} className="h-20 w-20 sm:h-24 sm:w-24" />
+            <Link href="/" className="block w-full" aria-label="Canopée">
+              <BrandMark
+                size={512}
+                className="h-auto w-full"
+              />
             </Link>
           </div>
           {/* Colonne 2: Tagline + citation + réseaux */}
