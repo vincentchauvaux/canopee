@@ -262,7 +262,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/NewsFeed.tsx` - Fil d&apos;actualité (cours à venir + actualités datées). **Visible par tous** ; données via `/api/classes` et `/api/news`. Si la timeline est vide après chargement, la section n&apos;est pas affichée. Pas d&apos;actualité factice
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). **Test style éditorial (juillet 2026)** sur le bloc « Cours de Yin Yoga » : intro en grille avec image, encadrés `rounded-2xl`, cartes bienfaits/infos pratiques harmonisées avec les pages contenu.
-- `components/Footer.tsx` - Footer 4 colonnes : logo ; tagline / citation / réseaux ; Navigation ; Infos spirituelles (phase lunaire, saisons MTC). Citation du jour. Mise à jour : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
+- `components/Footer.tsx` - Footer 4 colonnes : logo (pleine largeur de colonne) ; tagline / citation / réseaux ; Navigation ; Infos spirituelles (phase lunaire, saisons MTC). Citation du jour. Mise à jour : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
 - `components/BrandMark.tsx` - Marque Canopée (logo yin-yang feuille `/images/logo.png`)
 - `components/MoonPhase.tsx` - Graphique SVG de phase lunaire (hémisphère éclairé + ellipse du terminateur, aligné sur le % d&apos;illumination ; lumière à droite si croissante, à gauche si décroissante)
 - `lib/lunar.ts` - Calcul partagé illumination / phase (source de vérité pour le % et le graphique du footer)
@@ -417,7 +417,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Footer : logo en 1re colonne (Septembre 2026)
 
-- ✅ Colonne 1 : logo seul (plus grand). Colonne 2 : nom, tagline, citation, réseaux. Colonne 3 : Navigation. Colonne 4 : Infos spirituelles. La colonne Contact vide a été retirée.
+- ✅ Colonne 1 : logo seul, pleine largeur de la colonne. Colonne 2 : nom, tagline, citation, réseaux. Colonne 3 : Navigation. Colonne 4 : Infos spirituelles. La colonne Contact vide a été retirée.
 
 ### Header accueil : logo seul puis mot-marque au scroll (Septembre 2026)
 
