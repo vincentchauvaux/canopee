@@ -246,13 +246,16 @@ export default function Footer() {
     <footer className="bg-text-dark text-text-light py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 ">
-          {/* Colonne 1: Logo + Tagline */}
+          {/* Colonne 1: Logo */}
+          <div className="flex flex-col">
+            <Link href="/" className="inline-flex w-fit" aria-label="Canopée">
+              <BrandMark size={96} className="h-20 w-20 sm:h-24 sm:w-24" />
+            </Link>
+          </div>
+          {/* Colonne 2: Tagline + citation + réseaux */}
           <div className="flex flex-col h-full">
             <div>
-              <h3 className="flex items-center gap-2 text-2xl font-serif font-bold mb-4">
-                <BrandMark size={36} className="h-9 w-9" />
-                Canopée
-              </h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">Canopée</h3>
               <p className="text-text-light/80 mb-4">
                 Votre espace de bien-être et de sérénité
               </p>
@@ -278,7 +281,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          {/* Colonne 2: Navigation */}
+          {/* Colonne 3: Navigation */}
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-4">Navigation</h4>
             <ul className="space-y-2">
@@ -316,9 +319,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
-          {/* Colonne 3: Contact */}
-          <div className="flex flex-col"></div>
           {/* Colonne 4: Infos Spirituelles */}
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-4">Infos Spirituelles</h4>

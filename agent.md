@@ -254,7 +254,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 
 ### Composants
 
-- `components/Header.tsx` - Header sticky (couleurs selon le fond). Fond blanc dès le départ sur `/profile`, `/mon-parcours`, `/yin-yoga`, `/faq`, `/saisons-mtc`, pages légales (`/mentions-legales`, `/politique-confidentialite`, `/cookies`). Lien « Mon parcours ». Visiteurs non connectés : un seul bouton **Se connecter** (plus de « S&apos;inscrire » depuis mars 2026). Logo yin-yang feuille + nom « Canopée » (septembre 2026)
+- `components/Header.tsx` - Header sticky (couleurs selon le fond). Fond blanc dès le départ sur `/profile`, `/mon-parcours`, `/yin-yoga`, `/faq`, `/saisons-mtc`, pages légales (`/mentions-legales`, `/politique-confidentialite`, `/cookies`). Lien « Mon parcours ». Visiteurs non connectés : un seul bouton **Se connecter** (plus de « S&apos;inscrire » depuis mars 2026). Logo yin-yang feuille + nom « Canopée ». Accueil : logo seul en haut de page, puis au scroll le logo rétrécit et « Canopée » apparaît lettre par lettre depuis la gauche (septembre 2026)
 - `components/Hero.tsx` - Section hero avec carrousel d'images automatique (7 images qui défilent toutes les 5 secondes) et citation aléatoire
 - `components/Agenda.tsx` - Section agenda interactive (semaine / mois), cours avec horaires et intervenant ; sans réservation depuis le calendrier. **Visible par tous** (visiteurs anonymes inclus) ; chargement via `/api/classes`. **Administrateurs** connectés : clic sur un jour ouvre `ClassFormModal` avec la date présélectionnée. **Responsive mobile** (juillet 2026) : barre de navigation empilée, pas de débordement horizontal.
 - `components/CookieConsent.tsx` - Bannière RGPD cookies (essentiels / accepter) ; stockage `localStorage` + cookie `canopee-cookie-consent`
@@ -262,7 +262,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/NewsFeed.tsx` - Fil d&apos;actualité (cours à venir + actualités datées). **Visible par tous** ; données via `/api/classes` et `/api/news`. Si la timeline est vide après chargement, la section n&apos;est pas affichée. Pas d&apos;actualité factice
 - `components/NewsModal.tsx` - Modal pour afficher les détails d'une actualité
 - `components/PracticalInfo.tsx` - Informations pratiques avec section dédiée au Yin Yoga présentant les bienfaits, les horaires (vendredi 18h-19h), l'adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), et les informations sur la professeure Carol Nelissen (certifiée E.T.Y. et Karma Yoga Institute, membre ABEFY). **Test style éditorial (juillet 2026)** sur le bloc « Cours de Yin Yoga » : intro en grille avec image, encadrés `rounded-2xl`, cartes bienfaits/infos pratiques harmonisées avec les pages contenu.
-- `components/Footer.tsx` - Footer avec phase lunaire (calcul local aligné sur le graphique + enrichissement lunopia), saisons MTC, citation du jour. Mise à jour : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com. Logo yin-yang feuille + nom « Canopée » (septembre 2026)
+- `components/Footer.tsx` - Footer 4 colonnes : logo ; tagline / citation / réseaux ; Navigation ; Infos spirituelles (phase lunaire, saisons MTC). Citation du jour. Mise à jour : phase lunaire toutes les heures, saison MTC et citation chaque jour à minuit. Lien vers la page dédiée aux saisons MTC. Informations de contact réelles : adresse (Rue Jean Theys, 10, 1440 Wauthier-Braine), professeure Carol Nelissen, lien vers canopee-yin-yoga.com
 - `components/BrandMark.tsx` - Marque Canopée (logo yin-yang feuille `/images/logo.png`)
 - `components/MoonPhase.tsx` - Graphique SVG de phase lunaire (hémisphère éclairé + ellipse du terminateur, aligné sur le % d&apos;illumination ; lumière à droite si croissante, à gauche si décroissante)
 - `lib/lunar.ts` - Calcul partagé illumination / phase (source de vérité pour le % et le graphique du footer)
@@ -414,6 +414,15 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - 🔍 **Guide de vérification** - Voir [VERIFICATION_OVH.md](./VERIFICATION_OVH.md) pour identifier ce qui est déjà configuré
 
 ## Corrections Récentes
+
+### Footer : logo en 1re colonne (Septembre 2026)
+
+- ✅ Colonne 1 : logo seul (plus grand). Colonne 2 : nom, tagline, citation, réseaux. Colonne 3 : Navigation. Colonne 4 : Infos spirituelles. La colonne Contact vide a été retirée.
+
+### Header accueil : logo seul puis mot-marque au scroll (Septembre 2026)
+
+- ✅ Accueil (`/`) : le header n&apos;affiche que le logo (plus grand) tant que le hero « Studio Canopée » est visible.
+- ✅ Au scroll : le logo rétrécit et le mot « Canopée » apparaît depuis la gauche, lettre par lettre. Les autres pages gardent le nom visible tout de suite.
 
 ### Logo et favicon yin-yang feuille (Septembre 2026)
 

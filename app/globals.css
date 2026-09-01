@@ -183,6 +183,36 @@ h3 {
   }
 }
 
+.header-wordmark {
+  display: inline-flex;
+  overflow: hidden;
+  max-width: 0;
+  margin-left: 0;
+  white-space: nowrap;
+  transition:
+    max-width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    margin-left 0.4s ease;
+}
+
+.header-wordmark.is-visible {
+  max-width: 12rem;
+  margin-left: 0.5rem;
+}
+
+.header-wordmark-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-0.55em);
+  transition:
+    opacity 0.32s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.header-wordmark.is-visible .header-wordmark-letter {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 body.audio-bar-active {
   padding-bottom: 5.5rem;
 }

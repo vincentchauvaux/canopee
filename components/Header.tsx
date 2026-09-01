@@ -25,19 +25,42 @@ export default function Header() {
     pathname === "/cookies";
   const shouldHaveWhiteBackground = forceWhiteHeader || isScrolled;
 
+  const isHome = pathname === "/";
+  const showWordmark = !isHome || isScrolled;
+  const wordmark = "Canopée";
+
   useEffect(() => {
     if (forceWhiteHeader) {
       setIsScrolled(true);
       return;
     }
 
-    const handleScroll = () => {
+    const updateFromScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [forceWhiteHeader]);
+    if (pathname !== "/") {
+      updateFromScroll();
+      window.addEventListener("scroll", updateFromScroll, { passive: true });
+      return () => window.removeEventListener("scroll", updateFromScroll);
+    }
+
+    const hero = document.getElementById("hero");
+    if (!hero) {
+      updateFromScroll();
+      window.addEventListener("scroll", updateFromScroll, { passive: true });
+      return () => window.removeEventListener("scroll", updateFromScroll);
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsScrolled(!entry.isIntersecting);
+      },
+      { threshold: 0.45, rootMargin: "-72px 0px 0px 0px" },
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [forceWhiteHeader, pathname]);
 
   const displayName =
     session?.user?.name || (session?.user as any)?.firstName || "Utilisateur";
@@ -53,19 +76,39 @@ export default function Header() {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center">
             <BrandMark
-              size={40}
-              className="h-9 w-9 sm:h-10 sm:w-10"
+              size={64}
+              className={`transition-all duration-500 ease-out ${
+                isHome && !isScrolled
+                  ? "h-14 w-14 sm:h-16 sm:w-16"
+                  : "h-8 w-8 sm:h-9 sm:w-9"
+              }`}
               priority
             />
-            <div
-              className={`text-2xl font-serif font-bold transition-colors ${
+            <span className="sr-only">Canopée</span>
+            <span
+              aria-hidden="true"
+              className={`header-wordmark text-2xl font-serif font-bold ${
+                showWordmark ? "is-visible" : ""
+              } ${
                 shouldHaveWhiteBackground ? "text-primary" : "text-white"
               }`}
             >
-              Canopée
-            </div>
+              {wordmark.split("").map((letter, index) => (
+                <span
+                  key={`${letter}-${index}`}
+                  className="header-wordmark-letter"
+                  style={{
+                    transitionDelay: showWordmark
+                      ? `${index * 55}ms`
+                      : `${(wordmark.length - 1 - index) * 35}ms`,
+                  }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

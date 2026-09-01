@@ -75,7 +75,10 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-accent">
+    <section
+      id="hero"
+      className="relative h-screen flex items-center justify-center overflow-hidden bg-accent"
+    >
       {/* Images de fond avec carrousel */}
       <div className="absolute inset-0 z-0">
         {heroImages.map((image, index) => {
