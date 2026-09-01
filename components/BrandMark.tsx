@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface BrandMarkProps {
   size?: number;
   className?: string;
@@ -12,13 +10,15 @@ export default function BrandMark({
   priority = false,
 }: BrandMarkProps) {
   return (
-    <Image
+    // Local PNG : next/image (sharp) dessine un halo clair sur le contour transparent.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       src="/images/logo.png"
       alt=""
       width={size}
       height={size}
-      className={className}
-      priority={priority}
+      className={`brand-mark ${className}`}
+      fetchPriority={priority ? "high" : "auto"}
     />
   );
 }
