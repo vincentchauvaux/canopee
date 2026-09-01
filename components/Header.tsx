@@ -79,10 +79,10 @@ export default function Header() {
           <Link href="/" className="flex items-center">
             <BrandMark
               size={64}
-              className={`transition-all duration-500 ease-out ${
+              className={`origin-center transition-all duration-500 ease-out ${
                 isHome && !isScrolled
-                  ? "h-10 w-10 sm:h-11 sm:w-11"
-                  : "h-8 w-8 sm:h-9 sm:w-9"
+                  ? "h-10 w-10 sm:h-11 sm:w-11 -rotate-180"
+                  : "h-8 w-8 sm:h-9 sm:w-9 rotate-0"
               } ${
                 shouldHaveWhiteBackground ? "opacity-100" : "opacity-50"
               }`}
