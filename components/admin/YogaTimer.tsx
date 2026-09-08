@@ -341,8 +341,8 @@ export default function YogaTimer() {
 
         {ringtone === "vibrate" && !canUseVibration() && (
           <p className="text-[11px] leading-snug text-text-dark/50">
-            Vibration non disponible sur cet appareil (ex. iPhone) — choisissez « Buzz » pour une
-            imitation sonore avec volume réglable.
+            Vibration non disponible sur cet appareil (ex. iPhone) — choisissez « Pulse doux » pour un
+            souffle sonore discret.
           </p>
         )}
       </div>

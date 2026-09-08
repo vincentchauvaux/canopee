@@ -41,12 +41,12 @@ Musiques et sons utilisés dans les outils admin (lecteur zen). Téléchargés p
 
 ## Minuteur
 
-Les sonneries sont générées en direct (Web Audio API), sans fichier MP3 :
+Les sonneries sont générées en direct (Web Audio API), sans fichier MP3 — sons **doux uniquement** (sinus + filtre passe-bas) :
 
-- **Gong doux**, **Bol tibétain**, **Cloche douce**, **Om doux** — sons apaisants
-- **Buzz (imitation vibreur)** — pulsations sonores type vibreur, avec réglage de volume
+- **Gong doux**, **Bol tibétain**, **Cloche douce**, **Om doux** — résonances méditatives, fades longs
+- **Pulse doux** — souffle sinusoïdal discret (remplace l&apos;ancien buzz agressif), volume réglable
 - **Vibration téléphone** — vibreur matériel (Android ; non supporté sur iOS Safari)
 
-Choix de sonnerie + volume (hors iPhone) dans le panneau minuteur. Bouton **Tester** pour un aperçu. Bouton **Stop** pour couper l&apos;alarme.
+Choix de sonnerie + volume dans le panneau minuteur. Bouton **Tester** pour un aperçu. Bouton **Stop** pour couper l&apos;alarme.
 
 Téléchargement automatisé : `scripts/download-yoga-audio.sh`

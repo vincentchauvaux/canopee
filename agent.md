@@ -273,7 +273,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/admin/GlobalAudioBar.tsx` - Barre de lecture fixe en bas du site (lecture persistante)
 - `contexts/AudioPlayerContext.tsx` - Contexte audio global (playlist, volume, boucle)
 - `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, om, temple, pluie, nature) — 11 pistes ≥ 1 h
-- `lib/timer-sound.ts` - Sonneries Web Audio (gong, bol, cloche, om, buzz imitation vibreur) + vibration matérielle ; volume ; `playTimerEndAlert`, `previewTimerRingtone`, `stopTimerAlert`
+- `lib/timer-sound.ts` - Sonneries Web Audio douces (gong, bol, cloche, om, pulse sinus) + vibration matérielle ; volume ; `playTimerEndAlert`, `previewTimerRingtone`, `stopTimerAlert`
 - `lib/device.ts` - Détection iOS (volume masqué sur iPhone pour le lecteur HTML)
 - `public/audio/` - Fichiers MP3 libres de droit (≥ 1 h) + `CREDITS.md` ; script `scripts/download-yoga-audio.sh`
 - `components/mtc/ElementWatermark.tsx` - Icônes filigrane lucide-react par élément MTC
@@ -810,7 +810,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Page `/admin/outils` : minuteur circulaire (presets 1, 2, 3, 4 min + réglage ±1 min avant lancement) + lecteur playlist par catégories (Zen, Om, Temple, Pluie, Nature).
 - ✅ `AudioPlayerContext` + `GlobalAudioBar` : lecture persistante sur tout le site jusqu&apos;à pause/stop ; barre de progression cliquable / glissable (seek).
 - ✅ Playlist audio (≥ 1 h uniquement, août 2026) : 11 pistes — Zen (2), Om (2 chants OM), Temple (3), Pluie (2), Nature (2) ; courts morceaux retirés ; crédits dans `public/audio/CREDITS.md`.
-- ✅ Minuteur : choix de sonnerie (Gong, Bol, Cloche, Om, Buzz imitation vibreur, Vibration téléphone) + volume Web Audio + bouton Tester ; Stop pour couper.
+- ✅ Minuteur : choix de sonnerie (Gong, Bol, Cloche, Om, Pulse doux, Vibration téléphone) + volume Web Audio + bouton Tester ; Stop pour couper.
 - ✅ Presets minuteur : grille 2×2 sur mobile, 4 colonnes sur écran large (plus de bouton seul).
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
 - ✅ Volume musique : slider dans `MusicPlayer` et `GlobalAudioBar` (masqué sur iPhone — Safari ignore le volume logiciel HTML).
@@ -820,8 +820,9 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Déployé sur VPS (branche `Carol`, juillet 2026) : `git pull`, `scripts/download-yoga-audio.sh`, `npm run build`, PM2 `canopee`.
 - ✅ Alarme minuteur renforcée (août 2026) : motif vibration type réveil ; gong répété jusqu&apos;au Stop ; bouton Stop rouge.
 - ✅ Vibration minuteur à intensité max (août 2026) : rafales de 1 s avec micro-pauses ; API Web = rythme seulement (Android).
-- ✅ Sonneries minuteur au choix (août 2026) : gong / bol / cloche / om / buzz audio (imitation vibreur, volume réglable, utile sur iPhone) / vibration matérielle ; persistance `yoga-timer-ringtone` + `yoga-timer-volume`.
+- ✅ Sonneries minuteur au choix (août 2026) : gong / bol / cloche / om / pulse doux / vibration matérielle ; persistance `yoga-timer-ringtone` + `yoga-timer-volume`.
 - ✅ Déployé sur VPS (août 2026) : `Carol` @ `24c4350` — pull, audio Om/Temple, build, `pm2 restart canopee`.
+- ✅ Sonneries minuteur adoucies (sept. 2026) : suppression du buzz sawtooth/bruit (style années 2000) ; uniquement sinus + passe-bas, fades longs, volumes bas — « Pulse doux » type respiration.
 
 ### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
 

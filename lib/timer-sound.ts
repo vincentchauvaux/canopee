@@ -20,31 +20,31 @@ export const TIMER_RINGTONES: TimerRingtone[] = [
   {
     id: "gong",
     label: "Gong doux",
-    description: "Gong grave et apaisant",
+    description: "Gong grave, fade long — comme un bol de méditation",
     kind: "audio",
   },
   {
     id: "bol",
     label: "Bol tibétain",
-    description: "Résonance douce de bol",
+    description: "Résonance chaude et enveloppante",
     kind: "audio",
   },
   {
     id: "cloche",
     label: "Cloche douce",
-    description: "Tintement léger et calme",
+    description: "Tintement cristallin très léger",
     kind: "audio",
   },
   {
     id: "om",
     label: "Om doux",
-    description: "Voyelle OM synthétisée",
+    description: "Voyelle OM grave et lente",
     kind: "audio",
   },
   {
     id: "buzz",
-    label: "Buzz (imitation vibreur)",
-    description: "Son pulsant type vibreur, volume réglable",
+    label: "Pulse doux",
+    description: "Souffle sinusoïdal discret (remplace le vibreur, volume réglable)",
     kind: "audio",
   },
   {
@@ -63,7 +63,7 @@ export const TIMER_RINGTONE_KEY = "yoga-timer-ringtone";
 export const TIMER_VOLUME_KEY = "yoga-timer-volume";
 
 export const DEFAULT_TIMER_RINGTONE: TimerRingtoneId = "gong";
-export const DEFAULT_TIMER_VOLUME = 0.55;
+export const DEFAULT_TIMER_VOLUME = 0.4;
 
 /**
  * Motif d'alarme à intensité maximale perçue : rafales longues, pauses minimales.
@@ -78,15 +78,11 @@ const ALARM_VIBRATE_PATTERN = [
   1000, 40,
 ] as const;
 
-/** Motif buzz audio (ms on / ms off), calqué sur un vibreur. */
-const BUZZ_AUDIO_PATTERN = [
-  180, 70,
-  320, 70,
-  180, 70,
-  450, 100,
-  180, 70,
-  320, 70,
-  550, 160,
+/** Pulse doux : on/off en ms — gonflement lent type respiration. */
+const SOFT_PULSE_PATTERN = [
+  900, 500,
+  900, 500,
+  1200, 800,
 ] as const;
 
 let sharedAudioContext: AudioContext | null = null;
@@ -178,190 +174,226 @@ function createMasterGain(ctx: AudioContext, peak: number) {
   return master;
 }
 
+/** Filtre passe-bas pour adoucir les partiels aigus. */
+function softLowpass(ctx: AudioContext, cutoffHz: number) {
+  const filter = ctx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(cutoffHz, ctx.currentTime);
+  filter.Q.setValueAtTime(0.7, ctx.currentTime);
+  return filter;
+}
+
 function scheduleGong(ctx: AudioContext) {
   const now = ctx.currentTime;
-  const master = createMasterGain(ctx, 0.55);
-  master.gain.setValueAtTime(0, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.55, now + 0.1);
-  master.gain.exponentialRampToValueAtTime(0.001, now + 3.2);
+  const duration = 5.5;
+  const master = createMasterGain(ctx, 0.28);
+  const filter = softLowpass(ctx, 900);
+  filter.connect(master);
 
-  const fundamental = ctx.createOscillator();
-  fundamental.type = "sine";
-  fundamental.frequency.setValueAtTime(155, now);
-  fundamental.frequency.exponentialRampToValueAtTime(118, now + 2.8);
+  master.gain.setValueAtTime(0.0001, now);
+  master.gain.linearRampToValueAtTime(alertVolume * 0.28, now + 0.25);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
-  const fundamentalGain = ctx.createGain();
-  fundamentalGain.gain.setValueAtTime(1, now);
-  fundamental.connect(fundamentalGain);
-  fundamentalGain.connect(master);
+  // Fondamental grave + harmoniques très discrètes (sinus uniquement)
+  const partials: Array<[number, number]> = [
+    [98, 1],
+    [147, 0.22],
+    [196, 0.1],
+    [294, 0.04],
+  ];
 
-  const harmonic = ctx.createOscillator();
-  harmonic.type = "sine";
-  harmonic.frequency.setValueAtTime(310, now);
-  harmonic.frequency.exponentialRampToValueAtTime(236, now + 2.4);
+  for (const [freq, amp] of partials) {
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, now);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.94, now + duration * 0.85);
 
-  const harmonicGain = ctx.createGain();
-  harmonicGain.gain.setValueAtTime(0.14, now);
-  harmonic.connect(harmonicGain);
-  harmonicGain.connect(master);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(amp, now);
+    osc.connect(gain);
+    gain.connect(filter);
 
-  const end = now + 3.4;
-  fundamental.start(now);
-  harmonic.start(now);
-  fundamental.stop(end);
-  harmonic.stop(end);
-  activeSources.push(fundamental, harmonic);
+    osc.start(now);
+    osc.stop(now + duration + 0.05);
+    activeSources.push(osc);
+  }
 }
 
 function scheduleBol(ctx: AudioContext) {
   const now = ctx.currentTime;
-  const master = createMasterGain(ctx, 0.45);
-  master.gain.setValueAtTime(0, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.45, now + 0.05);
-  master.gain.exponentialRampToValueAtTime(0.001, now + 4.5);
+  const duration = 6.5;
+  const master = createMasterGain(ctx, 0.26);
+  const filter = softLowpass(ctx, 1200);
+  filter.connect(master);
 
-  const freqs = [196, 294, 392, 588];
-  freqs.forEach((freq, index) => {
+  master.gain.setValueAtTime(0.0001, now);
+  master.gain.linearRampToValueAtTime(alertVolume * 0.26, now + 0.4);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+  // Cordes de bol : 5e juste, octave — très douces
+  const partials: Array<[number, number]> = [
+    [174.61, 1], // Fa3
+    [261.63, 0.28],
+    [349.23, 0.12],
+    [523.25, 0.05],
+  ];
+
+  partials.forEach(([freq, amp]) => {
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.setValueAtTime(freq, now);
 
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.35 / (index + 1), now);
+    gain.gain.setValueAtTime(amp, now);
     osc.connect(gain);
-    gain.connect(master);
+    gain.connect(filter);
 
     osc.start(now);
-    osc.stop(now + 4.6);
+    osc.stop(now + duration + 0.05);
     activeSources.push(osc);
   });
 }
 
 function scheduleCloche(ctx: AudioContext) {
   const now = ctx.currentTime;
-  const master = createMasterGain(ctx, 0.4);
-  master.gain.setValueAtTime(0, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.4, now + 0.01);
-  master.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
+  const duration = 4.2;
+  const master = createMasterGain(ctx, 0.22);
+  const filter = softLowpass(ctx, 1800);
+  filter.connect(master);
+
+  master.gain.setValueAtTime(0.0001, now);
+  master.gain.linearRampToValueAtTime(alertVolume * 0.22, now + 0.08);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
   const osc = ctx.createOscillator();
   osc.type = "sine";
-  osc.frequency.setValueAtTime(660, now);
-  osc.frequency.exponentialRampToValueAtTime(520, now + 2.2);
+  osc.frequency.setValueAtTime(523.25, now); // Do5
+  osc.frequency.exponentialRampToValueAtTime(440, now + 3.2);
 
-  const partial = ctx.createOscillator();
-  partial.type = "triangle";
-  partial.frequency.setValueAtTime(1320, now);
+  const shimmer = ctx.createOscillator();
+  shimmer.type = "sine";
+  shimmer.frequency.setValueAtTime(784, now);
 
-  const partialGain = ctx.createGain();
-  partialGain.gain.setValueAtTime(0.08, now);
+  const shimmerGain = ctx.createGain();
+  shimmerGain.gain.setValueAtTime(0.06, now);
+  shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
 
-  osc.connect(master);
-  partial.connect(partialGain);
-  partialGain.connect(master);
+  osc.connect(filter);
+  shimmer.connect(shimmerGain);
+  shimmerGain.connect(filter);
 
   osc.start(now);
-  partial.start(now);
-  osc.stop(now + 2.9);
-  partial.stop(now + 2.9);
-  activeSources.push(osc, partial);
+  shimmer.start(now);
+  osc.stop(now + duration + 0.05);
+  shimmer.stop(now + duration + 0.05);
+  activeSources.push(osc, shimmer);
 }
 
 function scheduleOm(ctx: AudioContext) {
   const now = ctx.currentTime;
-  const master = createMasterGain(ctx, 0.42);
-  master.gain.setValueAtTime(0, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.42, now + 0.35);
-  master.gain.setValueAtTime(alertVolume * 0.42, now + 2.2);
-  master.gain.exponentialRampToValueAtTime(0.001, now + 3.8);
+  const duration = 5.8;
+  const master = createMasterGain(ctx, 0.3);
+  const filter = softLowpass(ctx, 700);
+  filter.connect(master);
+
+  // Attack / sustain / release type respiration
+  master.gain.setValueAtTime(0.0001, now);
+  master.gain.linearRampToValueAtTime(alertVolume * 0.3, now + 0.9);
+  master.gain.setValueAtTime(alertVolume * 0.3, now + 3.2);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
   const fundamental = ctx.createOscillator();
   fundamental.type = "sine";
-  fundamental.frequency.setValueAtTime(110, now);
+  fundamental.frequency.setValueAtTime(110, now); // La2
 
   const formant = ctx.createOscillator();
   formant.type = "sine";
-  formant.frequency.setValueAtTime(220, now);
-  formant.frequency.linearRampToValueAtTime(165, now + 1.2);
-  formant.frequency.linearRampToValueAtTime(140, now + 2.8);
+  formant.frequency.setValueAtTime(165, now);
+  formant.frequency.linearRampToValueAtTime(138, now + 2.5);
+  formant.frequency.linearRampToValueAtTime(110, now + 5);
 
   const formantGain = ctx.createGain();
-  formantGain.gain.setValueAtTime(0.35, now);
+  formantGain.gain.setValueAtTime(0.28, now);
 
-  fundamental.connect(master);
+  const fifth = ctx.createOscillator();
+  fifth.type = "sine";
+  fifth.frequency.setValueAtTime(165, now);
+  const fifthGain = ctx.createGain();
+  fifthGain.gain.setValueAtTime(0.08, now);
+
+  fundamental.connect(filter);
   formant.connect(formantGain);
-  formantGain.connect(master);
+  formantGain.connect(filter);
+  fifth.connect(fifthGain);
+  fifthGain.connect(filter);
 
   fundamental.start(now);
   formant.start(now);
-  fundamental.stop(now + 4);
-  formant.stop(now + 4);
-  activeSources.push(fundamental, formant);
+  fifth.start(now);
+  fundamental.stop(now + duration + 0.05);
+  formant.stop(now + duration + 0.05);
+  fifth.stop(now + duration + 0.05);
+  activeSources.push(fundamental, formant, fifth);
 }
 
-function createNoiseBuffer(ctx: AudioContext, durationSec: number) {
-  const length = Math.max(1, Math.floor(ctx.sampleRate * durationSec));
-  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < length; i += 1) {
-    data[i] = Math.random() * 2 - 1;
-  }
-  return buffer;
-}
-
+/**
+ * Remplace l'ancien buzz (sawtooth + bruit) par un pulse sinusoïdal
+ * type souffle / respiration — discret, compatible musique zen.
+ */
 function scheduleBuzz(ctx: AudioContext) {
   const now = ctx.currentTime;
-  const master = createMasterGain(ctx, 0.7);
-  const filter = ctx.createBiquadFilter();
-  filter.type = "bandpass";
-  filter.frequency.setValueAtTime(180, now);
-  filter.Q.setValueAtTime(4, now);
+  const master = createMasterGain(ctx, 0.24);
+  const filter = softLowpass(ctx, 480);
   filter.connect(master);
 
-  const rumble = ctx.createOscillator();
-  rumble.type = "sawtooth";
-  rumble.frequency.setValueAtTime(55, now);
+  const tone = ctx.createOscillator();
+  tone.type = "sine";
+  tone.frequency.setValueAtTime(174.61, now); // Fa3 — fréquence douce
 
-  const rumbleGain = ctx.createGain();
-  rumbleGain.gain.setValueAtTime(0, now);
-  rumble.connect(rumbleGain);
-  rumbleGain.connect(filter);
+  const harmonic = ctx.createOscillator();
+  harmonic.type = "sine";
+  harmonic.frequency.setValueAtTime(261.63, now);
 
-  const noise = ctx.createBufferSource();
-  noise.buffer = createNoiseBuffer(ctx, 4);
-  const noiseGain = ctx.createGain();
-  noiseGain.gain.setValueAtTime(0, now);
-  noise.connect(noiseGain);
-  noiseGain.connect(filter);
+  const toneGain = ctx.createGain();
+  toneGain.gain.setValueAtTime(0.0001, now);
+  const harmGain = ctx.createGain();
+  harmGain.gain.setValueAtTime(0.0001, now);
 
-  rumble.start(now);
-  noise.start(now);
+  tone.connect(toneGain);
+  toneGain.connect(filter);
+  harmonic.connect(harmGain);
+  harmGain.connect(filter);
+
+  tone.start(now);
+  harmonic.start(now);
 
   let cursor = now;
-  for (let i = 0; i < BUZZ_AUDIO_PATTERN.length; i += 2) {
-    const onMs = BUZZ_AUDIO_PATTERN[i] ?? 0;
-    const offMs = BUZZ_AUDIO_PATTERN[i + 1] ?? 0;
+  for (let i = 0; i < SOFT_PULSE_PATTERN.length; i += 2) {
+    const onMs = SOFT_PULSE_PATTERN[i] ?? 0;
+    const offMs = SOFT_PULSE_PATTERN[i + 1] ?? 0;
     const onSec = onMs / 1000;
     const offSec = offMs / 1000;
-    const peak = alertVolume * 0.7;
+    const peak = alertVolume * 0.24;
+    const attack = Math.min(0.28, onSec * 0.35);
+    const release = Math.min(0.35, onSec * 0.4);
 
-    rumbleGain.gain.setValueAtTime(0.0001, cursor);
-    rumbleGain.gain.linearRampToValueAtTime(peak * 0.85, cursor + 0.01);
-    rumbleGain.gain.setValueAtTime(peak * 0.85, cursor + onSec - 0.01);
-    rumbleGain.gain.linearRampToValueAtTime(0.0001, cursor + onSec);
+    toneGain.gain.setValueAtTime(0.0001, cursor);
+    toneGain.gain.linearRampToValueAtTime(peak, cursor + attack);
+    toneGain.gain.setValueAtTime(peak * 0.85, cursor + onSec - release);
+    toneGain.gain.linearRampToValueAtTime(0.0001, cursor + onSec);
 
-    noiseGain.gain.setValueAtTime(0.0001, cursor);
-    noiseGain.gain.linearRampToValueAtTime(peak * 0.35, cursor + 0.01);
-    noiseGain.gain.setValueAtTime(peak * 0.35, cursor + onSec - 0.01);
-    noiseGain.gain.linearRampToValueAtTime(0.0001, cursor + onSec);
+    harmGain.gain.setValueAtTime(0.0001, cursor);
+    harmGain.gain.linearRampToValueAtTime(peak * 0.18, cursor + attack);
+    harmGain.gain.setValueAtTime(peak * 0.12, cursor + onSec - release);
+    harmGain.gain.linearRampToValueAtTime(0.0001, cursor + onSec);
 
     cursor += onSec + offSec;
   }
 
   const end = cursor + 0.05;
-  rumble.stop(end);
-  noise.stop(end);
-  activeSources.push(rumble, noise);
+  tone.stop(end);
+  harmonic.stop(end);
+  activeSources.push(tone, harmonic);
 }
 
 function scheduleRingtone(ctx: AudioContext, ringtone: TimerRingtoneId) {
@@ -388,16 +420,16 @@ function scheduleRingtone(ctx: AudioContext, ringtone: TimerRingtoneId) {
 function ringtoneRepeatMs(ringtone: TimerRingtoneId) {
   switch (ringtone) {
     case "bol":
-      return 4200;
+      return 6200;
     case "cloche":
-      return 2800;
+      return 4500;
     case "om":
-      return 3800;
+      return 5800;
     case "buzz":
-      return patternDurationMs(BUZZ_AUDIO_PATTERN) + 120;
+      return patternDurationMs(SOFT_PULSE_PATTERN) + 400;
     case "gong":
     default:
-      return 3200;
+      return 5200;
   }
 }
 
