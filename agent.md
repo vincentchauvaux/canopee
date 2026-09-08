@@ -823,6 +823,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Sonneries minuteur au choix (août 2026) : gong / bol / cloche / om / pulse doux / vibration matérielle ; persistance `yoga-timer-ringtone` + `yoga-timer-volume`.
 - ✅ Déployé sur VPS (août 2026) : `Carol` @ `24c4350` — pull, audio Om/Temple, build, `pm2 restart canopee`.
 - ✅ Sonneries minuteur adoucies (sept. 2026) : suppression du buzz sawtooth/bruit (style années 2000) ; uniquement sinus + passe-bas, fades longs, volumes bas — « Pulse doux » type respiration.
+- ✅ Déployé sur VPS (sept. 2026) : `Carol` @ `8a53187` — pull, build, `pm2 restart canopee`.
 
 ### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
 
