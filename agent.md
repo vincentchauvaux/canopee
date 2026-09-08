@@ -824,6 +824,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ Déployé sur VPS (août 2026) : `Carol` @ `24c4350` — pull, audio Om/Temple, build, `pm2 restart canopee`.
 - ✅ Sonneries minuteur adoucies (sept. 2026) : suppression du buzz sawtooth/bruit (style années 2000) ; uniquement sinus + passe-bas, fades longs, volumes bas — « Pulse doux » type respiration.
 - ✅ Déployé sur VPS (sept. 2026) : `Carol` @ `8a53187` — pull, build, `pm2 restart canopee`.
+- ✅ Fix Tester minuteur silencieux (sept. 2026) : AudioContext mieux débloqué ; volumes doux mais audibles ; volume localStorage ≈ 0 réinitialisé ; fallback Pulse doux si Vibration sur iPhone.
 
 ### Actualités : ajout de la date d&apos;événement et amélioration du Fil d&apos;actualité (Mars 2026)
 

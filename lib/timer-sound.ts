@@ -63,7 +63,8 @@ export const TIMER_RINGTONE_KEY = "yoga-timer-ringtone";
 export const TIMER_VOLUME_KEY = "yoga-timer-volume";
 
 export const DEFAULT_TIMER_RINGTONE: TimerRingtoneId = "gong";
-export const DEFAULT_TIMER_VOLUME = 0.4;
+/** Volume par défaut audible tout en restant doux. */
+export const DEFAULT_TIMER_VOLUME = 0.7;
 
 /**
  * Motif d'alarme à intensité maximale perçue : rafales longues, pauses minimales.
@@ -125,6 +126,24 @@ async function resumeContext(ctx: AudioContext) {
   }
 }
 
+/** Garantit un AudioContext running (recréation si Safari reste suspendu). */
+async function ensureRunningAudioContext() {
+  let ctx = getOrCreateAudioContext();
+  if (!ctx) return null;
+
+  await resumeContext(ctx);
+
+  if (ctx.state !== "running") {
+    const AudioCtx = getAudioContextClass();
+    if (!AudioCtx) return null;
+    ctx = new AudioCtx();
+    sharedAudioContext = ctx;
+    await resumeContext(ctx);
+  }
+
+  return ctx.state === "running" ? ctx : null;
+}
+
 function stopActiveSources() {
   for (const source of activeSources) {
     try {
@@ -141,6 +160,12 @@ function clampVolume(value: number) {
   return Math.min(1, Math.max(0, value));
 }
 
+/** Volume effectif : évite le silence total si le curseur est à 0. */
+function effectivePeak(multiplier: number) {
+  const vol = Math.max(0.25, alertVolume);
+  return Math.min(1, vol * multiplier);
+}
+
 export function getTimerRingtone(id: string | null | undefined): TimerRingtone {
   return (
     TIMER_RINGTONES.find((item) => item.id === id) ??
@@ -152,7 +177,6 @@ export function resolveStoredRingtone(stored: string | null): TimerRingtoneId {
   if (stored && TIMER_RINGTONES.some((item) => item.id === stored)) {
     return stored as TimerRingtoneId;
   }
-  // Migration ancienne clé Sonner/Vibrer
   if (stored === "vibrate") return "vibrate";
   if (stored === "sound") return "gong";
   return DEFAULT_TIMER_RINGTONE;
@@ -166,15 +190,6 @@ export function getTimerAlertVolume() {
   return alertVolume;
 }
 
-function createMasterGain(ctx: AudioContext, peak: number) {
-  const master = ctx.createGain();
-  const level = alertVolume * peak;
-  master.gain.setValueAtTime(Math.max(0.0001, level), ctx.currentTime);
-  master.connect(ctx.destination);
-  return master;
-}
-
-/** Filtre passe-bas pour adoucir les partiels aigus. */
 function softLowpass(ctx: AudioContext, cutoffHz: number) {
   const filter = ctx.createBiquadFilter();
   filter.type = "lowpass";
@@ -183,23 +198,28 @@ function softLowpass(ctx: AudioContext, cutoffHz: number) {
   return filter;
 }
 
-function scheduleGong(ctx: AudioContext) {
-  const now = ctx.currentTime;
-  const duration = 5.5;
-  const master = createMasterGain(ctx, 0.28);
-  const filter = softLowpass(ctx, 900);
+function connectSoftMaster(ctx: AudioContext, cutoffHz: number, peak: number, attack: number, duration: number) {
+  const master = ctx.createGain();
+  const filter = softLowpass(ctx, cutoffHz);
   filter.connect(master);
+  master.connect(ctx.destination);
 
+  const now = ctx.currentTime;
   master.gain.setValueAtTime(0.0001, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.28, now + 0.25);
+  master.gain.linearRampToValueAtTime(peak, now + attack);
   master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  return { filter, now, duration };
+}
 
-  // Fondamental grave + harmoniques très discrètes (sinus uniquement)
+function scheduleGong(ctx: AudioContext) {
+  const peak = effectivePeak(0.6);
+  const { filter, now, duration } = connectSoftMaster(ctx, 1200, peak, 0.15, 5);
+
   const partials: Array<[number, number]> = [
-    [98, 1],
-    [147, 0.22],
-    [196, 0.1],
-    [294, 0.04],
+    [110, 1],
+    [165, 0.3],
+    [220, 0.14],
+    [330, 0.06],
   ];
 
   for (const [freq, amp] of partials) {
@@ -220,22 +240,14 @@ function scheduleGong(ctx: AudioContext) {
 }
 
 function scheduleBol(ctx: AudioContext) {
-  const now = ctx.currentTime;
-  const duration = 6.5;
-  const master = createMasterGain(ctx, 0.26);
-  const filter = softLowpass(ctx, 1200);
-  filter.connect(master);
+  const peak = effectivePeak(0.58);
+  const { filter, now, duration } = connectSoftMaster(ctx, 1500, peak, 0.25, 5.8);
 
-  master.gain.setValueAtTime(0.0001, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.26, now + 0.4);
-  master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-  // Cordes de bol : 5e juste, octave — très douces
   const partials: Array<[number, number]> = [
-    [174.61, 1], // Fa3
-    [261.63, 0.28],
-    [349.23, 0.12],
-    [523.25, 0.05],
+    [174.61, 1],
+    [261.63, 0.34],
+    [349.23, 0.15],
+    [523.25, 0.07],
   ];
 
   partials.forEach(([freq, amp]) => {
@@ -255,28 +267,21 @@ function scheduleBol(ctx: AudioContext) {
 }
 
 function scheduleCloche(ctx: AudioContext) {
-  const now = ctx.currentTime;
-  const duration = 4.2;
-  const master = createMasterGain(ctx, 0.22);
-  const filter = softLowpass(ctx, 1800);
-  filter.connect(master);
-
-  master.gain.setValueAtTime(0.0001, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.22, now + 0.08);
-  master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  const peak = effectivePeak(0.52);
+  const { filter, now, duration } = connectSoftMaster(ctx, 2400, peak, 0.04, 3.8);
 
   const osc = ctx.createOscillator();
   osc.type = "sine";
-  osc.frequency.setValueAtTime(523.25, now); // Do5
-  osc.frequency.exponentialRampToValueAtTime(440, now + 3.2);
+  osc.frequency.setValueAtTime(523.25, now);
+  osc.frequency.exponentialRampToValueAtTime(440, now + 2.8);
 
   const shimmer = ctx.createOscillator();
   shimmer.type = "sine";
   shimmer.frequency.setValueAtTime(784, now);
 
   const shimmerGain = ctx.createGain();
-  shimmerGain.gain.setValueAtTime(0.06, now);
-  shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
+  shimmerGain.gain.setValueAtTime(0.1, now);
+  shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 2);
 
   osc.connect(filter);
   shimmer.connect(shimmerGain);
@@ -290,36 +295,37 @@ function scheduleCloche(ctx: AudioContext) {
 }
 
 function scheduleOm(ctx: AudioContext) {
+  const peak = effectivePeak(0.58);
   const now = ctx.currentTime;
-  const duration = 5.8;
-  const master = createMasterGain(ctx, 0.3);
-  const filter = softLowpass(ctx, 700);
+  const duration = 5.2;
+  const master = ctx.createGain();
+  const filter = softLowpass(ctx, 1000);
   filter.connect(master);
+  master.connect(ctx.destination);
 
-  // Attack / sustain / release type respiration
   master.gain.setValueAtTime(0.0001, now);
-  master.gain.linearRampToValueAtTime(alertVolume * 0.3, now + 0.9);
-  master.gain.setValueAtTime(alertVolume * 0.3, now + 3.2);
+  master.gain.linearRampToValueAtTime(peak, now + 0.55);
+  master.gain.linearRampToValueAtTime(peak * 0.85, now + 2.8);
   master.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
   const fundamental = ctx.createOscillator();
   fundamental.type = "sine";
-  fundamental.frequency.setValueAtTime(110, now); // La2
+  fundamental.frequency.setValueAtTime(110, now);
 
   const formant = ctx.createOscillator();
   formant.type = "sine";
   formant.frequency.setValueAtTime(165, now);
-  formant.frequency.linearRampToValueAtTime(138, now + 2.5);
-  formant.frequency.linearRampToValueAtTime(110, now + 5);
+  formant.frequency.linearRampToValueAtTime(138, now + 2.2);
+  formant.frequency.linearRampToValueAtTime(110, now + 4.5);
 
   const formantGain = ctx.createGain();
-  formantGain.gain.setValueAtTime(0.28, now);
+  formantGain.gain.setValueAtTime(0.35, now);
 
   const fifth = ctx.createOscillator();
   fifth.type = "sine";
   fifth.frequency.setValueAtTime(165, now);
   const fifthGain = ctx.createGain();
-  fifthGain.gain.setValueAtTime(0.08, now);
+  fifthGain.gain.setValueAtTime(0.12, now);
 
   fundamental.connect(filter);
   formant.connect(formantGain);
@@ -336,23 +342,23 @@ function scheduleOm(ctx: AudioContext) {
   activeSources.push(fundamental, formant, fifth);
 }
 
-/**
- * Remplace l'ancien buzz (sawtooth + bruit) par un pulse sinusoïdal
- * type souffle / respiration — discret, compatible musique zen.
- */
+/** Pulse sinusoïdal type souffle — doux mais clairement audible. */
 function scheduleBuzz(ctx: AudioContext) {
   const now = ctx.currentTime;
-  const master = createMasterGain(ctx, 0.24);
-  const filter = softLowpass(ctx, 480);
+  const peak = effectivePeak(0.55);
+  const master = ctx.createGain();
+  const filter = softLowpass(ctx, 900);
   filter.connect(master);
+  master.connect(ctx.destination);
+  master.gain.setValueAtTime(1, now);
 
   const tone = ctx.createOscillator();
   tone.type = "sine";
-  tone.frequency.setValueAtTime(174.61, now); // Fa3 — fréquence douce
+  tone.frequency.setValueAtTime(196, now);
 
   const harmonic = ctx.createOscillator();
   harmonic.type = "sine";
-  harmonic.frequency.setValueAtTime(261.63, now);
+  harmonic.frequency.setValueAtTime(294, now);
 
   const toneGain = ctx.createGain();
   toneGain.gain.setValueAtTime(0.0001, now);
@@ -373,18 +379,19 @@ function scheduleBuzz(ctx: AudioContext) {
     const offMs = SOFT_PULSE_PATTERN[i + 1] ?? 0;
     const onSec = onMs / 1000;
     const offSec = offMs / 1000;
-    const peak = alertVolume * 0.24;
-    const attack = Math.min(0.28, onSec * 0.35);
-    const release = Math.min(0.35, onSec * 0.4);
+    const attack = Math.min(0.2, onSec * 0.28);
+    const release = Math.min(0.25, onSec * 0.32);
 
+    toneGain.gain.cancelScheduledValues(cursor);
     toneGain.gain.setValueAtTime(0.0001, cursor);
     toneGain.gain.linearRampToValueAtTime(peak, cursor + attack);
-    toneGain.gain.setValueAtTime(peak * 0.85, cursor + onSec - release);
+    toneGain.gain.linearRampToValueAtTime(peak * 0.8, cursor + onSec - release);
     toneGain.gain.linearRampToValueAtTime(0.0001, cursor + onSec);
 
+    harmGain.gain.cancelScheduledValues(cursor);
     harmGain.gain.setValueAtTime(0.0001, cursor);
-    harmGain.gain.linearRampToValueAtTime(peak * 0.18, cursor + attack);
-    harmGain.gain.setValueAtTime(peak * 0.12, cursor + onSec - release);
+    harmGain.gain.linearRampToValueAtTime(peak * 0.25, cursor + attack);
+    harmGain.gain.linearRampToValueAtTime(peak * 0.15, cursor + onSec - release);
     harmGain.gain.linearRampToValueAtTime(0.0001, cursor + onSec);
 
     cursor += onSec + offSec;
@@ -420,11 +427,11 @@ function scheduleRingtone(ctx: AudioContext, ringtone: TimerRingtoneId) {
 function ringtoneRepeatMs(ringtone: TimerRingtoneId) {
   switch (ringtone) {
     case "bol":
-      return 6200;
+      return 6000;
     case "cloche":
-      return 4500;
+      return 4200;
     case "om":
-      return 5800;
+      return 5400;
     case "buzz":
       return patternDurationMs(SOFT_PULSE_PATTERN) + 400;
     case "gong":
@@ -435,9 +442,7 @@ function ringtoneRepeatMs(ringtone: TimerRingtoneId) {
 
 /** Débloque l'audio Web sur un geste utilisateur (démarrage minuteur, choix sonnerie). */
 export async function unlockTimerAudio() {
-  const ctx = getOrCreateAudioContext();
-  if (!ctx) return;
-  await resumeContext(ctx);
+  await ensureRunningAudioContext();
 }
 
 export function canUseVibration() {
@@ -501,21 +506,8 @@ function startAlarmVibration() {
 async function startRepeatingRingtone(ringtone: TimerRingtoneId) {
   const playOnce = async () => {
     if (!alertActive) return;
-
-    let ctx = getOrCreateAudioContext();
-    if (!ctx) return;
-
-    await resumeContext(ctx);
-
-    if (ctx.state !== "running") {
-      const AudioCtx = getAudioContextClass();
-      if (!AudioCtx) return;
-      ctx = new AudioCtx();
-      sharedAudioContext = ctx;
-      await resumeContext(ctx);
-    }
-
-    if (!alertActive) return;
+    const ctx = await ensureRunningAudioContext();
+    if (!ctx || !alertActive) return;
     scheduleRingtone(ctx, ringtone);
   };
 
@@ -533,18 +525,19 @@ export async function previewTimerRingtone(
   if (ringtone === "vibrate") {
     if (canUseVibration()) {
       navigator.vibrate([0, 220, 80, 380, 80, 220]);
+      return;
     }
-    return;
+    // iPhone : pas de vibreur Web → aperçu sonore du pulse doux
+    ringtone = "buzz";
   }
 
-  await unlockTimerAudio();
-  const ctx = getOrCreateAudioContext();
+  stopActiveSources();
+
+  const ctx = await ensureRunningAudioContext();
   if (!ctx) return;
-  await resumeContext(ctx);
-  if (ctx.state !== "running") return;
 
   const previous = alertVolume;
-  alertVolume = clampVolume(volume);
+  alertVolume = clampVolume(volume <= 0.05 ? DEFAULT_TIMER_VOLUME : volume);
   scheduleRingtone(ctx, ringtone);
   alertVolume = previous;
 }

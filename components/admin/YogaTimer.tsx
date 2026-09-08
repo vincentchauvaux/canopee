@@ -195,10 +195,17 @@ export default function YogaTimer() {
     if (storedVolume !== null) {
       const parsed = Number(storedVolume);
       if (Number.isFinite(parsed)) {
-        const next = Math.min(1, Math.max(0, parsed));
+        // Volume à 0 = silence total → repartir sur le défaut audible
+        const next =
+          parsed <= 0.05
+            ? DEFAULT_TIMER_VOLUME
+            : Math.min(1, Math.max(0, parsed));
         setVolume(next);
         volumeRef.current = next;
         setTimerAlertVolume(next);
+        if (parsed <= 0.05) {
+          localStorage.setItem(TIMER_VOLUME_KEY, String(next));
+        }
       }
     }
   }, []);
