@@ -804,7 +804,8 @@ Revue posture : middleware, NextAuth, garde-fous admin API, headers, Zod, upload
 - ✅ PII : `GET /api/classes` sans `userId` ; `GET /api/classes/[id]` emails bookers **admin only**
 - ✅ Profil : validation `profilePic` (https / data:image borné) ; logs session retirés
 - ✅ Pagination plafonnée (`limit` max 50–100) news / admin users / bookings
-- ✅ Cookie JWT middleware : plus de `cookieName` forcé (compatible `__Secure-` en HTTPS)
+- ✅ Cookie JWT middleware : aligné sur `next-auth.session-token` (comme `lib/auth.ts`)
+- ✅ Déployé sur VPS (oct. 2026) : `Carol` @ `6b19df2` — pull, build, `pm2 restart canopee`
 
 ### Correction Infos Spirituelles footer — illumination figée à 0% (Août 2026)
 
