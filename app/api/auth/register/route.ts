@@ -2,14 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+import { getClientIp, rateLimit } from '@/lib/rate-limit'
 
 const registerSchema = z.object({
   email: z.string().email('Email invalide'),
   password: z
     .string()
-    .min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
+    .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
+    .max(128, 'Mot de passe trop long'),
+  firstName: z.string().max(80).optional(),
+  lastName: z.string().max(80).optional(),
 })
 
 /**
@@ -30,6 +32,18 @@ function isRegistrationAllowed(request: NextRequest): boolean {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request)
+    const limited = rateLimit(`register:${ip}`, 5, 60 * 60 * 1000)
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: 'Trop de tentatives d\'inscription. Réessayez plus tard.' },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(limited.retryAfterSec) },
+        },
+      )
+    }
+
     if (!isRegistrationAllowed(request)) {
       return NextResponse.json(
         {

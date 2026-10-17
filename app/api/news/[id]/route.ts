@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/get-session'
+import { isSafeImageUrl, sanitizeHtml } from '@/lib/sanitize-html'
 
 // GET - Récupérer une actualité spécifique
 export async function GET(
@@ -41,6 +42,9 @@ export async function GET(
 
     return NextResponse.json({
       ...news,
+      content: sanitizeHtml(news.content),
+      coverImage:
+        news.coverImage && isSafeImageUrl(news.coverImage) ? news.coverImage : null,
       viewCount: news.viewCount + 1,
     })
   } catch (error) {
@@ -68,11 +72,19 @@ export async function PATCH(
     }
 
     const body = await request.json()
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
-    if (body.title) updateData.title = body.title
-    if (body.content) updateData.content = body.content
-    if (body.coverImage !== undefined) updateData.coverImage = body.coverImage
+    if (body.title) updateData.title = String(body.title).slice(0, 200)
+    if (body.content) updateData.content = sanitizeHtml(String(body.content))
+    if (body.coverImage !== undefined) {
+      if (body.coverImage && !isSafeImageUrl(body.coverImage)) {
+        return NextResponse.json(
+          { error: "URL d'image de couverture invalide" },
+          { status: 400 },
+        )
+      }
+      updateData.coverImage = body.coverImage || null
+    }
     if (body.eventDate !== undefined) {
       updateData.eventDate = body.eventDate ? new Date(body.eventDate) : null
     }

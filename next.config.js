@@ -16,6 +16,22 @@ const nextConfig = {
     optimizePackageImports: ["lucide-react"],
   },
   async headers() {
+    // CSP : autorise Next.js, NextAuth, polices Google, images HTTPS + data (avatar)
+    const csp = [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+      "object-src 'none'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "img-src 'self' data: blob: https:",
+      "media-src 'self' blob:",
+      "connect-src 'self' https:",
+      "upgrade-insecure-requests",
+    ].join("; ");
+
     return [
       {
         source: "/:path*",
@@ -37,6 +53,10 @@ const nextConfig = {
           {
             key: "X-DNS-Prefetch-Control",
             value: "on",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: csp,
           },
         ],
       },

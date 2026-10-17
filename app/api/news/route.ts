@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/get-session'
+import { isSafeImageUrl, sanitizeHtml } from '@/lib/sanitize-html'
 
 // GET - Récupérer toutes les actualités
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const limit = parseInt(searchParams.get('limit') || '10')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const rawLimit = parseInt(searchParams.get('limit') || '10', 10)
+    const rawOffset = parseInt(searchParams.get('offset') || '0', 10)
+    const limit = Number.isFinite(rawLimit) ? Math.min(Math.max(rawLimit, 1), 50) : 10
+    const offset = Number.isFinite(rawOffset) ? Math.min(Math.max(rawOffset, 0), 5000) : 0
 
     const news = await prisma.news.findMany({
       take: limit,
@@ -32,10 +35,13 @@ export async function GET(request: NextRequest) {
       ],
     })
 
-    // Formater les données
-    const formattedNews = news
+    const formattedNews = news.map((item) => ({
+      ...item,
+      content: sanitizeHtml(item.content),
+      coverImage:
+        item.coverImage && isSafeImageUrl(item.coverImage) ? item.coverImage : null,
+    }))
 
-    // Compter le total pour la pagination
     const total = await prisma.news.count()
 
     return NextResponse.json({
@@ -77,12 +83,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (coverImage && !isSafeImageUrl(coverImage)) {
+      return NextResponse.json(
+        { error: 'URL d\'image de couverture invalide' },
+        { status: 400 }
+      )
+    }
+
     const userId = (session.user as any).id
 
     const news = await prisma.news.create({
       data: {
-        title,
-        content,
+        title: String(title).slice(0, 200),
+        content: sanitizeHtml(String(content)),
         coverImage: coverImage || null,
         authorId: userId,
         viewCount: 0,

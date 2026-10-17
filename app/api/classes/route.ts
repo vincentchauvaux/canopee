@@ -42,15 +42,13 @@ export async function GET(request: NextRequest) {
       where.type = type;
     }
 
-    // Utiliser withRetry pour gérer les problèmes de connexion
+    // Public : uniquement le nombre de places, jamais les userId / emails
     const classes = await withRetry(async () => {
       return await prisma.class.findMany({
         where,
         include: {
-          bookings: {
-            select: {
-              userId: true,
-            },
+          _count: {
+            select: { bookings: true },
           },
         },
         orderBy: {
@@ -59,12 +57,14 @@ export async function GET(request: NextRequest) {
       });
     });
 
-    // Formater les données pour inclure le nombre de réservations
-    const formattedClasses = classes.map((cls) => ({
-      ...cls,
-      currentParticipants: cls.bookings.length,
-      isBooked: false, // Sera déterminé côté client si l'utilisateur est connecté
-    }));
+    const formattedClasses = classes.map((cls) => {
+      const { _count, ...rest } = cls;
+      return {
+        ...rest,
+        currentParticipants: _count.bookings,
+        isBooked: false,
+      };
+    });
 
     return NextResponse.json(formattedClasses);
   } catch (error: any) {

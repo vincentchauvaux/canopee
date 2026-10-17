@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
 import { format, parseISO, startOfToday } from 'date-fns'
 import { fr } from 'date-fns/locale/fr'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 interface UpcomingClass {
   id: string
@@ -263,7 +264,9 @@ export default function NewsFeed() {
                       <div className="pt-4 border-t border-gray text-sm text-text-dark/80 leading-relaxed">
                         <div
                           className="prose prose-sm max-w-none"
-                          dangerouslySetInnerHTML={{ __html: newsItem.content }}
+                          dangerouslySetInnerHTML={{
+                            __html: sanitizeHtml(newsItem.content),
+                          }}
                         />
                       </div>
                     </div>

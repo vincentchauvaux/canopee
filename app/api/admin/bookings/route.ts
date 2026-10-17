@@ -7,9 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getSessionFromRequest(request)
 
-    // Debug temporaire
     if (!session) {
-      console.log('[admin/bookings] No session found')
       return NextResponse.json(
         { error: 'Non autorisé' },
         { status: 403 }
@@ -17,14 +15,8 @@ export async function GET(request: NextRequest) {
     }
 
     const userRole = (session.user as any)?.role
-    console.log('[admin/bookings] Session user:', {
-      id: session.user?.id,
-      email: session.user?.email,
-      role: userRole,
-    })
 
     if (userRole !== 'admin') {
-      console.log('[admin/bookings] User is not admin, role:', userRole)
       return NextResponse.json(
         { error: 'Non autorisé' },
         { status: 403 }
@@ -32,8 +24,10 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url)
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const rawLimit = parseInt(searchParams.get('limit') || '50', 10)
+    const rawOffset = parseInt(searchParams.get('offset') || '0', 10)
+    const limit = Number.isFinite(rawLimit) ? Math.min(Math.max(rawLimit, 1), 100) : 50
+    const offset = Number.isFinite(rawOffset) ? Math.min(Math.max(rawOffset, 0), 10000) : 0
 
     const bookings = await prisma.booking.findMany({
       take: limit,

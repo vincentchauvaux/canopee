@@ -2,23 +2,12 @@ import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 
+const isDev = process.env.NODE_ENV === "development";
+
 // Fonction utilitaire pour récupérer la session dans les API routes
-// Utilise getToken qui est plus fiable dans les API routes Next.js 14
 export async function getSessionFromRequest(request: NextRequest) {
   try {
-    // Log des headers pour diagnostiquer
-    const cookieHeader = request.headers.get('cookie');
-    const hostHeader = request.headers.get('host');
-    console.log("[getSessionFromRequest] Request info:", {
-      host: hostHeader,
-      hasCookie: !!cookieHeader,
-      cookieLength: cookieHeader?.length || 0,
-      hasNextAuthCookie:
-        cookieHeader?.includes("next-auth.session-token") || false,
-    });
-
-    // Utiliser le même nom de cookie que dans lib/auth.ts (cookies.sessionToken.name)
-    // pour que le token soit trouvé en production (sans quoi getToken cherche __Secure-* par défaut)
+    // Même nom de cookie que lib/auth.ts
     const cookieName = "next-auth.session-token";
 
     const token = await getToken({
@@ -29,27 +18,10 @@ export async function getSessionFromRequest(request: NextRequest) {
     });
 
     if (!token || !token.id) {
-      console.log("[getSessionFromRequest] No token or token.id");
-      console.log("[getSessionFromRequest] Token value:", token ? "exists but no id" : "null");
-      console.log("[getSessionFromRequest] NEXTAUTH_SECRET configured:", !!process.env.NEXTAUTH_SECRET);
-      console.log("[getSessionFromRequest] NEXTAUTH_URL:", process.env.NEXTAUTH_URL || "not set");
-      
-      // Log supplémentaire si le cookie est présent mais non lu
-      if (cookieHeader?.includes("next-auth.session-token")) {
-        console.log("[getSessionFromRequest] WARNING: Cookie present but token is null - possible domain mismatch");
-        console.log("[getSessionFromRequest] Cookie domain might not match NEXTAUTH_URL");
-      }
-      
       return null;
     }
 
-    console.log("[getSessionFromRequest] Token found:", {
-      id: token.id,
-      email: token.email,
-      roleFromToken: token.role,
-    });
-
-    // Récupérer le rôle depuis la DB pour s'assurer qu'il est à jour
+    // Rôle relu en DB (révocation admin sans attendre la reconnexion)
     let userRole = token.role as string;
     try {
       const dbUser = await prisma.user.findUnique({
@@ -57,20 +29,13 @@ export async function getSessionFromRequest(request: NextRequest) {
         select: { role: true },
       });
       if (dbUser) {
-        console.log("[getSessionFromRequest] Role from DB:", dbUser.role);
         userRole = dbUser.role;
-      } else {
-        console.log(
-          "[getSessionFromRequest] User not found in DB for id:",
-          token.id
-        );
       }
     } catch (error) {
-      console.error("[getSessionFromRequest] Error fetching user role:", error);
-      // Utiliser le rôle du token en fallback
+      if (isDev) {
+        console.error("[getSessionFromRequest] Error fetching user role:", error);
+      }
     }
-
-    console.log("[getSessionFromRequest] Final role:", userRole);
 
     return {
       user: {

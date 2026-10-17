@@ -790,6 +790,22 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - ✅ **API register** : inscription publique **désactivée** par défaut (403) ; réactivation via `ALLOW_PUBLIC_REGISTER=true` ou en-tête `x-register-secret` = `REGISTER_API_SECRET` ; mot de passe min. 8 caractères ; bcrypt cost 12.
 - ✅ **robots.txt**, **sitemap.xml**, **`.well-known/security.txt`**.
 
+### Audit sécurité (octobre 2026)
+
+Revue posture : middleware, NextAuth, garde-fous admin API, headers, Zod, uploads, env, XSS.
+
+**Déjà en place :** headers (HSTS, XFO, nosniff, Referrer, Permissions-Policy) ; `/admin/*` via middleware JWT+rôle ; mutations admin sur classes/news + GET `/api/admin/*` avec `getSessionFromRequest` (rôle relu en DB) ; register gated + Zod + bcrypt 12 ; cookies session httpOnly / sameSite=lax / secure en prod ; profil PATCH ne permet pas d’élever `role`.
+
+**Renforcement anti-intrusion (oct. 2026) :**
+- ✅ Blocage scans (`lib/security-paths.ts` + middleware) : `.env`, `.git`, WordPress, PHP, phpMyAdmin, etc. → 404
+- ✅ Rate limiting (`lib/rate-limit.ts`) : auth 20/15 min/IP ; API 180/min/IP ; register 5/h/IP
+- ✅ CSP (`next.config.js`) : `default-src 'self'`, `frame-ancestors 'none'`, `object-src 'none'`
+- ✅ XSS news : `sanitizeHtml` à l’écriture/lecture API + côté `NewsFeed` / `NewsModal` ; URLs image allowlist
+- ✅ PII : `GET /api/classes` sans `userId` ; `GET /api/classes/[id]` emails bookers **admin only**
+- ✅ Profil : validation `profilePic` (https / data:image borné) ; logs session retirés
+- ✅ Pagination plafonnée (`limit` max 50–100) news / admin users / bookings
+- ✅ Cookie JWT middleware : plus de `cookieName` forcé (compatible `__Secure-` en HTTPS)
+
 ### Correction Infos Spirituelles footer — illumination figée à 0% (Août 2026)
 
 **Problème :** Le pourcentage d&apos;illumination dans le footer restait à 0% pendant plusieurs jours, alors que le graphique lunaire évoluait correctement.

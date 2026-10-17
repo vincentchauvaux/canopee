@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { X, Eye, Calendar, User, Send, Trash2, Edit2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale/fr'
+import { isSafeImageUrl, sanitizeHtml } from '@/lib/sanitize-html'
 
 interface NewsAuthor {
   id: string
@@ -127,8 +128,13 @@ export default function NewsModal({ news, isOpen, onClose }: NewsModalProps) {
           </div>
 
           {/* Image de couverture */}
-          {displayNews.coverImage && (
-            <div className="w-full h-64 bg-cover bg-center" style={{ backgroundImage: `url(${displayNews.coverImage})` }} />
+          {displayNews.coverImage && isSafeImageUrl(displayNews.coverImage) && (
+            <div
+              className="w-full h-64 bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${JSON.stringify(displayNews.coverImage)})`,
+              }}
+            />
           )}
 
           {/* Contenu */}
@@ -138,7 +144,9 @@ export default function NewsModal({ news, isOpen, onClose }: NewsModalProps) {
             ) : (
               <div
                 className="prose max-w-none text-text-dark"
-                dangerouslySetInnerHTML={{ __html: displayNews.content }}
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeHtml(displayNews.content),
+                }}
               />
             )}
           </div>
