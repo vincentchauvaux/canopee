@@ -42,6 +42,10 @@ interface AudioPlayerContextValue {
 
 const AudioPlayerContext = createContext<AudioPlayerContextValue | null>(null);
 
+function isAbortError(error: unknown) {
+  return error instanceof Error && error.name === "AbortError";
+}
+
 export function useAudioPlayer() {
   const context = useContext(AudioPlayerContext);
   if (!context) {
@@ -59,6 +63,11 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   const loopPlaylistRef = useRef(true);
   const volumeRef = useRef(0.75);
   const playNextRef = useRef<() => void>(() => {});
+  const wantsToPlayRef = useRef(false);
+  const pauseIsIntentionalRef = useRef(false);
+  const playRequestIdRef = useRef(0);
+  const resumeTimerRef = useRef<number | null>(null);
+  const errorRetriesRef = useRef(0);
 
   const [status, setStatus] = useState<PlayerStatus>("idle");
   const [isActive, setIsActive] = useState(false);
@@ -70,11 +79,45 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   const [duration, setDuration] = useState(0);
   const [loopPlaylist, setLoopPlaylistState] = useState(true);
 
+  const clearResumeTimer = useCallback(() => {
+    if (resumeTimerRef.current !== null) {
+      window.clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
+  }, []);
+
+  const requestPlay = useCallback(
+    (audio: HTMLAudioElement) => {
+      const requestId = ++playRequestIdRef.current;
+      wantsToPlayRef.current = true;
+      pauseIsIntentionalRef.current = false;
+
+      return audio
+        .play()
+        .then(() => {
+          if (requestId !== playRequestIdRef.current) return;
+          errorRetriesRef.current = 0;
+          setStatus("playing");
+          setIsActive(true);
+        })
+        .catch((error: unknown) => {
+          if (requestId !== playRequestIdRef.current) return;
+          // Changement de piste / play() concurrent : ne pas afficher Pause.
+          if (isAbortError(error)) return;
+          setStatus("paused");
+          setIsActive(true);
+        });
+    },
+    [],
+  );
+
   const loadTrack = useCallback(
     (track: YogaTrack, shouldPlay: boolean) => {
       const audio = audioRef.current;
       if (!audio) return;
 
+      playRequestIdRef.current += 1;
+      clearResumeTimer();
       setCurrentTrack(track);
       audio.src = track.src;
       audio.volume = volumeRef.current;
@@ -82,16 +125,11 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
       setDuration(track.durationSeconds);
 
       if (shouldPlay) {
-        void audio.play().then(() => {
-          setStatus("playing");
-          setIsActive(true);
-        }).catch(() => {
-          setStatus("paused");
-          setIsActive(true);
-        });
+        setIsActive(true);
+        void requestPlay(audio);
       }
     },
-    [],
+    [clearResumeTimer, requestPlay],
   );
 
   const playCategory = useCallback(
@@ -134,6 +172,8 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     let nextIndex = trackIndexRef.current + 1;
     if (nextIndex >= tracks.length) {
       if (!loopPlaylistRef.current) {
+        wantsToPlayRef.current = false;
+        pauseIsIntentionalRef.current = true;
         setStatus("idle");
         setIsActive(false);
         return;
@@ -170,25 +210,32 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     const audio = audioRef.current;
     if (!audio || !currentTrack) return;
 
-    if (status === "playing") {
+    if (!audio.paused) {
+      pauseIsIntentionalRef.current = true;
+      wantsToPlayRef.current = false;
+      clearResumeTimer();
       audio.pause();
       setStatus("paused");
       return;
     }
 
-    void audio.play().then(() => setStatus("playing"));
-  }, [currentTrack, status]);
+    void requestPlay(audio);
+  }, [clearResumeTimer, currentTrack, requestPlay]);
 
   const stop = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    pauseIsIntentionalRef.current = true;
+    wantsToPlayRef.current = false;
+    playRequestIdRef.current += 1;
+    clearResumeTimer();
     audio.pause();
     audio.currentTime = 0;
     setStatus("idle");
     setIsActive(false);
     setCurrentTime(0);
-  }, []);
+  }, [clearResumeTimer]);
 
   const setVolume = useCallback((value: number) => {
     const clamped = Math.min(Math.max(value, 0), 1);
@@ -221,25 +268,88 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const audio = new Audio();
+    audio.preload = "auto";
+    audio.playsInline = true;
     audioRef.current = audio;
     audio.volume = volumeRef.current;
 
     const onTimeUpdate = () => setCurrentTime(audio.currentTime);
     const onLoadedMetadata = () => setDuration(audio.duration || 0);
     const onEnded = () => playNextRef.current();
+    const onPlay = () => {
+      errorRetriesRef.current = 0;
+      setStatus("playing");
+      setIsActive(true);
+    };
+    const onPause = () => {
+      if (audio.ended) return;
+      if (pauseIsIntentionalRef.current || !wantsToPlayRef.current) return;
+
+      clearResumeTimer();
+      resumeTimerRef.current = window.setTimeout(() => {
+        resumeTimerRef.current = null;
+        if (!wantsToPlayRef.current || audio.paused === false || audio.ended) {
+          return;
+        }
+        void requestPlay(audio);
+      }, 300);
+    };
+    const onError = () => {
+      if (!wantsToPlayRef.current) return;
+      if (errorRetriesRef.current >= 2) {
+        setStatus("paused");
+        return;
+      }
+      errorRetriesRef.current += 1;
+      const time = audio.currentTime;
+      const src = audio.currentSrc || audio.src;
+      if (!src) {
+        setStatus("paused");
+        return;
+      }
+      const restore = () => {
+        audio.removeEventListener("loadedmetadata", restore);
+        if (time > 0 && Number.isFinite(time)) {
+          try {
+            audio.currentTime = time;
+          } catch {
+            // ignore
+          }
+        }
+        void requestPlay(audio);
+      };
+      audio.addEventListener("loadedmetadata", restore);
+      audio.src = src;
+      audio.load();
+    };
+    const onVisibility = () => {
+      if (document.visibilityState !== "visible") return;
+      if (!wantsToPlayRef.current || !audio.paused || audio.ended) return;
+      void requestPlay(audio);
+    };
 
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("loadedmetadata", onLoadedMetadata);
     audio.addEventListener("ended", onEnded);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+    audio.addEventListener("error", onError);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
+      clearResumeTimer();
+      pauseIsIntentionalRef.current = true;
       audio.pause();
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("loadedmetadata", onLoadedMetadata);
       audio.removeEventListener("ended", onEnded);
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+      audio.removeEventListener("error", onError);
+      document.removeEventListener("visibilitychange", onVisibility);
       audioRef.current = null;
     };
-  }, []);
+  }, [clearResumeTimer, requestPlay]);
 
   useEffect(() => {
     document.body.classList.toggle("audio-bar-active", isActive);

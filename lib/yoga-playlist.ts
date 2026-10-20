@@ -48,13 +48,13 @@ export const PLAYLIST_CATEGORIES: {
 /** Uniquement des morceaux ≥ 1 h. */
 export const YOGA_TRACKS: YogaTrack[] = [
   {
-    id: "zen-ambient-groove",
-    title: "Ambient Groove Mix (~1 h)",
+    id: "zen-healing-528hz-deep",
+    title: "Méditation 528 Hz — énergie profonde (~3 h)",
     category: "zen",
-    src: "/audio/zen/ambient-groove-mix.mp3",
-    durationSeconds: 3755,
-    artist: "ambientgroove.net",
-    license: "CC BY-ND 3.0 (Internet Archive)",
+    src: "/audio/zen/healing-528hz-3h.mp3",
+    durationSeconds: 10900,
+    artist: "Healing Meditation Music",
+    license: "Internet Archive",
   },
   {
     id: "zen-healing-528hz",

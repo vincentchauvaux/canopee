@@ -7,7 +7,7 @@ Musiques et sons utilisés dans les outils admin (lecteur zen). Téléchargés p
 
 | Fichier | Titre | Artiste | Source | Licence |
 |---------|-------|---------|--------|---------|
-| `zen/ambient-groove-mix.mp3` | Ambient Groove Mix (~1 h) | ambientgroove.net | [Internet Archive](https://archive.org/details/ambientgroove.net_mix1) | CC BY-ND 3.0 |
+| `zen/healing-528hz-3h.mp3` | Méditation 528 Hz — énergie profonde (~3 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
 | `zen/healing-528hz-2h.mp3` | Méditation 528 Hz — régénération (~2 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
 
 ## Om

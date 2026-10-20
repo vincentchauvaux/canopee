@@ -13,9 +13,9 @@ download() {
   curl -fL --retry 3 --retry-delay 2 -o "$dest" "$url"
 }
 
-# Zen — ambient long-form + méditation (≥ 1 h)
-download "https://archive.org/download/ambientgroove.net_mix1/Ambientgroovedotnet_mix.mp3" \
-  "$AUDIO/zen/ambient-groove-mix.mp3"
+# Zen — méditations 528 Hz (≥ 1 h)
+download "https://archive.org/download/m_20210503/deep_healing_energy_528hz_ancient_frequency_sound_healing_session_zen_meditation_-8929627272695525770.mp3" \
+  "$AUDIO/zen/healing-528hz-3h.mp3"
 download "https://archive.org/download/m_20210503/528hz_whole_body_regeneration_full_body_healing_emotional_physical_healing_epxe_XIByoK-gucZgB0-.mp3" \
   "$AUDIO/zen/healing-528hz-2h.mp3"
 
