@@ -269,7 +269,7 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const audio = new Audio();
     audio.preload = "auto";
-    audio.playsInline = true;
+    audio.setAttribute("playsinline", "true");
     audioRef.current = audio;
     audio.volume = volumeRef.current;
 
