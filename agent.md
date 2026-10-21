@@ -272,7 +272,7 @@ Le site présente le cours de Yin Yoga avec les informations suivantes :
 - `components/admin/MusicPlayer.tsx` - Lecteur playlist zen par catégorie (admin) ; slider volume + note iOS
 - `components/admin/GlobalAudioBar.tsx` - Barre de lecture fixe en bas du site (lecture persistante)
 - `contexts/AudioPlayerContext.tsx` - Contexte audio global (playlist, volume, boucle). Reprise auto si pause non demandée par l&apos;utilisateur ; ignore `AbortError` sur `play()`.
-- `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, om, temple, pluie, nature) — 13 pistes ≥ 1 h
+- `lib/yoga-playlist.ts` - Configuration des pistes audio zen (zen, om, temple, pluie, nature) — 14 pistes ≥ 1 h
 - `lib/timer-sound.ts` - Sonneries Web Audio douces (gong, bol, cloche, om, pulse sinus) + vibration matérielle ; volume ; `playTimerEndAlert`, `previewTimerRingtone`, `stopTimerAlert`
 - `lib/device.ts` - Détection iOS (volume masqué sur iPhone pour le lecteur HTML)
 - `public/audio/` - Fichiers MP3 libres de droit (≥ 1 h) + `CREDITS.md` ; script `scripts/download-yoga-audio.sh`
@@ -827,9 +827,10 @@ Revue posture : middleware, NextAuth, garde-fous admin API, headers, Zod, upload
 
 - ✅ Page `/admin/outils` : minuteur circulaire (presets 1, 2, 3, 4 min + réglage ±1 min avant lancement) + lecteur playlist par catégories (Zen, Om, Temple, Pluie, Nature).
 - ✅ `AudioPlayerContext` + `GlobalAudioBar` : lecture persistante sur tout le site jusqu&apos;à pause/stop ; barre de progression cliquable / glissable (seek).
-- ✅ Playlist audio (≥ 1 h uniquement, août 2026, étendue oct. 2026) : 13 pistes — Zen (4 : 528 Hz ×2, 777 Hz, 432 Hz), Om (2), Temple (3), Pluie (2), Nature (2) ; crédits dans `public/audio/CREDITS.md`.
+- ✅ Playlist audio (≥ 1 h uniquement, août 2026, étendue oct. 2026) : **14 pistes** — Zen (4 : 528 Hz ×2, **777 Hz réel**, 432 Hz), Om (3 : dont chant Aum tibétain), Temple (3), Pluie (2), Nature (2) ; crédits dans `public/audio/CREDITS.md`.
 - ✅ Zen : remplacement d&apos;Ambient Groove Mix par « Méditation 528 Hz — énergie profonde (~3 h) » (même collection Archive que la piste régénération 528 Hz) (octobre 2026).
-- ✅ Zen : ajout « Méditation 777 Hz — fréquence angélique (~2 h) » (drone original) et « Méditation 432 Hz — guérison profonde (~3 h) » (octobre 2026).
+- ✅ Zen : « Méditation 432 Hz — guérison profonde (~3 h) » (octobre 2026).
+- ✅ 777 Hz : le drone ffmpeg (sine 777 Hz, ~−46 dB) était inaudible. Remplacé par `zen/healing-777hz-3h.mp3` (3e œil, ~3 h 25). Ajout Om : `om/aum-tibetan-chanting.mp3` (Aum tibétain, ~2 h 22). Les MP3 restent gitignorés ; copie locale via `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (oct. 2026) : `Carol` @ `9017b12` — pull, audio 777/432 Hz, build, `pm2 restart canopee`.
 - ✅ Minuteur : choix de sonnerie (Gong, Bol, Cloche, Om, Pulse doux, Vibration téléphone) + volume Web Audio + bouton Tester ; Stop pour couper.
 - ✅ Presets minuteur : grille 2×2 sur mobile, 4 colonnes sur écran large (plus de bouton seul).

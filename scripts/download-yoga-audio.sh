@@ -21,27 +21,26 @@ download "https://archive.org/download/m_20210503/528hz_whole_body_regeneration_
 download "https://archive.org/download/m_20210503/432hz_the_deepest_healing_let_go_of_all_negative_energy_healing_meditation_music_432hz_VYbK-nIByoK-gucZwK3S.mp3" \
   "$AUDIO/zen/healing-432hz-3h.mp3"
 
-generate_777hz() {
-  local dest="$1"
+# Pistes fournies localement (pas de drone ffmpeg : inaudible).
+copy_local() {
+  local src="$1"
+  local dest="$2"
   if [ -f "$dest" ]; then
     echo "→ $dest (déjà présent)"
     return
   fi
-  if ! command -v ffmpeg >/dev/null 2>&1; then
-    echo "⚠ ffmpeg manquant : impossible de générer $dest"
-    return 1
+  if [ -f "$src" ]; then
+    echo "→ $dest (copie locale)"
+    cp "$src" "$dest"
+    return
   fi
-  echo "→ $dest (génération 777 Hz, ~2 h)"
-  ffmpeg -y -hide_banner -loglevel error \
-    -f lavfi -i "sine=frequency=777:sample_rate=44100:duration=7200" \
-    -f lavfi -i "sine=frequency=388.5:sample_rate=44100:duration=7200" \
-    -f lavfi -i "anoisesrc=color=pink:sample_rate=44100:duration=7200:amplitude=0.015" \
-    -filter_complex "[0]volume=0.16,tremolo=f=0.12:d=0.4[a];[1]volume=0.10,tremolo=f=0.15:d=0.45[b];[2]lowpass=f=600,volume=0.06[c];[a][b][c]amix=inputs=3:normalize=0,aecho=0.8:0.7:60:0.25,lowpass=f=2800,afade=t=in:st=0:d=10,afade=t=out:st=7185:d=15" \
-    -c:a libmp3lame -b:a 96k \
-    "$dest"
+  echo "⚠ Manquant : $dest — copier le MP3 dans public/audio/"
 }
 
-generate_777hz "$AUDIO/zen/healing-777hz-2h.mp3"
+copy_local "$HOME/Downloads/777 Hz Third Eye Activation Meditation  Clarify & Awaken Your Inner Vision  Ambient Flute Music.mp3" \
+  "$AUDIO/zen/healing-777hz-3h.mp3"
+copy_local "$HOME/Downloads/Deep Tibetan Aum Chanting - Meditation, Focus, Cleansing.mp3" \
+  "$AUDIO/om/aum-tibetan-chanting.mp3"
 
 # Om — chants OM / mantras (≥ 1 h)
 download "https://archive.org/download/yt-5s.com-om-chanting-528-hz-320-kbps/yt5s.com%20-%20OM%20Chanting%20%40%20528Hz%20(320%20kbps).mp3" \

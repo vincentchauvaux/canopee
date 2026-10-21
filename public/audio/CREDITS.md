@@ -9,7 +9,7 @@ Musiques et sons utilisés dans les outils admin (lecteur zen). Téléchargés p
 |---------|-------|---------|--------|---------|
 | `zen/healing-528hz-3h.mp3` | Méditation 528 Hz — énergie profonde (~3 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
 | `zen/healing-528hz-2h.mp3` | Méditation 528 Hz — régénération (~2 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
-| `zen/healing-777hz-2h.mp3` | Méditation 777 Hz — fréquence angélique (~2 h) | Canopée | Drone original 777 Hz (ffmpeg) | Création originale |
+| `zen/healing-777hz-3h.mp3` | Méditation 777 Hz — 3e œil (~3 h 25) | 777 Hz Third Eye Activation | Fichier fourni localement (remplace le drone ffmpeg inaudible) | Usage local |
 | `zen/healing-432hz-3h.mp3` | Méditation 432 Hz — guérison profonde (~3 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
 
 ## Om
@@ -18,6 +18,7 @@ Musiques et sons utilisés dans les outils admin (lecteur zen). Téléchargés p
 |---------|-------|---------|--------|---------|
 | `om/om-chanting-528hz.mp3` | Chant OM @ 528 Hz (~1 h 42) | OM Chanting | [Internet Archive](https://archive.org/details/yt-5s.com-om-chanting-528-hz-320-kbps) | Internet Archive |
 | `om/om-vibrations-1h.mp3` | Vibrations OM — énergie positive (~1 h) | OM Mantras | [Internet Archive](https://archive.org/details/GETPOSITIVEENERGYAURASUPERPOWERFULVIBRATIONSOMZOOM) | Internet Archive |
+| `om/aum-tibetan-chanting.mp3` | Chant Aum tibétain — méditation (~2 h 22) | Deep Tibetan Aum Chanting | Fichier fourni localement | Usage local |
 
 ## Temple
 

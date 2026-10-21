@@ -67,12 +67,12 @@ export const YOGA_TRACKS: YogaTrack[] = [
   },
   {
     id: "zen-healing-777hz",
-    title: "Méditation 777 Hz — fréquence angélique (~2 h)",
+    title: "Méditation 777 Hz — 3e œil (~3 h 25)",
     category: "zen",
-    src: "/audio/zen/healing-777hz-2h.mp3",
-    durationSeconds: 7200,
-    artist: "Canopée",
-    license: "Création originale (drone 777 Hz)",
+    src: "/audio/zen/healing-777hz-3h.mp3",
+    durationSeconds: 12331,
+    artist: "777 Hz Third Eye Activation",
+    license: "Fichier fourni localement",
   },
   {
     id: "zen-healing-432hz",
@@ -100,6 +100,15 @@ export const YOGA_TRACKS: YogaTrack[] = [
     durationSeconds: 3638,
     artist: "OM Mantras",
     license: "Internet Archive",
+  },
+  {
+    id: "om-aum-tibetan",
+    title: "Chant Aum tibétain — méditation (~2 h 22)",
+    category: "om",
+    src: "/audio/om/aum-tibetan-chanting.mp3",
+    durationSeconds: 8540,
+    artist: "Deep Tibetan Aum Chanting",
+    license: "Fichier fourni localement",
   },
   {
     id: "temple-singing-bowls-healing",
