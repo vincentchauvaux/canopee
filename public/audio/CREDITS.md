@@ -9,6 +9,8 @@ Musiques et sons utilisés dans les outils admin (lecteur zen). Téléchargés p
 |---------|-------|---------|--------|---------|
 | `zen/healing-528hz-3h.mp3` | Méditation 528 Hz — énergie profonde (~3 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
 | `zen/healing-528hz-2h.mp3` | Méditation 528 Hz — régénération (~2 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
+| `zen/healing-777hz-2h.mp3` | Méditation 777 Hz — fréquence angélique (~2 h) | Canopée | Drone original 777 Hz (ffmpeg) | Création originale |
+| `zen/healing-432hz-3h.mp3` | Méditation 432 Hz — guérison profonde (~3 h) | Healing Meditation Music | [Internet Archive](https://archive.org/details/m_20210503) | Internet Archive |
 
 ## Om
 

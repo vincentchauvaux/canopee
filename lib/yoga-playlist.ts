@@ -21,7 +21,7 @@ export const PLAYLIST_CATEGORIES: {
   {
     id: "zen",
     label: "Zen",
-    description: "Méditation douce et ambient relaxant",
+    description: "Méditations 528, 432 et 777 Hz",
   },
   {
     id: "om",
@@ -62,6 +62,24 @@ export const YOGA_TRACKS: YogaTrack[] = [
     category: "zen",
     src: "/audio/zen/healing-528hz-2h.mp3",
     durationSeconds: 7209,
+    artist: "Healing Meditation Music",
+    license: "Internet Archive",
+  },
+  {
+    id: "zen-healing-777hz",
+    title: "Méditation 777 Hz — fréquence angélique (~2 h)",
+    category: "zen",
+    src: "/audio/zen/healing-777hz-2h.mp3",
+    durationSeconds: 7200,
+    artist: "Canopée",
+    license: "Création originale (drone 777 Hz)",
+  },
+  {
+    id: "zen-healing-432hz",
+    title: "Méditation 432 Hz — guérison profonde (~3 h)",
+    category: "zen",
+    src: "/audio/zen/healing-432hz-3h.mp3",
+    durationSeconds: 10800,
     artist: "Healing Meditation Music",
     license: "Internet Archive",
   },

@@ -13,8 +13,9 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Pages contenu / légales : fond blanc dès le départ
+  // Pages contenu / légales / admin : fond blanc dès le départ
   const forceWhiteHeader =
+    pathname.startsWith("/admin") ||
     pathname === "/profile" ||
     pathname === "/mon-parcours" ||
     pathname === "/yin-yoga" ||
