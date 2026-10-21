@@ -832,6 +832,7 @@ Revue posture : middleware, NextAuth, garde-fous admin API, headers, Zod, upload
 - ✅ Zen : « Méditation 432 Hz — guérison profonde (~3 h) » (octobre 2026).
 - ✅ 777 Hz : le drone ffmpeg (sine 777 Hz, ~−46 dB) était inaudible. Remplacé par `zen/healing-777hz-3h.mp3` (3e œil, ~3 h 25). Ajout Om : `om/aum-tibetan-chanting.mp3` (Aum tibétain, ~2 h 22). Les MP3 restent gitignorés ; copie locale via `scripts/download-yoga-audio.sh`.
 - ✅ Déployé sur VPS (oct. 2026) : `Carol` @ `9017b12` — pull, audio 777/432 Hz, build, `pm2 restart canopee`.
+- ✅ Déployé sur VPS (oct. 2026) : `Carol` @ `3d148cd` — pull, remplacement 777 Hz réel + Aum tibétain, suppression du drone inaudible, build, `pm2 restart canopee`.
 - ✅ Minuteur : choix de sonnerie (Gong, Bol, Cloche, Om, Pulse doux, Vibration téléphone) + volume Web Audio + bouton Tester ; Stop pour couper.
 - ✅ Presets minuteur : grille 2×2 sur mobile, 4 colonnes sur écran large (plus de bouton seul).
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
