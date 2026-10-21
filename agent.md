@@ -830,6 +830,7 @@ Revue posture : middleware, NextAuth, garde-fous admin API, headers, Zod, upload
 - ✅ Playlist audio (≥ 1 h uniquement, août 2026, étendue oct. 2026) : 13 pistes — Zen (4 : 528 Hz ×2, 777 Hz, 432 Hz), Om (2), Temple (3), Pluie (2), Nature (2) ; crédits dans `public/audio/CREDITS.md`.
 - ✅ Zen : remplacement d&apos;Ambient Groove Mix par « Méditation 528 Hz — énergie profonde (~3 h) » (même collection Archive que la piste régénération 528 Hz) (octobre 2026).
 - ✅ Zen : ajout « Méditation 777 Hz — fréquence angélique (~2 h) » (drone original) et « Méditation 432 Hz — guérison profonde (~3 h) » (octobre 2026).
+- ✅ Déployé sur VPS (oct. 2026) : `Carol` @ `9017b12` — pull, audio 777/432 Hz, build, `pm2 restart canopee`.
 - ✅ Minuteur : choix de sonnerie (Gong, Bol, Cloche, Om, Pulse doux, Vibration téléphone) + volume Web Audio + bouton Tester ; Stop pour couper.
 - ✅ Presets minuteur : grille 2×2 sur mobile, 4 colonnes sur écran large (plus de bouton seul).
 - ✅ Fix lecteur audio : changement de volume ne recrée plus l&apos;élément `Audio` (play/pause reste fonctionnel).
